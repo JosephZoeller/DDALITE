@@ -28,7 +28,7 @@ type Server struct {
 }
 
 //CONFIG is yaml config
-const CONFIG string = "config.yml"
+const CONFIG string = "./config/blandwallconf/config.yml"
 
 func loadConfig(path string) ([]Server, error) {
 	c := Proxy{}
