@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/ken343/vnf-suite/pkg/proxy"
+	"github.com/200106-uta-go/JKJP2/pkg/proxy"
 )
 
 // testProfile is a backup profile that will be used in case of errors with
