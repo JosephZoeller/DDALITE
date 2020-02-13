@@ -1,16 +1,15 @@
 FROM golang:rc-buster AS builder
-RUN mkdir -p /home/go/src/github.com/ken343/demo/
-ADD . /home/go/src/github.com/ken343/demo/
-WORKDIR /home/go/src/github.com/ken343/demo/
+RUN mkdir -p /home/go/src/github.com/200106-uta-go/JKJP2
+ADD . /home/go/src/github.com/200106-uta-go/JKJP2
+WORKDIR /home/go/src/github.com/200106-uta-go/JKJP2
 
-RUN go build .
+RUN go build -o business_demo_servers .
 
 FROM debian:latest
 
-COPY --from=builder /home/go/src/github.com/ken343/demo/ /home/servers/
+COPY --from=builder /home/go/src/github.com/200106-uta-go/JKJP2 /home/servers/
 WORKDIR /home/servers/
 EXPOSE 80 443 22
 EXPOSE 8081 8082 8083
 EXPOSE 9090
-RUN mv /home/servers/demo /bin/
-CMD [ "demo" ]
+CMD [ "./business_demo_servers" ]
