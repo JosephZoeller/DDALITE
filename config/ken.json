@@ -1,0 +1,1 @@
+{"Name":"ken","Port":"8080","AppServers":[{"AppHost":"localhost","AppPort":"8081","Endpoint":"/"},{"AppHost":"localhost","AppPort":"8081","Endpoint":"/english"},{"AppHost":"localhost","AppPort":"8082","Endpoint":"/spanish"},{"AppHost":"localhost","AppPort":"8083","Endpoint":"/russian"}]}
