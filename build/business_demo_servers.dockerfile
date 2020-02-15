@@ -1,9 +1,10 @@
 FROM golang:rc-buster AS builder
-RUN mkdir -p /home/go/src/github.com/200106-uta-go/JKJP2
-ADD . /home/go/src/github.com/200106-uta-go/JKJP2
-WORKDIR /home/go/src/github.com/200106-uta-go/JKJP2
 
-RUN go build -o business_demo_servers .
+RUN mkdir -p /home/go/src/github.com/200106-uta-go/JKJP2
+WORKDIR /home/go/src/github.com/200106-uta-go/JKJP2
+ADD . .
+
+RUN go build ./cmd/business_demo_servers
 
 FROM debian:latest
 

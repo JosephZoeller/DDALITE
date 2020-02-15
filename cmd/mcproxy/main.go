@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/200106-uta-go/JKJP2/pkg/proxy"
+	"../../pkg/proxy"
 )
 
 func main() {
