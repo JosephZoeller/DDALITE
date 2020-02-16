@@ -23,6 +23,7 @@ func Resp(w http.ResponseWriter, r *http.Request) {
 	response.Hash = r.FormValue("hash")
 
 	// Sleep for random amount of seconds to simulate processing time (maximum 5 seconds).
+	rand.Seed(time.Now().UnixNano())
 	time.Sleep(time.Duration(rand.Intn(6)) * time.Second)
 
 	// Set result value
