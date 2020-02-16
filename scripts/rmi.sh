@@ -1,1 +1,0 @@
-docker rmi bdservers:latest mcproxy:latest
