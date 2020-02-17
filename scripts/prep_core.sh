@@ -5,9 +5,7 @@
 echo Setting up Kubernetes Node...
 
 # Update instance repos and install standard software.
-sudo apt-get update
-
-sudo su -
+ apt-get update
 
 apt-get install \
     apt-transport-https \
@@ -17,7 +15,7 @@ apt-get install \
     software-properties-common
 
 # Add key for docker-ubuntu repo
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg |  apt-key add -
 
 # Add repo to end of /etc/apt/source.list
 add-apt-repository \
@@ -27,13 +25,13 @@ add-apt-repository \
 
 # Update new docker repo and install modern docker tools
 apt-get update
-apt-get install docker-ce docker-ce-cli containerd.io
+apt-get install -y docker-ce docker-ce-cli containerd.io
 
 # Update repo list with kubernetes tools and install the 3 universal tools
 # all nodes are expected to have.
-apt-get update && sudo apt-get install -y apt-transport-https curl
-curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-cat <<EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
+apt-get update &&  apt-get install -y apt-transport-https curl
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg |  apt-key add -
+cat <<EOF |  tee /etc/apt/sources.list.d/kubernetes.list
 deb https://apt.kubernetes.io/ kubernetes-xenial main
 EOF
 apt-get update

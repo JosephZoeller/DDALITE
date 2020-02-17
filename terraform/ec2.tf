@@ -61,6 +61,7 @@ resource "aws_instance" "master" {
       "sudo /bin/bash /tmp/prep_master_node.sh",
     ]
   }
+  
 }
 ##EC2's for SLAVES
 resource "aws_instance" "worker" {
