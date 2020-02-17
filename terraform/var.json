@@ -1,4 +1,4 @@
 {
-    "WORKER_image_id" : "ami-06aad026c70009ce4",
-    "MASTER_image_id" : "ami-0a39a8d5bae448e73"
+    "WORKER_image_id" : "ami-0203845596dbef2f1",
+    "MASTER_image_id" : "ami-0203845596dbef2f1"
 }

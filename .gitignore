@@ -8,6 +8,7 @@ mcproxy
 
 # Security Credentials (e.g. TLS)
 *.pem
+*.pub
 
 # Test binary, built with `go test -c`
 *.test
@@ -22,6 +23,8 @@ mcproxy
 !*/
 
 # (From https://github.com/github/gitignore/blob/master/Terraform.gitignore)
+# Ignore the creds and secrets
+terraform/
 
 # Ignore excessive mcProxy routing table profiles
 /config/*
