@@ -3,12 +3,11 @@ locals {
   json_data = jsondecode(file("./var.json"))
   json_secrets= jsondecode(file("./secrets/creds.json"))
 }
-##Public IPs for Master EC2, 1 ip.
-output "master_ip" {
-  value = aws_instance.master.public_ip
+##Public IPs for WORKER EC2's, array of worker ips.
+output "instance_ips" {
+  value = aws_instance.worker.*.public_ip
   description = "The Private IP address of the server instance"
 }
-
 ##AWS Login Settings and Setup
 provider "aws" {
   access_key = local.json_secrets.access_key
@@ -20,11 +19,12 @@ resource "aws_key_pair" "deployer" {
   key_name	  = "Key123"
   public_key	= file("./secrets/public.pub")
 }
-##EC2for MASTER 
-resource "aws_instance" "master" {
+##EC2's for SLAVES
+resource "aws_instance" "worker" {
+  count   = 2
   key_name = aws_key_pair.deployer.key_name
-  ami           = local.json_data.MASTER_image_id
-  instance_type = "t2.medium"
+  ami           = local.json_data.WORKER_image_id
+  instance_type = "t2.micro"
   security_groups = [aws_security_group.SSH.name]
   connection {
     user = "ubuntu"
@@ -32,62 +32,38 @@ resource "aws_instance" "master" {
     private_key = file("./secrets/private.pem")
     host =  self.public_ip
     timeout = "4m"
-  }
-##Setup Directories for Master
-  provisioner "remote-exec" {
+##Make file structure pods and services
+    provisioner "remote-exec" {
     inline = [
-    "mkdir -p terraform/secrets"
-    "mkdir pods",
-    "mkdir services",
-
+      "mkdir pods",
+      "mkdir services",      
     ]
   }
-##Core Script
-  provisioner "file" {
+##Place scripts in tmp folder to run and delete after
+   provisioner "file" {
     source      = "../scripts/prep_core.sh"
     destination = "/tmp/prep_core.sh"
   }
-##Master Script
+##Place scrpits in temp folder to run and delete after
   provisioner "file" {
-    source      = "../scripts/prep_master_node.sh"
-    destination = "/tmp/prep_master_node.sh"
-  }
-##Collider Service Yaml
-  provisioner "file" {
-    source      = "../collider-service.yaml"
-    destination = "/home/ubuntu/services/collider-service.yaml"
-  }
-##Collider Pod Yaml
-  provisioner "file" {
-    source      = "../collider.yaml"
-    destination = "/home/ubuntu/pods/collider.yaml"
-  }
-##Terraform Slave tf file
-  provisioner "file" {
-    source      = "slave.tf"
-    destrination = "/home/ubuntu/terraform"
-  }
-
-##Place creds, and keys into secrets directory
-  provisioner "file" {
-    source      = "/secrets"
-    destination = "/home/ubuntu/terraform/secrets"
+    source      = "../scripts/prep_slave_node.sh"
+    destination = "/tmp/prep_slave_node.sh"
   }
 ##Place varraibles json into terraform directory
    provisioner "file" {
-    source      = "var.json"
-    destination = "/home/ubuntu/terraform/var.json"
+    source      = "home/mastertoken.json"
+    destination = "home/mastertoken.json"
   }
 
-##Exicute Script
+##Run scrpits for slave setup
   provisioner "remote-exec" {
     inline = [
       "sudo /bin/bash /tmp/prep_core.sh",
-      "sudo /bin/bash /tmp/prep_master_node.sh",
+      "sudo /bin/bash /tmp/prep_slave_node.sh",
     ]
-  } 
+  }   
 }
-##Secuirty Group Allow SSH
+##Allows SSH
 resource "aws_security_group" "SSH" {
   name        = "allow_ssh"
   description = "Allow SSH traffic"
@@ -105,4 +81,3 @@ resource "aws_security_group" "SSH" {
     cidr_blocks     = ["0.0.0.0/0"]
   }
 }
-
