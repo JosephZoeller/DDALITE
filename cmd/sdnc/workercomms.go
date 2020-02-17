@@ -9,6 +9,7 @@ import (
 )
 
 // listenForWorker awaits messages from workers. Upon recieving a message, the hash-collision pair is saved to a text file.
+/*
 func listenForWorker() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		var hash = r.FormValue("hash")
@@ -17,7 +18,7 @@ func listenForWorker() {
 	})
 	http.ListenAndServe(":8081", nil)
 }
-
+*/
 func sendToWorkers(hash string) {
 	for i := 0; i < len(workerAddrs); i++ {
 		go func(index int) {
