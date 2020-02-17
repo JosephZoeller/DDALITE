@@ -1,14 +1,21 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
 )
 
+// SDN Controller Entry point.
+// Listens for Client Query (hash)
+// Broadcasts query to workers (hash)
+// Listens for worker responses (hash + collision)
+// Logs worker responses (hash + collision -> collisions.txt)
 func main() {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		var hash = r.FormValue("hash")
-		
-	})
-	http.ListenAndServe(":8080", nil)
+	go listenForClient()
+	go listenForWorker()
+
+	signalChan := make(chan os.Signal, 1)
+	signal.Notify(signalChan, syscall.SIGINT)
+	<-signalChan
 }
