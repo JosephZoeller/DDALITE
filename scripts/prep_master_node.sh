@@ -39,5 +39,17 @@ token=$(echo ${arrvar10[4]})
 
 discovery_token=$(echo ${arrvar10[6]})
 
+json_data="{
+      var1: ${var1},
+      arrvar1: ${arrvar1},
+      masteripp: ${masteripp},
+      token: ${token},
+      discovery_token: ${discovery_token}
+      }"
+
+touch ../terraform/mastertoken.json
+
+cat $json_data > ../terraform/mastertoken.json
+
 # Check for all nodes once more.
 kubectl get nodes
