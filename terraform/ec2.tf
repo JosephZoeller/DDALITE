@@ -44,10 +44,10 @@ resource "aws_instance" "master" {
       "mkdir services",
     ]
   }
-  # provisioner "file" {
-  #   source      = "setup_master.sh"
-  #   destination = "/tmp/setup_master.sh"
-  # }
+  provisioner "file" {
+    source      = "../scripts/prep_master_node.sh"
+    destination = "/tmp/prep_master_node.sh"
+  }
   provisioner "file" {
     source      = "../collider-service.yaml"
     destination = "/home/ubuntu/services/client-server.yaml"
@@ -56,13 +56,13 @@ resource "aws_instance" "master" {
     source      = "../collider.yaml"
     destination = "/home/ubuntu/pods/html-server.yaml"
   }
-  # provisioner "remote-exec" {
-  #   inline = [
-  #     "sudo /bin/bash /tmp/setup_master.sh",
-  #   ]
-  # }
+  provisioner "remote-exec" {
+    inline = [
+      "sudo /bin/bash /tmp/prep_master_node.sh",
+    ]
+  }
 }
-##EC2's for WORKER
+##EC2's for SLAVES
 resource "aws_instance" "worker" {
   count   = 2
   key_name = aws_key_pair.deployer.key_name
