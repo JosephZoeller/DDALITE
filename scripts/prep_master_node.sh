@@ -38,3 +38,17 @@ echo $json_data | cat > /home/mastertoken.json
 # IPtables setting
 iptables -P FORWARD ACCEPT
 sudo sysctl net.bridge.bridge-nf-call-iptables=1
+
+curl -fsSL https://releases.hashicorp.com/terraform/0.12.20/terraform_0.12.20_linux_amd64.zip -o terr.zip
+
+apt install -y unzip
+
+unzip terr.zip
+
+mv terraform /bin
+
+cd $HOME/terraform/
+
+terraform init
+
+terraform apply
