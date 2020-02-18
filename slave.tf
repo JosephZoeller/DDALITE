@@ -16,7 +16,7 @@ provider "aws" {
 }
 ##SSH LOGIN KEYS
 resource "aws_key_pair" "deployer" {
-  key_name	  = "Key4"
+  key_name	  = "Key5"
   public_key	= file("./secrets/public.pub")
 }
 ##EC2's for SLAVES
@@ -65,8 +65,8 @@ resource "aws_instance" "worker" {
   }   
 }
 ##Allows SSH
-resource "aws_security_group" "SSH4" {
-  name        = "allow_ssh_4"
+resource "aws_security_group" "SSH5" {
+  name        = "allow_ssh_5"
   description = "Allow SSH traffic"
   ingress {
     from_port   = 0 
