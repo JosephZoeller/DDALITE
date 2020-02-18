@@ -1,11 +1,13 @@
 package main
 
 import (
-	"os"
 	"fmt"
+	"os"
 )
 
 var workerAddrs []string
+
+// What is this for?
 
 func init() {
 	for i := 0; i < 2; i++ {
