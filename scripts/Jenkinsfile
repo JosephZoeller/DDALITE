@@ -1,0 +1,39 @@
+pipeline {
+   agent any
+
+   tools {
+      go 'go1.13'
+   }
+
+   stages {
+      stage('Pull') {
+          steps {
+              git 'https://github.com/200106-uta-go/JKJP2.git'   
+          }
+      }
+      stage('Test') {
+        steps {
+          sh 'go test ./...'
+        }
+
+        post {
+          success {
+            sh "echo TEST SUCCESS"
+          }
+        }
+      }
+      stage('Build') {
+         steps {
+            
+            sh 'go build -o sdnc ./cmd/sdnc'
+            sh 'go build -o collider ./cmd/collider'
+         }
+
+         post {
+            success {
+               sh "echo BUILD SUCCESS"
+            }
+         }
+      }
+   }
+}
