@@ -1,22 +1,23 @@
 #!/bin/bash
-# The next portions are specific to the master node.
+# The next portions are specific to the master node
 
-# Kubeadm prepares master node
-
-kubeadm init
-
-
+# Kubeadm initialization
+# Flannel uses 10.244.0.0/16 as the pod network CIDR
+kubeadm init --pod-network-cidr=10.244.0.0/16
 
 # To make kubectl work for non-root user
 mkdir -p $HOME/.kube
    cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
    chown $(id -u):$(id -g) $HOME/.kube/config
 
-# Start weave network add-on with kubernetes version passed in
-# and also set as an env variable.
+# Container Network Interface (CNI) Flannel installation
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/2140ac876ef134e0ed5af15c65e414cf26827915/Documentation/kube-flannel.yml
 
+# IPtables configuration required by Container Network Interface (CNI), Flannel
+sysctl net.bridge.bridge-nf-call-iptables=1
+
+# Set environment variables
 export kubever=$(kubectl version | base64 | tr -d '\n')
-kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
 
 var1=$(sudo kubeadm token create --print-join-command)
 arrvar1=(${var10// / })
@@ -32,7 +33,3 @@ json_data="{
       }"
 touch ../terraform/mastertoken.json
 cat $json_data > ../terraform/mastertoken.json
-
-# IPtables setting
-iptables -P FORWARD ACCEPT
-sudo sysctl net.bridge.bridge-nf-call-iptables=1

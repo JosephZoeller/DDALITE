@@ -27,9 +27,23 @@ add-apt-repository \
 # Install the latest version of Docker Engine - Community and containerd
 apt-get install docker-ce docker-ce-cli containerd.io
 
-# Enable Docker service
-systemctl enable docker
-systemctl start docker
+# Setup daemon
+cat > /etc/docker/daemon.json <<EOF
+{
+  "exec-opts": ["native.cgroupdriver=systemd"],
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "100m"
+  },
+  "storage-driver": "overlay2"
+}
+EOF
+
+mkdir -p /etc/systemd/system/docker.service.d
+
+# Restart docker
+systemctl daemon-reload
+systemctl restart docker
 
 # Kubernetes installation per guidance from kubernetes.io
 # Update repo list with kubernetes tools and install the 3 universal tools
@@ -45,6 +59,6 @@ sudo apt-get install -y kubelet kubeadm kubectl
 # Mark up kublet, kubeadm and kubectl to prevent from auto updating
 sudo apt-mark hold kubelet kubeadm kubectl
 
-# Enable kublet service
-systemctl enable kubelet
-systemctl start kubelet
+# Restart the kubelet
+systemctl daemon-reload
+systemctl restart kubelet
