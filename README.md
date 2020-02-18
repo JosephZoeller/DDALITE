@@ -1,5 +1,5 @@
 # Project 2 - Overlay Networking
-Jessey, Ken and Joseph Z, deploy a multi-instance server and VNFs to a production environment on a cloud services platform of your choice. There must be communication across separate virtual machines managed by an SDN controller and service mesh, separate applications controlling and routing traffic between them. Infrastructure and application changes should be managed by an automated CI/CD pipeline.
+Jaeik, Jessey, Ken and Joseph Z, deploy a multi-instance server and VNFs to a production environment on a cloud services platform of your choice. There must be communication across separate virtual machines managed by an SDN controller and service mesh, separate applications controlling and routing traffic between them. Infrastructure and application changes should be managed by an automated CI/CD pipeline.
 
 ## Recommended Tools
 - [DockerHub](https://hub.docker.com/)
