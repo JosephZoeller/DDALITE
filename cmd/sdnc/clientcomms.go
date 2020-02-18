@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+
+	"github.com/200106-uta-go/JKJP2/pkg/terra"
 )
 
 // listenForClient awaits a query (curl request) from the client. Upon recieving a request, the hash is handed out to the worker addresses.
@@ -19,13 +21,15 @@ func listenForClient() {
 		// status if client is derp.
 		hash := req.Form.Get("hash")
 		instanceCount := req.Form.Get("instances")
+
 		if hash == "" || instanceCount == "" {
 			rw.WriteHeader(http.StatusBadRequest)
 			errMsg := fmt.Sprintf("Error hash=%s and instances=%s were not set.", hash, instanceCount)
 			rw.Write([]byte(errMsg))
 		}
 
-		terra.Provision(instancesCount)
+		// Initiate Terraform script to create EC2 instances.
+		terra.Provision(instanceCount)
 
 		sendToWorkers(hash)
 	})

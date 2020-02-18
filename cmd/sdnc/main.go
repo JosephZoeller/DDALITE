@@ -14,7 +14,7 @@ import (
 func main() {
 
 	go listenForClient()
-	go listenForWorker()
+	// go listenForWorker()
 
 	signalChan := make(chan os.Signal, 1)
 	signal.Notify(signalChan, syscall.SIGINT)
