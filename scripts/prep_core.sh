@@ -6,6 +6,8 @@ echo Setting up Kubernetes Node...
 # Update the apt package index
 apt-get update
 
+# Docker installation per guidance from docs.docker.com
+# Install packages to allow apt to use a repository over HTTPS
 apt-get install -y \
     apt-transport-https \
     ca-certificates \
