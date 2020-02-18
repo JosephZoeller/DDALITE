@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/200106-uta-go/JKJP2/pkg/cityhashutil"
 )
 
@@ -13,11 +11,7 @@ import (
 // Logs worker responses (hash + collision -> collisions.txt)
 func main() {
 
-	// rapid testing the cityhash algorithm with dismal results
-	const knownCollision string = ("TENSION_NECK")
-
-	f := cityhashutil.GetStrCode64Hash(knownCollision)
-	fmt.Printf("\nPost-CityHash: %s\n", f)
+	cityhashutil.TestStrCode64Hash()
 
 	//go listenForClient()
 	//go listenForWorker() currently, forwarding the client's request to the workers will then wait for the workers to return the collision as a response (0-5 seconds)
