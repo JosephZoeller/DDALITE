@@ -25,7 +25,7 @@ resource "aws_instance" "worker" {
   key_name = aws_key_pair.deployer.key_name
   ami           = local.json_data.WORKER_image_id
   instance_type = "t2.micro"
-  security_groups = [aws_security_group.SSH4.name]
+  security_groups = [aws_security_group.SSH5.name]
   connection {
     user = "ubuntu"
     type = "ssh"
@@ -43,12 +43,12 @@ resource "aws_instance" "worker" {
 ##Place scripts in tmp folder to run and delete after
    provisioner "file" {
     source      = "/home/ubuntu/terradir/prep_core.sh"
-    destination = "/tmp/prep_core.sh"
+    destination = "/home/ubuntu/prep_core.sh"
   }
 ##Place scrpits in temp folder to run and delete after
   provisioner "file" {
     source      = "/home/ubuntu/terradir/prep_slave_node.sh"
-    destination = "/tmp/prep_slave_node.sh"
+    destination = "/home/ubuntu/prep_slave_node.sh"
   }
 ##Place varraibles json into terraform directory
    provisioner "file" {
@@ -59,8 +59,8 @@ resource "aws_instance" "worker" {
 ##Run scrpits for slave setup
   provisioner "remote-exec" {
     inline = [
-      "sudo /bin/bash /tmp/prep_core.sh",
-      "sudo /bin/bash /tmp/prep_slave_node.sh",
+      "sudo /bin/bash /home/ubuntu/prep_core.sh",
+      "sudo /bin/bash /home/ubuntu/prep_slave_node.sh",
     ]
   }   
 }
