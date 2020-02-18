@@ -31,9 +31,9 @@ json_data="{
       \"discovery_token\": \"${discovery_token}\"
       }"
 
-touch /home/mastertoken.json
-chmod 777 /home/mastertoken.json 
-echo $json_data | cat > /home/mastertoken.json
+touch /home/ubuntu/terradir/mastertoken.json
+chmod 777 /home/ubuntu/terradir/mastertoken.json 
+echo $json_data | cat > /home/ubuntu/terradir/mastertoken.json
 
 # IPtables setting
 iptables -P FORWARD ACCEPT

@@ -52,6 +52,16 @@ resource "aws_instance" "master" {
     source      = "../scripts/prep_master_node.sh"
     destination = "/tmp/prep_master_node.sh"
   }
+##Slave Script 
+  provisioner "file" {
+    source      = "../scripts/prep_slave_node.sh"
+    destination = "/home/ubuntu/terradir/prep_slave_node.sh"
+  }
+##Slave Script 
+  provisioner "file" {
+    source      = "../scripts/prep_core.sh"
+    destination = "/home/ubuntu/terradir/prep_core.sh"
+  }
 ##Collider Service Yaml
   provisioner "file" {
     source      = "../collider-service.yaml"
