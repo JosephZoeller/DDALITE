@@ -9,11 +9,6 @@ output "master_ip" {
   description = "The Private IP address of the server instance"
 }
 
-##Public IPs for WORKER EC2's, array of worker ips.
-output "instance_ips" {
-  value = aws_instance.worker.*.public_ip
-  description = "The Private IP address of the server instance"
-}
 ##AWS Login Settings and Setup
 provider "aws" {
   access_key = local.json_secrets.access_key
@@ -28,7 +23,7 @@ resource "aws_key_pair" "deployer" {
 ##EC2for MASTER 
 resource "aws_instance" "master" {
   key_name = aws_key_pair.deployer.key_name
-  ami           = local.json_data.WORKER_image_id
+  ami           = local.json_data.MASTER_image_id
   instance_type = "t2.medium"
   security_groups = [aws_security_group.SSH.name]
   connection {
@@ -38,47 +33,61 @@ resource "aws_instance" "master" {
     host =  self.public_ip
     timeout = "4m"
   }
+##Setup Directories for Master
   provisioner "remote-exec" {
     inline = [
-      "mkdir pods",
-      "mkdir services",
+    "mkdir -p terradir/secrets",
+    "mkdir pods",
+    "mkdir services",
+
     ]
   }
+##Core Script
+  provisioner "file" {
+    source      = "../scripts/prep_core.sh"
+    destination = "/tmp/prep_core.sh"
+  }
+##Master Script
   provisioner "file" {
     source      = "../scripts/prep_master_node.sh"
     destination = "/tmp/prep_master_node.sh"
   }
+##Collider Service Yaml
   provisioner "file" {
     source      = "../collider-service.yaml"
-    destination = "/home/ubuntu/services/client-server.yaml"
+    destination = "/home/ubuntu/services/collider-service.yaml"
   }
+##Collider Pod Yaml
   provisioner "file" {
     source      = "../collider.yaml"
-    destination = "/home/ubuntu/pods/html-server.yaml"
+    destination = "/home/ubuntu/pods/collider.yaml"
   }
+##Terraform Slave tf file
+  provisioner "file" {
+    source      = "../slave.tf"
+    destination = "/home/ubuntu/terradir/slave.tf"
+  }
+
+##Place creds, and keys into secrets directory
+  provisioner "file" {
+    source      = "./secrets/"
+    destination = "/home/ubuntu/terradir/secrets"
+  }
+##Place varraibles json into terradir directory
+   provisioner "file" {
+    source      = "var.json"
+    destination = "/home/ubuntu/terradir/var.json"
+  }
+
+##Exicute Script
   provisioner "remote-exec" {
     inline = [
+      "sudo /bin/bash /tmp/prep_core.sh",
       "sudo /bin/bash /tmp/prep_master_node.sh",
     ]
-  }
-  
+  } 
 }
-##EC2's for SLAVES
-resource "aws_instance" "worker" {
-  count   = 2
-  key_name = aws_key_pair.deployer.key_name
-  ami           = local.json_data.MASTER_image_id
-  instance_type = "t2.micro"
-  security_groups = [aws_security_group.SSH.name]
-  connection {
-    user = "ubuntu"
-    type = "ssh"
-    private_key = "${file("./secrets/private.pem")}"
-    host =  self.public_ip
-    timeout = "4m"
-  }
-}
-##Secuirty Group Open everything
+##Secuirty Group Allow SSH
 resource "aws_security_group" "SSH" {
   name        = "allow_ssh"
   description = "Allow SSH traffic"

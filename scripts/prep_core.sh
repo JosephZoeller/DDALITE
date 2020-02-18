@@ -6,9 +6,7 @@ echo Setting up Kubernetes Node...
 # Update the apt package index
 apt-get update
 
-# Docker installation per guidance from docs.docker.com
-# Install packages to allow apt to use a repository over HTTPS
-apt-get install \
+apt-get install -y \
     apt-transport-https \
     ca-certificates \
     curl \
@@ -25,7 +23,7 @@ add-apt-repository \
    stable"
 
 # Install the latest version of Docker Engine - Community and containerd
-apt-get install docker-ce docker-ce-cli containerd.io
+apt-get install -y docker-ce docker-ce-cli containerd.io
 
 # Setup daemon
 cat > /etc/docker/daemon.json <<EOF

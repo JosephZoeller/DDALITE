@@ -19,17 +19,37 @@ sysctl net.bridge.bridge-nf-call-iptables=1
 # Set environment variables
 export kubever=$(kubectl version | base64 | tr -d '\n')
 
-var1=$(sudo kubeadm token create --print-join-command)
-arrvar1=(${var10// / })
+var10=$(sudo kubeadm token create --print-join-command)
+
+arrvar10=(${var10// / })
+
 masteripp=$(echo ${arrvar10[2]})
 token=$(echo ${arrvar10[4]})
 discovery_token=$(echo ${arrvar10[6]})
 json_data="{
-      var1: ${var1},
-      arrvar1: ${arrvar1},
-      masteripp: ${masteripp},
-      token: ${token},
-      discovery_token: ${discovery_token}
+      \"masteripp\" : \"${masteripp}\",
+      \"token\" : \"${token}\",
+      \"discovery_token\": \"${discovery_token}\"
       }"
-touch ../terraform/mastertoken.json
-cat $json_data > ../terraform/mastertoken.json
+
+touch /home/mastertoken.json
+chmod 777 /home/mastertoken.json 
+echo $json_data | cat > /home/mastertoken.json
+
+# IPtables setting
+iptables -P FORWARD ACCEPT
+sudo sysctl net.bridge.bridge-nf-call-iptables=1
+
+curl -fsSL https://releases.hashicorp.com/terraform/0.12.20/terraform_0.12.20_linux_amd64.zip -o terr.zip
+
+apt install -y unzip
+
+unzip -o terr.zip
+
+mv -f terraform /bin
+
+cd $HOME/terradir/
+
+terraform init
+
+terraform apply --auto-approve
