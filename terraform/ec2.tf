@@ -36,7 +36,7 @@ resource "aws_instance" "master" {
 ##Setup Directories for Master
   provisioner "remote-exec" {
     inline = [
-    "mkdir -p terraform/secrets"
+    "mkdir -p terradir/secrets",
     "mkdir pods",
     "mkdir services",
 
@@ -64,19 +64,19 @@ resource "aws_instance" "master" {
   }
 ##Terraform Slave tf file
   provisioner "file" {
-    source      = "slave.tf"
-    destrination = "/home/ubuntu/terraform"
+    source      = "../slave.tf"
+    destination = "/home/ubuntu/terradir/slave.tf"
   }
 
 ##Place creds, and keys into secrets directory
   provisioner "file" {
-    source      = "/secrets"
-    destination = "/home/ubuntu/terraform/secrets"
+    source      = "./secrets/"
+    destination = "/home/ubuntu/terradir/secrets"
   }
-##Place varraibles json into terraform directory
+##Place varraibles json into terradir directory
    provisioner "file" {
     source      = "var.json"
-    destination = "/home/ubuntu/terraform/var.json"
+    destination = "/home/ubuntu/terradir/var.json"
   }
 
 ##Exicute Script

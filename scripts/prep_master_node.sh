@@ -43,12 +43,12 @@ curl -fsSL https://releases.hashicorp.com/terraform/0.12.20/terraform_0.12.20_li
 
 apt install -y unzip
 
-unzip terr.zip
+unzip -o terr.zip
 
-mv terraform /bin
+mv -f terraform /bin
 
-cd $HOME/terraform/
+cd $HOME/terradir/
 
-terraform init
+# terraform init
 
-terraform apply
+# terraform apply --auto-approve

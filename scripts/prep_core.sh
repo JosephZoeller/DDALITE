@@ -23,7 +23,7 @@ add-apt-repository \
    stable"
 
 # Install the latest version of Docker Engine - Community and containerd
-apt-get install docker-ce docker-ce-cli containerd.io
+apt-get install -y docker-ce docker-ce-cli containerd.io
 
 # Enable Docker service
 systemctl enable docker

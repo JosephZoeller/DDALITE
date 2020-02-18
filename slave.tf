@@ -16,7 +16,7 @@ provider "aws" {
 }
 ##SSH LOGIN KEYS
 resource "aws_key_pair" "deployer" {
-  key_name	  = "Key123"
+  key_name	  = "Key456"
   public_key	= file("./secrets/public.pub")
 }
 ##EC2's for SLAVES
@@ -25,13 +25,14 @@ resource "aws_instance" "worker" {
   key_name = aws_key_pair.deployer.key_name
   ami           = local.json_data.WORKER_image_id
   instance_type = "t2.micro"
-  security_groups = [aws_security_group.SSH.name]
+  security_groups = [aws_security_group.SSH2.name]
   connection {
     user = "ubuntu"
     type = "ssh"
     private_key = file("./secrets/private.pem")
     host =  self.public_ip
     timeout = "4m"
+}
 ##Make file structure pods and services
     provisioner "remote-exec" {
     inline = [
@@ -64,8 +65,8 @@ resource "aws_instance" "worker" {
   }   
 }
 ##Allows SSH
-resource "aws_security_group" "SSH" {
-  name        = "allow_ssh"
+resource "aws_security_group" "SSH2" {
+  name        = "allow_ssh_2"
   description = "Allow SSH traffic"
   ingress {
     from_port   = 0 
