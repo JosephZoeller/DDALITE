@@ -27,16 +27,6 @@ func GetStrCode64Hash(permutation string) uint64 {
 	return cityhash.CityHash64WithSeeds([]byte(input), 0x9ae16a3b2f90404f, seed1) & mask
 }
 
-// TestStrCode64Hash does
-func TestStrCode64Hash() {
-	collisiontests := []string{" ", "TENSION_NECK", "a", "joke", "hi", "how", "are", "you", "?"}
-
-	for _, v := range collisiontests {
-		f := GetStrCode64Hash(v)
-		fmt.Printf("\n'%s' Post-CityHash: %x | %d\n\n", v, f, f)
-	}
-}
-
 // DecodeUTF16 from https://gist.github.com/bradleypeabody/185b1d7ed6c0c2ab6cec
 func DecodeUTF16(b []byte) (string, error) {
 
