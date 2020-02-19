@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/200106-uta-go/JKJP2/pkg/cityhashutil"
 	"github.com/200106-uta-go/JKJP2/pkg/kubeutil"
@@ -40,6 +41,8 @@ func listenForClient() {
 			http.Error(rw, setUpErr.Error(), http.StatusInternalServerError)
 			return
 		}
+
+		time.Sleep(time.Duration(10) * time.Second)
 
 		// Get Overlay IPs from current set of pods.
 		overIps := make([]string, 0)
