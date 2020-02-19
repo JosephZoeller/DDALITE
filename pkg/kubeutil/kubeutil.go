@@ -6,6 +6,7 @@ import (
 	"strings"
 )
 
+// Node Represents Kubernetes Nodes
 type Node struct {
 	Name             string
 	Status           string
@@ -19,6 +20,7 @@ type Node struct {
 	ContainerRunTime string
 }
 
+// Pod represents K8 Pod
 type Pod struct {
 	Name          string
 	Ready         string
@@ -31,6 +33,7 @@ type Pod struct {
 	ReadinessGate string
 }
 
+// Service represents K8 Service
 type Service struct {
 	Name       string
 	Type       string
@@ -41,6 +44,7 @@ type Service struct {
 	Selector   string
 }
 
+// NodeInfo Retrieves Data on All nodes on cluster
 func NodeInfo() []Node {
 	var Nodes []Node
 
@@ -77,6 +81,7 @@ func NodeInfo() []Node {
 	return Nodes
 }
 
+// PodInfo retrieves data on all Pods on cluster
 func PodInfo() []Pod {
 	var Pods []Pod
 
@@ -112,6 +117,7 @@ func PodInfo() []Pod {
 	return Pods
 }
 
+// ServiceInfo retrieves data on all Services on cluster
 func ServiceInfo() []Service {
 	var Services []Service
 
