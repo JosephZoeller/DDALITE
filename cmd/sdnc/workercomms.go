@@ -21,7 +21,7 @@ func sendToWorkers(hash string, workerAddrs []string) *http.Response {
 		// This go routine submits values to the PODS not the ec2s.
 		go func(index int) {
 
-			resp, er := tryGet(workerAddrs[index], hash, startIndex, pages, 15)
+			resp, er := tryGet(workerAddrs[index], hash, startIndex, pages, 60)
 			if er == nil {
 				myResponse <- resp
 			}
