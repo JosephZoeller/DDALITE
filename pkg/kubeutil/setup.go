@@ -25,7 +25,7 @@ func SetUp(podCount string) error {
 	log.Printf("-Successful Deployment-\n%s\n", out)
 
 	// kubectl scale deployment.v1.apps/collider-deployment --relicas=```podCount```
-	scaleOut, err := exec.Command("sudo", "kubectl", "scale", "deployment.v1.apps/collider-deployment", "--replicas=", podCount).Output()
+	scaleOut, err := exec.Command("sudo", "kubectl", "scale", "deployment.v1.apps/collider-deployment", "--replicas=%s", podCount).Output()
 	if err != nil {
 		return fmt.Errorf("Could not scale deployment to match user request podCount=%s", podCount)
 	}
