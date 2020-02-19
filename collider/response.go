@@ -6,13 +6,12 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"github.com/200106-uta-go/JKJP2/pkg/cityhashutil"
+
 )
 
 // Data is response data struct
-type Data struct {
-	InputHash string `json:"hash"`
-	Collision string `json:"collision"`
-}
+
 
 // Resp responses to request in JSON format
 func Resp(w http.ResponseWriter, r *http.Request) {
@@ -31,7 +30,7 @@ func Resp(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Retrieve collision
-	response := Data {
+	response := cityhashutil.HashCollision {
 		InputHash: hash,
 		Collision: findCollision(hash, index, length),
 	}

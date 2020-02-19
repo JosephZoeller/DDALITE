@@ -7,6 +7,7 @@ import (
 
 	"github.com/200106-uta-go/JKJP2/pkg/cityhashutil"
 	"github.com/200106-uta-go/JKJP2/pkg/flyerdbutil"
+	_ "github.com/lib/pq"
 )
 
 var flyerDB *sql.DB
