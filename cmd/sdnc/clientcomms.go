@@ -53,6 +53,7 @@ func listenForClient() {
 
 		// Log result to stdoutput. May want to route logs to different location later.
 		log.Printf("Worker Returned Collision: %v\n", myCollision)
+		exportCollision(myCollision.InputHash, myCollision.Collision)
 
 		// Wrap up myCollision into json because you do not want to read response body multiple times.
 		js, err := json.Marshal(myCollision)
