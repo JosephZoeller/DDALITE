@@ -32,7 +32,7 @@ func Resp(w http.ResponseWriter, r *http.Request) {
 	// Retrieve collision
 	response := cityhashutil.HashCollision {
 		InputHash: hash,
-		Collision: findCollision(hash, index, length),
+		Collision: findCollisionFile(hash, index, length),
 	}
 
 	// Generate http response in JSON format

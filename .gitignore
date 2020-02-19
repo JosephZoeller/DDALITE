@@ -4,6 +4,7 @@
 *.dll
 *.so
 *.dylib
+dictionary.txt
 mcproxy
 collider
 sdnc

@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func test(expected []uint64, offset int, length int, t *testing.T) {
+func Test(t *testing.T) {
 
 	collisiontests := []string{" ", "TENSION_NECK", "a", "joke", "hi", "how", "are", "you", "?"}
 

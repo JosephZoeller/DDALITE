@@ -12,7 +12,7 @@ import (
 
 var flyerDB *sql.DB
 
-func findCollision(inputHash string, startIndex, searchLength int) string {
+func findDBCollision(inputHash string, startIndex, searchLength int) string {
 	// Connect to database
 	dbConfig, er := flyerdbutil.ReadConfig(dbConfigFilePath)
 	if er != nil {
@@ -27,7 +27,7 @@ func findCollision(inputHash string, startIndex, searchLength int) string {
 	// iterate over database strings
 	j := startIndex + searchLength
 	for i := startIndex; i < j; i++ {
-		word, er := getWordFromDictionary(i)
+		word, er := getWordFromDB(i)
 		if er != nil {
 			return "" // get ready to redo this
 		}
@@ -40,7 +40,7 @@ func findCollision(inputHash string, startIndex, searchLength int) string {
 	return ""
 }
 
-func getWordFromDictionary(id int) (string, error) { // query database for a word
+func getWordFromDB(id int) (string, error) { // query database for a word
 	var word string
 
 	row := flyerDB.QueryRow("SELECT word FROM dic WHERE idx = $1", id)

@@ -9,13 +9,16 @@ import (
 
 var inPort string
 var dbConfigFilePath string
+var dictionaryFilePath string
 
 func init() {
 	inPort = os.Getenv("SERV_PORT")
 	dbConfigFilePath = "config.yaml"
+	dictionaryFilePath = "dictionary.txt"
 }
 
 func main() {
+
 	// Response function initiator.
 	http.HandleFunc("/", Resp)
 
