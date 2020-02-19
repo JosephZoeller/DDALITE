@@ -63,6 +63,7 @@ func tryGet(addr, hash string, index int64, length int64, t int) (*http.Response
 
 	// We did not connect to collider in time. Don't return a resp back to sendToWorkers.
 	// Return error from POST request.
+	log.Printf("My error says =====> %v", er)
 	return nil, er
 
 }
