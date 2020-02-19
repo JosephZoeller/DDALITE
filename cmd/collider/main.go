@@ -4,15 +4,25 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-
-	"github.com/200106-uta-go/JKJP2/cmd/collider/proc"
+	"os"
 )
 
-func main() {
-	// Response function initiator.
-	http.HandleFunc("/", proc.Resp)
+var inPort string
+var dbConfigFilePath string
+var dictionaryFilePath string
 
-	// Listen http port 8080.
-	fmt.Println("Server is running on port 8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+func init() {
+	inPort = os.Getenv("SERV_PORT")
+	dbConfigFilePath = "config.yaml"
+	dictionaryFilePath = "dictionary.txt"
+}
+
+func main() {
+
+	// Response function initiator.
+	http.HandleFunc("/", Resp)
+
+	// Listen http via service port as definded in enviroment variable.
+	fmt.Printf("Collider is running on port %s\n", inPort)
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", inPort), nil))
 }
