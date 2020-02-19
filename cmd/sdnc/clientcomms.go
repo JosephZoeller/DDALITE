@@ -22,7 +22,7 @@ func listenForClient() {
 
 		// Double check that variables actually have a value. Send a bad request
 		// status if client is derp.
-		hash := req.FormValue("hash").Form.Get("hash")
+		hash := req.FormValue("hash")
 		instanceCount := req.FormValue("instances")
 
 		if hash == "" || instanceCount == "" {
