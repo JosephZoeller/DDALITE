@@ -5,8 +5,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-
-	"github.com/200106-uta-go/JKJP2/collider/proc"
 )
 
 func main() {
@@ -15,7 +13,7 @@ func main() {
 	port := os.Getenv("SERV_PORT")
 
 	// Response function initiator.
-	http.HandleFunc("/", proc.Resp)
+	http.HandleFunc("/", Resp)
 
 	// Listen http via service port as definded in enviroment variable.
 	fmt.Printf("Server is running on port %s\n", port)
