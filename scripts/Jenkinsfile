@@ -9,7 +9,6 @@ pipeline {
       stage('Pull') {
           steps {
               git 'https://github.com/200106-uta-go/JKJP2.git'
-              sh 'go get -d'
           }
       }
       stage('Test') {
