@@ -10,11 +10,6 @@ import (
 	"github.com/200106-uta-go/JKJP2/pkg/terra"
 )
 
-type Collision struct {
-	hash      string
-	collision string
-}
-
 // listenForClient awaits a query (curl request) from the client. Upon recieving a request, the hash is handed out to the worker addresses.
 func listenForClient() {
 	http.HandleFunc("/", func(rw http.ResponseWriter, req *http.Request) {
@@ -40,9 +35,9 @@ func listenForClient() {
 		ips := terra.Provision(instanceCount)
 
 		// Launch deployment yaml in /kubernetes/deployment.yaml
-		kubeutil.SetUp()
+		overIps := kubeutil.SetUp(instanceCount)
 
-		resp := sendToWorkers(hash, ips)
+		resp := sendToWorkers(hash, overIps)
 
 		var myCol cityhashutil.Collision
 
