@@ -1,12 +1,19 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
 
+	"github.com/200106-uta-go/JKJP2/pkg/kubeutil"
 	"github.com/200106-uta-go/JKJP2/pkg/terra"
 )
+
+type Collision struct {
+	hash      string
+	collision string
+}
 
 // listenForClient awaits a query (curl request) from the client. Upon recieving a request, the hash is handed out to the worker addresses.
 func listenForClient() {
@@ -35,7 +42,15 @@ func listenForClient() {
 		// Launch deployment yaml in /kubernetes/deployment.yaml
 		kubeutil.SetUp()
 
-		sendToWorkers(hash, ips)
+		resp := sendToWorkers(hash, ips)
+
+		var myCol cityhashutil.Collision
+
+		err := json.NewDecoder(&myCol).Decode()
+		if err != nil {
+			log.Panicf("Error decoding json: Error == %v", err)
+		}
+
 	})
 
 	http.ListenAndServe(":8080", nil)
