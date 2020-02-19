@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"net/url"
 	"time"
 )
 
@@ -42,14 +41,13 @@ func tryGet(addr, hash string, index int64, length int64, t int) (*http.Response
 		// Submit request to colliders. Post request will be used because GET query and
 		// POST Content-Type: application/x-www-form-urlencoded get parsed exactly the same by
 		// myURL.PasreForm()
-		colliderURL := fmt.Sprintf("%s:%s/", addr, colliderPort)
-		stringIndex := string(index)
-		stringLength := string(length)
+		colliderURL := fmt.Sprintf("%s:%s/?hash=%s&index=%s&length=%s", addr, colliderPort, hash, string(index), string(length))
 		// contentType := "application/x-www-form-urlencoded"
 		// content := fmt.Sprintf("hash=%s&index=%s&length=%s", hash, index, length)
 
-		resp, er := http.PostForm(colliderURL, url.Values{"hash": {hash}, "index": {stringIndex}, "length": {stringLength}})
+		req, er := http.NewRequest("GET", colliderURL, nil)
 
+		resp, er := http.DefaultClient.Do(req)
 		// Normal operation
 		if er == nil {
 			return resp, er
