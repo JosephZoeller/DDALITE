@@ -1,10 +1,8 @@
 package kubeutil
 
 import (
-	"errors"
 	"fmt"
 	"log"
-	"os"
 	"os/exec"
 )
 
@@ -12,11 +10,11 @@ import (
 func SetUp(podCount string) error {
 
 	// Create absolute file path to deployment yaml
-	home, present := os.LookupEnv("HOME")
-	if present == false {
-		return errors.New("Home variable is not set. Can't find kubernetes/deployment.yaml")
-	}
-	filePath := fmt.Sprintf("%s/go/src/github.com/200601-uta-go/JKJP2/kubernetes/deployment.yaml", home)
+	// // home, present := os.LookupEnv("HOME")
+	// if present == false {
+	// 	return errors.New("Home variable is not set. Can't find kubernetes/deployment.yaml")
+	// }
+	filePath := fmt.Sprint("./kubernetes/deployment.yaml")
 
 	// Appy deployment
 	out, err := exec.Command("kubectl", "apply", "-f", filePath).Output()
