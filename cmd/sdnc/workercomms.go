@@ -4,12 +4,11 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 	"time"
 )
 
 // Send hash to each worker's ip address.
-func sendToWorkers(hash string, workerAddrs []string) {
+func sendToWorkers(hash string, workerAddrs []string) *http.Response {
 	workerCount := len(workerAddrs)                // How many slave ips have we registered?
 	var pages int = dictionaryLength / workerCount // How big will the assigned tasks will be
 
@@ -19,11 +18,10 @@ func sendToWorkers(hash string, workerAddrs []string) {
 		go func(index int) {
 			resp, er := tryGet(workerAddrs[index], hash, startIndex, pages, 15)
 			if er == nil {
-				// Use proper logging in the future.
-				resp.Write(os.Stdout)
-			} else {
-				log.Fatal("Timeout: failed to connect - ", er)
+				return resp
 			}
+			log.Fatal("Timeout: failed to connect - ", er)
+
 		}(i)
 	}
 }
