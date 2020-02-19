@@ -42,7 +42,7 @@ func tryGet(addr, hash string, index int64, length int64, t int) (*http.Response
 		// Submit request to colliders. Post request will be used because GET query and
 		// POST Content-Type: application/x-www-form-urlencoded get parsed exactly the same by
 		// myURL.PasreForm()
-		colliderURL := fmt.Sprintf("http://%s:%s/", addr, colliderPort)
+		colliderURL := fmt.Sprintf("%s:%s/", addr, colliderPort)
 		stringIndex := string(index)
 		stringLength := string(length)
 		// contentType := "application/x-www-form-urlencoded"
