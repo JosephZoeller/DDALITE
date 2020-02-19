@@ -46,8 +46,8 @@ func tryGet(addr, hash string, index int64, length int64, t int) (*http.Response
 		// content := fmt.Sprintf("hash=%s&index=%s&length=%s", hash, index, length)
 
 		req, er := http.NewRequest("GET", colliderURL, nil)
-
-		resp, er := http.DefaultClient.Do(req)
+		client := http.Client{}
+		resp, er := client.Do(req)
 		// Normal operation
 		if er == nil {
 			return resp, er
