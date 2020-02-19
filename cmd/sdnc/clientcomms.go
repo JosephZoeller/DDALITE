@@ -36,7 +36,19 @@ func listenForClient() {
 		fmt.Printf("ECS have been created @ %v", ips)
 
 		// Launch deployment yaml in /kubernetes/deployment.yaml and return the pod private overlay ips.
-		overIps := kubeutil.SetUp(instanceCount)
+		setUpErr := kubeutil.SetUp(instanceCount)
+		if setUpErr != nil {
+			http.Error(rw, setUpErr, http.StatusInternalServerError)
+			return
+		}
+
+		// Get Overlay IPs from current set of pods.
+		overIps := make([]string, 0)
+		myPods := kubeutil.PodInfo()
+
+		for _, v := range myPods {
+			overIps = append(overIps, v.IPaddr)
+		}
 
 		// Send hash to each pod at each overlay ip.
 		resp := sendToWorkers(hash, overIps)
