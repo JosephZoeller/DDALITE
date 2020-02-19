@@ -49,7 +49,3 @@ unzip -o terr.zip
 mv -f terraform /bin
 
 cd $HOME/terradir/
-
-terraform init
-
-terraform apply --auto-approve

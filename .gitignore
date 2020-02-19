@@ -5,6 +5,8 @@
 *.so
 *.dylib
 mcproxy
+collider
+sdnc
 
 # Security Credentials (e.g. TLS)
 *.pem
