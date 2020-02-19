@@ -8,6 +8,7 @@ dictionary.txt
 mcproxy
 collider
 sdnc
+revproxy
 
 # Security Credentials (e.g. TLS)
 *.pem

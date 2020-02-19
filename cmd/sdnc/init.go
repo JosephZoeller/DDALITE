@@ -11,6 +11,7 @@ var (
 )
 
 func init() {
+	workerAddrs = make([]string, 0)
 	/* What is this for?
 	for i := 0; i < 2; i++ {
 		wrkAddr := os.Getenv(fmt.Sprintf("wrkAddr_%d", 1))
