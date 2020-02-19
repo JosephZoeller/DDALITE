@@ -31,14 +31,13 @@ func listenForClient() {
 		}
 
 		// Initiate Terraform script to create EC2 instances.
-		// Use the ips here to log the EC2 underlay ips for safekeeping.
-		ips := terra.Provision(instanceCount)
-		fmt.Printf("ECS have been created @ %v", ips)
+		// NO LONGER RETURNS IPS. Use the ips here to log the EC2 underlay ips for safekeeping.
+		terra.Provision(instanceCount)
 
 		// Launch deployment yaml in /kubernetes/deployment.yaml and return the pod private overlay ips.
 		setUpErr := kubeutil.SetUp(instanceCount)
 		if setUpErr != nil {
-			http.Error(rw, setUpErr, http.StatusInternalServerError)
+			http.Error(rw, setUpErr.Error(), http.StatusInternalServerError)
 			return
 		}
 
@@ -57,9 +56,9 @@ func listenForClient() {
 		// Store hash and collision in struct
 		var myCollision cityhashutil.HashCollision
 
-		err := json.NewDecoder(resp.Body).Decode(&myCollision)
+		jsErr := json.NewDecoder(resp.Body).Decode(&myCollision)
 		if err != nil {
-			http.Error(rw, fmt.Printf("Error decoding json: Error == %v", err), http.StatusInternalServerError)
+			http.Error(rw, fmt.Sprintf("Error decoding json: Error == %v", jsErr), http.StatusInternalServerError)
 			kubeutil.TearDown()
 			return
 		}
@@ -71,7 +70,7 @@ func listenForClient() {
 		// Wrap up myCollision into json because you do not want to read response body multiple times.
 		js, err := json.Marshal(myCollision)
 		if err != nil {
-			http.Error(rw, fmt.Printf("Error marshaling json: Error == %v", err), http.StatusInternalServerError)
+			http.Error(rw, fmt.Sprintf("Error marshaling json: Error == %v", err), http.StatusInternalServerError)
 			kubeutil.TearDown()
 			return
 		}
@@ -83,7 +82,7 @@ func listenForClient() {
 		// Tear down kubernetes pods and then ec2 instances to save money.
 		tErr := kubeutil.TearDown()
 		if tErr != nil {
-			log.Printf(tErr)
+			log.Printf(tErr.Error())
 		}
 
 	})

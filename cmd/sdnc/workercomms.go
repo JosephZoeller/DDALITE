@@ -4,34 +4,37 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"net/url"
 	"time"
 )
 
 // Send hash to each worker's overlay ip address.
 func sendToWorkers(hash string, workerAddrs []string) *http.Response {
-	workerCount := len(workerAddrs)                // How many slave ips have we registered?
-	var pages int = dictionaryLength / workerCount // How big will the assigned tasks will be
+	var workerCount int64 = int64(len(workerAddrs))  // How many slave ips have we registered?
+	var pages int64 = dictionaryLength / workerCount // How big will the assigned tasks will be
+	myResponse := make(chan *http.Response, 0)
 
 	// Iterate over worker addresses and submit a hash, startindex, and length of entries.
 	for i := 0; i < len(workerAddrs); i++ {
-		startIndex := i * pages
+		startIndex := int64(i) * pages
 
 		// This go routine submits values to the PODS not the ec2s.
 		go func(index int) {
+
 			resp, er := tryGet(workerAddrs[index], hash, startIndex, pages, 15)
 			if er == nil {
-				return resp
+				myResponse <- resp
 			}
 			log.Fatalf("Timeout: failed to connect - %v", er)
 
 		}(i)
 	}
+	return <-myResponse
 }
 
 // tryGet attempts to send the hash string to the address every second, for t seconds. If no connection is made in that time, returns an error.
-func tryGet(addr, hash string, index int, length int, t int) (*http.Response, error) {
+func tryGet(addr, hash string, index int64, length int64, t int) (*http.Response, error) {
 	var er error
-	var resp *http.Response
 	var colliderPort string = "8080"
 
 	for i := 0; i < t; i++ {
@@ -40,10 +43,12 @@ func tryGet(addr, hash string, index int, length int, t int) (*http.Response, er
 		// POST Content-Type: application/x-www-form-urlencoded get parsed exactly the same by
 		// myURL.PasreForm()
 		colliderURL := fmt.Sprintf("http://%s:%s/", addr, colliderPort)
-		contentType := "application/x-www-form-urlencoded"
-		content := fmt.Sprintf("hash=%s&index=%s&length=%s", hash, index, length)
+		stringIndex := string(index)
+		stringLength := string(length)
+		// contentType := "application/x-www-form-urlencoded"
+		// content := fmt.Sprintf("hash=%s&index=%s&length=%s", hash, index, length)
 
-		resp, er := http.Post(colliderURL, contentType, content)
+		resp, er := http.PostForm(colliderURL, url.Values{"hash": {hash}, "index": {stringIndex}, "length": {stringLength}})
 
 		// Normal operation
 		if er == nil {
