@@ -1,15 +1,17 @@
 package main
 
 import (
+	"fmt"
+	"io"
 	"log"
 	"os"
-	"io"
-	"fmt"
 )
 
 const collisionFileName = "collisions.txt"
+
 // exportCollision logs the recieved hash-collision pair to a text file.
 // Aside: this logic  would be better off in a sidecar
+
 func exportCollision(hash, collision string) {
 	var logger = log.New(os.Stdout, "", log.Ldate|log.Ltime)
 	collisionFile, er := os.Create(collisionFileName)
