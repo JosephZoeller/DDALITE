@@ -29,9 +29,9 @@ func listenForClient() {
 		}
 
 		// Initiate Terraform script to create EC2 instances.
-		terra.Provision(instanceCount)
+		ips := terra.Provision(instanceCount)
 
-		sendToWorkers(hash)
+		sendToWorkers(hash, ips)
 	})
 
 	http.ListenAndServe(":8080", nil)
