@@ -1,5 +1,7 @@
 package main
 
+import "log"
+
 // Define ports for the different components that SDNC will be communicating with.
 const (
 	ColliderPort = "8080" // This is the expected port that the colliders will be listening on.
@@ -12,6 +14,7 @@ var (
 
 func init() {
 	workerAddrs = make([]string, 0)
+	log.SetFlags(log.Llongfile)
 	/* What is this for?
 	for i := 0; i < 2; i++ {
 		wrkAddr := os.Getenv(fmt.Sprintf("wrkAddr_%d", 1))

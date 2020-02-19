@@ -21,7 +21,7 @@ func SetUp(podCount string) error {
 	// Appy deployment
 	out, err := exec.Command("kubectl", "apply", "-f", filePath).Output()
 	if err != nil {
-		return fmt.Errorf("Could not kubectl apply: %s", filePath)
+		return fmt.Errorf("Could not kubectl apply podCount==%s to filepath: %s", podCount, filePath)
 	}
 
 	log.Printf("-Successful Deployment-\n%s\n", out)
