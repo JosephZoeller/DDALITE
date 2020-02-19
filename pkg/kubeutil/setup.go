@@ -17,7 +17,7 @@ func SetUp(podCount string) error {
 	filePath := fmt.Sprint("kubernetes/deployment.yaml")
 
 	// Appy deployment
-	out, err := exec.Command("kubectl", "apply", "-f", filePath).Output()
+	out, err := exec.Command("sudo", "kubectl", "apply", "-f", filePath).Output()
 	if err != nil {
 		return fmt.Errorf("Could not kubectl apply podCount==%s to filepath: %s", podCount, filePath)
 	}
@@ -25,7 +25,7 @@ func SetUp(podCount string) error {
 	log.Printf("-Successful Deployment-\n%s\n", out)
 
 	// kubectl scale deployment.v1.apps/collider-deployment --relicas=```podCount```
-	scaleOut, err := exec.Command("kubectl", "scale", "deployment.v1.apps/collider-deployment", "--replicas=", podCount).Output()
+	scaleOut, err := exec.Command("sudo", "kubectl", "scale", "deployment.v1.apps/collider-deployment", "--replicas=", podCount).Output()
 	if err != nil {
 		return fmt.Errorf("Could not scale deployment to match user request podCount=%s", podCount)
 	}
