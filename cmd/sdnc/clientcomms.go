@@ -60,6 +60,7 @@ func listenForClient() {
 		if err != nil {
 			http.Error(rw, fmt.Sprintf("Error decoding json: Error == %v", jsErr), http.StatusInternalServerError)
 			kubeutil.TearDown()
+			terra.TearDown()
 			return
 		}
 
@@ -72,6 +73,7 @@ func listenForClient() {
 		if err != nil {
 			http.Error(rw, fmt.Sprintf("Error marshaling json: Error == %v", err), http.StatusInternalServerError)
 			kubeutil.TearDown()
+			terra.TearDown()
 			return
 		}
 
@@ -84,6 +86,7 @@ func listenForClient() {
 		if tErr != nil {
 			log.Printf(tErr.Error())
 		}
+		terra.TearDown()
 
 	})
 
