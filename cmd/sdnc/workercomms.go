@@ -22,7 +22,7 @@ func sendToWorkers(hash string, workerAddrs []string) *http.Response {
 			if er == nil {
 				return resp
 			}
-			log.Fatal("Timeout: failed to connect - ", er)
+			log.Fatalf("Timeout: failed to connect - ", er)
 
 		}(i)
 	}
@@ -43,8 +43,7 @@ func tryGet(addr, hash string, index int, length int, t int) (*http.Response, er
 		contentType := "application/x-www-form-urlencoded"
 		content := fmt.Sprintf("hash=%s&index=%s&length=%s", hash, index, length)
 
-		resp, er = http.Post(colliderURL, contentType, content)
-		defer resp.Close()
+		resp, er := http.Post(colliderURL, contentType, content)
 
 		// Normal operation
 		if er == nil {

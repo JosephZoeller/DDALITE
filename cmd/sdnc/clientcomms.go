@@ -40,7 +40,7 @@ func listenForClient() {
 
 		// Send hash to each pod at each overlay ip.
 		resp := sendToWorkers(hash, overIps)
-		resp.Body.Close()
+		defer resp.Body.Close()
 
 		// Store hash and collision in struct
 		var myCollision cityhashutil.HashCollision
@@ -48,6 +48,7 @@ func listenForClient() {
 		err := json.NewDecoder(resp.Body).Decode(&myCollision)
 		if err != nil {
 			http.Error(rw, fmt.Printf("Error decoding json: Error == %v", err), http.StatusInternalServerError)
+			kubeutil.TearDown()
 			return
 		}
 
@@ -59,12 +60,16 @@ func listenForClient() {
 		js, err := json.Marshal(myCollision)
 		if err != nil {
 			http.Error(rw, fmt.Printf("Error marshaling json: Error == %v", err), http.StatusInternalServerError)
+			kubeutil.TearDown()
 			return
 		}
 
 		// Just pass on body from worker back to reverse proxy after marshaling.
 		rw.Header().Set("Content-Type", "application/json")
 		rw.Write(js)
+
+		// Tear down kubernetes pods and then ec2 instances to save money.
+		kubeutil.TearDown()
 	})
 
 	http.ListenAndServe(":8080", nil)
