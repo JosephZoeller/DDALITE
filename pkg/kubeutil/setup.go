@@ -14,7 +14,7 @@ func SetUp(podCount string) error {
 	// if present == false {
 	// 	return errors.New("Home variable is not set. Can't find kubernetes/deployment.yaml")
 	// }
-	filePath := fmt.Sprint("./kubernetes/deployment.yaml")
+	filePath := fmt.Sprint("kubernetes/deployment.yaml")
 
 	// Appy deployment
 	out, err := exec.Command("kubectl", "apply", "-f", filePath).Output()
