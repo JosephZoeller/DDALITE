@@ -22,7 +22,7 @@ func sendToWorkers(hash string, workerAddrs []string) *http.Response {
 			if er == nil {
 				return resp
 			}
-			log.Fatalf("Timeout: failed to connect - ", er)
+			log.Fatalf("Timeout: failed to connect - %v", er)
 
 		}(i)
 	}

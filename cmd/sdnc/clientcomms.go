@@ -69,7 +69,11 @@ func listenForClient() {
 		rw.Write(js)
 
 		// Tear down kubernetes pods and then ec2 instances to save money.
-		kubeutil.TearDown()
+		tErr := kubeutil.TearDown()
+		if tErr != nil {
+			log.Printf(tErr)
+		}
+
 	})
 
 	http.ListenAndServe(":8080", nil)
