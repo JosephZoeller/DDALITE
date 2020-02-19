@@ -49,6 +49,8 @@ func listenForClient() {
 			overIps = append(overIps, v.IPaddr)
 		}
 
+		fmt.Println(myPods)
+
 		// Send hash to each pod at each overlay ip.
 		resp := sendToWorkers(hash, overIps)
 		defer resp.Body.Close()
