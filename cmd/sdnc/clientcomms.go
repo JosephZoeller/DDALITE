@@ -49,6 +49,9 @@ func listenForClient() {
 			overIps = append(overIps, v.IPaddr)
 		}
 
+		l := len(overIps)
+		overIps = overIps[0 : l-1]
+
 		fmt.Println(myPods)
 
 		fmt.Println("IPList: ", overIps)
