@@ -103,8 +103,5 @@ func listenForClient() {
 			log.Printf(tErr.Error())
 		}
 		terra.TearDown()
-
 	})
-
-	http.ListenAndServe(":8080", nil)
 }
