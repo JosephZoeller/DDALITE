@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -13,10 +12,10 @@ type Data struct {
 	Result string `json:"result"`
 }
 
-var result []Data
+var result []*http.Request
 
 // Send hash to each worker's overlay ip address.
-func sendToWorkers(hash string, workerAddrs []string) []Data {
+func sendToWorkers(hash string, workerAddrs []string) []*http.Request {
 	var workerCount int64 = int64(len(workerAddrs))  // How many slave ips have we registered?
 	var pages int64 = dictionaryLength / workerCount // How big will the assigned tasks will be
 
@@ -32,7 +31,7 @@ func sendToWorkers(hash string, workerAddrs []string) []Data {
 			if er != nil {
 				log.Println(er)
 			}
-			result = append(result, Data{Hash: resp.Hash, Result: resp.Result})
+			result = append(result, resp)
 
 		}(i)
 	}
@@ -40,9 +39,8 @@ func sendToWorkers(hash string, workerAddrs []string) []Data {
 }
 
 // tryGet attempts to send the hash string to the address every second, for t seconds. If no connection is made in that time, returns an error.
-func tryGet(addr, hash string, index int64, length int64) (Data, error) {
+func tryGet(addr, hash string, index int64, length int64) (*http.Request, error) {
 	var er error
-	var tmp Data
 	var colliderPort string = "8080"
 
 	// Submit request to colliders. Post request will be used because GET query and
@@ -56,11 +54,6 @@ func tryGet(addr, hash string, index int64, length int64) (Data, error) {
 	if er != nil {
 		log.Println(er, "Backend server connection failed")
 	}
-	client := http.Client{}
-	response, er := client.Do(request)
-	json.NewDecoder(response.Body).Decode(&tmp)
 
-	fmt.Println(tmp)
-
-	return tmp, er
+	return request, er
 }

@@ -56,7 +56,16 @@ func listenForClient(rw http.ResponseWriter, req *http.Request) {
 	resp := sendToWorkers(hash, overIps)
 	fmt.Println(resp)
 
-	for _, tmp := range resp {
+	var tmp Data
+
+	for _, t := range resp {
+		client := http.Client{}
+		response, er := client.Do(t)
+		if er != nil {
+			log.Println(er)
+		}
+		json.NewDecoder(response.Body).Decode(&tmp)
+
 		if tmp.Result != "" {
 			Template = tmp
 		}
