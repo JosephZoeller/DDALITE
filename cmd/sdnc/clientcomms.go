@@ -12,6 +12,11 @@ import (
 	"github.com/200106-uta-go/JKJP2/pkg/terra"
 )
 
+type ResultTemp struct {
+	Hash   string `json:"hash"`
+	Result string `json:"result"`
+}
+
 // listenForClient awaits a query (curl request) from the client. Upon recieving a request, the hash is handed out to the worker addresses.
 func listenForClient() {
 	http.HandleFunc("/", func(rw http.ResponseWriter, req *http.Request) {
@@ -75,6 +80,11 @@ func listenForClient() {
 		log.Printf("Worker Returned Collision: %v\n", myCollision)
 		exportCollision(myCollision.InputHash, myCollision.Collision)
 
+		var Template ResultTemp
+
+		Template.Hash = myCollision.InputHash
+		Template.Result = myCollision.Collision
+
 		// Wrap up myCollision into json because you do not want to read response body multiple times.
 		js, err := json.Marshal(myCollision)
 		if err != nil {
@@ -86,6 +96,8 @@ func listenForClient() {
 
 		// Just pass on body from worker back to reverse proxy after marshaling.
 		rw.Header().Set("Content-Type", "application/json")
+		output, err := json.Marshal((Template))
+		fmt.Fprintln(rw, string(output))
 		rw.Write(js)
 
 		// Tear down kubernetes pods and then ec2 instances to save money.
