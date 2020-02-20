@@ -33,7 +33,7 @@ json_data="{
       }"
 
 touch /home/ubuntu/terradir/mastertoken.json
-chmod 777 /home/ubuntu/terradir/mastertoken.json 
+sudo chmod 777 /home/ubuntu/terradir/mastertoken.json 
 echo $json_data | cat > /home/ubuntu/terradir/mastertoken.json
 
 # IPtables setting

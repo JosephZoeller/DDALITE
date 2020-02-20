@@ -6,33 +6,35 @@ import (
 	"log"
 	"net/http"
 	"strconv"
-	"github.com/200106-uta-go/JKJP2/pkg/cityhashutil"
 
+	"github.com/200106-uta-go/JKJP2/pkg/cityhashutil"
 )
 
 // Data is response data struct
 
-
 // Resp responses to request in JSON format
 func Resp(w http.ResponseWriter, r *http.Request) {
-
 	// Parse request values
-	hash := r.PostFormValue("hash")
-	index, er := strconv.Atoi(r.PostFormValue("index"))
-	if (er != nil) {
+	hash := r.FormValue("hash")
+	index, er := strconv.Atoi(r.FormValue("index"))
+	if er != nil {
 		fmt.Fprint(w, "")
 		return
 	}
-	length, er := strconv.Atoi(r.PostFormValue("length"))
-	if (er != nil) {
+	length, er := strconv.Atoi(r.FormValue("length"))
+	if er != nil {
 		fmt.Fprint(w, "")
 		return
 	}
 
 	// Retrieve collision
-	response := cityhashutil.HashCollision {
+	dictionary, er := getDictionary(dictionaryFilePath)
+	if er != nil {
+		return
+	}
+	response := cityhashutil.HashCollision{
 		InputHash: hash,
-		Collision: findCollisionFile(hash, index, length),
+		Collision: findCollisionFile(dictionary, hash, index, length),
 	}
 
 	// Generate http response in JSON format

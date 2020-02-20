@@ -59,7 +59,6 @@ resource "aws_instance" "worker" {
 ##Run scrpits for slave setup
   provisioner "remote-exec" {
     inline = [
-      "sudo /bin/bash /home/ubuntu/prep_core.sh",
       "sudo /bin/bash /home/ubuntu/prep_slave_node.sh",
     ]
   }   
