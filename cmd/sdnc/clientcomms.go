@@ -94,7 +94,8 @@ func listenForClient(rw http.ResponseWriter, req *http.Request) {
 	// Just pass on body from worker back to reverse proxy after marshaling.
 	rw.Header().Set("Content-Type", "application/json")
 	fmt.Println(Template)
-	json.NewEncoder(rw).Encode(Template)
+	output, err := json.Marshal(Template)
+	fmt.Fprintln(rw, string(output))
 
 	// Tear down kubernetes pods and then ec2 instances to save money.
 	tErr := kubeutil.TearDown()
