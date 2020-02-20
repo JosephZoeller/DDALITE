@@ -91,6 +91,29 @@
     height:50px;
 }
 
+.dash_th{
+    height:50px;
+    background-color: #323648;
+    color: #ffae44;
+    border: 0px;
+    font-family: 'Open Sans', sans-serif;
+    font-size:16px;
+    padding: 0 10px;
+}
+
+.dash_td{
+    height:50px;
+    background-color: #E5E5E5;
+    border:0px;
+    font-family: 'Open Sans', sans-serif;
+    font-size:16px;
+    padding: 0 10px;
+}
+
+.dash_td2:hover{
+    background-color: #DDEEFF;
+}
+
 .h1{
     font-size: 40px;
     color: #323648;

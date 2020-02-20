@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="css/rws.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet"> 
+        <title>Revature Web Services</title>
+    </head>
+    <body>
+        <div class="outer">
+            <div class="result">
+                <h1 class="h1">System Status</h1>
+                <table>
+                    <tr>
+                        <th class="dash_th">Name</th>
+                        <th class="dash_th">Role</th>
+                        <th class="dash_th">Ager</th>
+                        <th class="dash_th">Version</th>
+                        <th class="dash_th">Internal IP</th>
+                        <th class="dash_th">External IP</th>
+                        <th class="dash_th">OS Image</th>
+                        <th class="dash_th">Kernel Version</th>
+                        <th class="dash_th">Container Runtime</th>
+                    </tr>
+                    {{range .Node}}
+                    <tr>
+                        <th class="dash_td">{{.Name}}</th>
+                        <th class="dash_td">{{.Role}}</th>
+                        <th class="dash_td">{{.Ager}}</th>
+                        <th class="dash_td">{{.Version}}</th>
+                        <th class="dash_td">{{.InternalIP}}</th>
+                        <th class="dash_td">{{.ExternalIP}}</th>
+                        <th class="dash_td">{{.OSImage}}</th>
+                        <th class="dash_td">{{.KernelVer}}</th>
+                        <th class="dash_td">{{.ContainerRunTime}}</th>
+                    </tr>
+                    {{end}}
+                </table>
+                <div class="result_spacer"></div>
+                <form action="/">
+                    <button class="home_button" type="submit">To Main Page</button>
+                 </form>
+        </div>
+    </body>
+</html>
