@@ -20,3 +20,4 @@ Jaeik, Jessey, Ken and Joseph Z, deploy a multi-instance server and VNFs to a pr
 ## Presentation
 - [ ] 15-minute Demonstration
 - [ ] Presentation Slides
+- [X] MVP Done
