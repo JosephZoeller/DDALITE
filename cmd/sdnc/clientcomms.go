@@ -23,10 +23,10 @@ func listenForClient(rw http.ResponseWriter, req *http.Request) {
 	hash := req.FormValue("hash")
 	instanceCount := req.FormValue("instances")
 
-	// if hash == "" || instanceCount == "" {
-	// 	http.Error(rw, fmt.Sprintf("Error hash=%s and instances=%s were not set.", hash, instanceCount), http.StatusBadRequest)
-	// 	return
-	// }
+	if hash == "" || instanceCount == "" {
+		http.Error(rw, fmt.Sprintf("Error hash=%s and instances=%s were not set.", hash, instanceCount), http.StatusBadRequest)
+		return
+	}
 
 	// Initiate Terraform script to create EC2 instances.
 	// NO LONGER RETURNS IPS. Use the ips here to log the EC2 underlay ips for safekeeping.
