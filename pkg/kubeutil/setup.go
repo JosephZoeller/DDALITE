@@ -31,7 +31,7 @@ func SetUp(podCount string) error {
 		return fmt.Errorf("Could not scale deployment to match user request podCount=%s", podCount)
 	}
 
-	time.Sleep(time.Duration(30) * time.Second)
+	time.Sleep(time.Duration(60) * time.Second)
 	log.Printf("-Sucessful Scaling-\n%s\n", scaleOut)
 
 	return nil
