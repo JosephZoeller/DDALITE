@@ -20,7 +20,7 @@ func sendToWorkers(hash string, workerAddrs []string) []*http.Request {
 	var pages int64 = dictionaryLength / workerCount // How big will the assigned tasks will be
 
 	// Iterate over worker addresses and submit a hash, startindex, and length of entries.
-	for i := 0; i < 1; i++ {
+	for i := 0; i < len(workerAddrs); i++ {
 		startIndex := int64(i) * pages
 
 		// This go routine submits values to the PODS not the ec2s.
