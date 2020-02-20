@@ -60,7 +60,5 @@ func tryGet(addr, hash string, index int64, length int64) (Data, error) {
 	response, er := client.Do(request)
 	json.NewDecoder(response.Body).Decode(&tmp)
 
-	fmt.Println(tmp)
-
 	return tmp, er
 }

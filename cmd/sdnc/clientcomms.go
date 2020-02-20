@@ -54,6 +54,7 @@ func listenForClient(rw http.ResponseWriter, req *http.Request) {
 
 	// Send hash to each pod at each overlay ip.
 	resp := sendToWorkers(hash, overIps)
+	fmt.Println(resp)
 
 	for _, tmp := range resp {
 		if tmp.Result != "" {
