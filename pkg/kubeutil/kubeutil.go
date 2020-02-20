@@ -108,9 +108,9 @@ func PodInfo() []Pod {
 				Restart:       strings.TrimSpace(tmp[3]),
 				Age:           strings.TrimSpace(tmp[4]),
 				IPaddr:        strings.TrimSpace(tmp[5]),
-				Node:          strings.TrimSpace(tmp[6]),
-				NominatedNode: strings.TrimSpace(tmp[7]),
-				ReadinessGate: strings.TrimSpace(tmp[8]),
+				Node:          strings.TrimSpace(tmp[6]) + " " + (tmp[7]) + " " + (tmp[8]),
+				NominatedNode: strings.TrimSpace(tmp[9]),
+				ReadinessGate: strings.TrimSpace(tmp[10]),
 			})
 		}
 	}
