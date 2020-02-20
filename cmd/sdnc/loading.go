@@ -11,5 +11,5 @@ func loading(rw http.ResponseWriter, req *http.Request) {
 	hash := req.FormValue("hash")
 	instances := req.FormValue("instances")
 	go http.FileServer(http.Dir("html/loading.html"))
-	go http.Redirect(rw, req, "/result/?hash="+hash+"&instances="+instances, 418)
+	http.Redirect(rw, req, "/result/?hash="+hash+"&instances="+instances, 418)
 }
