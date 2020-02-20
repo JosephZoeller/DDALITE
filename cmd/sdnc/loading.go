@@ -11,8 +11,7 @@ type Template struct {
 	Instances string
 }
 
-// Loading is HTML loading page template generator
-func Loading(rw http.ResponseWriter, req *http.Request) {
+func loading(rw http.ResponseWriter, req *http.Request) {
 	err := req.ParseForm()
 	if err != nil {
 		http.Error(rw, "Error Parsing client request form.", http.StatusInternalServerError)
