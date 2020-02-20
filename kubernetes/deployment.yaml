@@ -14,7 +14,7 @@ spec:
         spec:
             containers:
             - name: collider
-              image: gophersuits/collider:0.4
+              image: gophersuits/collider:1.0
               ports:
               - containerPort: 8080
 ---

@@ -11,16 +11,16 @@ import (
 func getDictionary(textfile string) (*os.File, error) {
 
 	return os.Open(textfile)
-	
+
 }
 
 func findCollisionFile(dictionary *os.File, inputHash string, startIndex, searchLength int) string {
-	
+
 	sc := bufio.NewScanner(dictionary)
-	
+
 	// iterate over file strings
 	j := startIndex + searchLength
-	for i:= 0; i < startIndex; i++ {
+	for i := 0; i < startIndex; i++ {
 		t := sc.Scan()
 		if !t {
 			return ""

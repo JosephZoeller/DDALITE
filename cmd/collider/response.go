@@ -17,12 +17,12 @@ func Resp(w http.ResponseWriter, r *http.Request) {
 	// Parse request values
 	hash := r.FormValue("hash")
 	index, er := strconv.Atoi(r.FormValue("index"))
-	if (er != nil) {
+	if er != nil {
 		fmt.Fprint(w, "")
 		return
 	}
 	length, er := strconv.Atoi(r.FormValue("length"))
-	if (er != nil) {
+	if er != nil {
 		fmt.Fprint(w, "")
 		return
 	}
@@ -32,7 +32,7 @@ func Resp(w http.ResponseWriter, r *http.Request) {
 	if er != nil {
 		return
 	}
-	response := cityhashutil.HashCollision {
+	response := cityhashutil.HashCollision{
 		InputHash: hash,
 		Collision: findCollisionFile(dictionary, hash, index, length),
 	}

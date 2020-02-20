@@ -17,7 +17,7 @@ func init() {
 }
 
 func main() {
-	
+
 	// Response function initiator.
 	http.HandleFunc("/", Resp)
 
