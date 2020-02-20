@@ -41,9 +41,7 @@ func findDBCollision(inputHash string, startIndex, searchLength int) string {
 
 func getWordFromDB(id int) (string, error) { // query database for a word
 	var word string
-
-	row := flyerDB.QueryRow("SELECT word FROM dic WHERE idx = $1", id)
-	er := row.Scan(&word)
+	er := flyerDB.QueryRow("SELECT word FROM dic WHERE idx = $1", id).Scan(&word)
 
 	return word, er
 }
