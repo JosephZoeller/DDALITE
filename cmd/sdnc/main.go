@@ -16,7 +16,7 @@ import (
 func main() {
 
 	fmt.Println("SDN Controller now listening on port 8080")
-	go listenForClient()
+	http.HandleFunc("/", listenForClient)
 	// go listenForWorker()
 	http.ListenAndServe(":8080", nil)
 	signalChan := make(chan os.Signal, 1)
