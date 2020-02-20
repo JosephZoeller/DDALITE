@@ -37,8 +37,8 @@ resource "aws_instance" "master" {
   provisioner "remote-exec" {
     inline = [
     "mkdir -p terradir/secrets",
-    "mkdir pods",
-    "mkdir services",
+    "mkdir pkg",
+    "mkdir cmd",
 
     ]
   }
@@ -52,25 +52,15 @@ resource "aws_instance" "master" {
     source      = "../scripts/prep_master_node.sh"
     destination = "/tmp/prep_master_node.sh"
   }
-##Slave Script 
+##Slave main Script 
   provisioner "file" {
     source      = "../scripts/prep_slave_node.sh"
     destination = "/home/ubuntu/terradir/prep_slave_node.sh"
   }
-##Slave Script 
+##Slave core Script 
   provisioner "file" {
     source      = "../scripts/prep_core.sh"
     destination = "/home/ubuntu/terradir/prep_core.sh"
-  }
-##Collider Service Yaml
-  provisioner "file" {
-    source      = "../collider-service.yaml"
-    destination = "/home/ubuntu/services/collider-service.yaml"
-  }
-##Collider Pod Yaml
-  provisioner "file" {
-    source      = "../collider.yaml"
-    destination = "/home/ubuntu/pods/collider.yaml"
   }
 ##Terraform Slave tf file
   provisioner "file" {
@@ -87,6 +77,21 @@ resource "aws_instance" "master" {
    provisioner "file" {
     source      = "var.json"
     destination = "/home/ubuntu/terradir/var.json"
+  }
+##Place varraibles json into terradir directory
+   provisioner "file" {
+    source      = "../cmd/"
+    destination = "/home/ubuntu/cmd"
+   }
+##Place varraibles json into terradir directory
+   provisioner "file" {
+    source      = "../pkg"
+    destination = "/home/ubuntu/pkg"
+  }
+##Place varraibles json into terradir directory
+   provisioner "file" {
+    source      = "../kubernetes"
+    destination = "/home/ubuntu/kubernetes"
   }
 
 ##Exicute Script

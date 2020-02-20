@@ -21,7 +21,7 @@ resource "aws_key_pair" "deployer" {
 }
 ##EC2's for SLAVES
 resource "aws_instance" "worker" {
-  count   = 2
+  count   = local.json_data.user_count
   key_name = aws_key_pair.deployer.key_name
   ami           = local.json_data.WORKER_image_id
   instance_type = "t2.micro"

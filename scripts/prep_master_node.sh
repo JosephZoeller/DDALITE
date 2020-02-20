@@ -7,8 +7,8 @@ kubeadm init --pod-network-cidr=10.244.0.0/16
 
 # To make kubectl work for non-root user
 mkdir -p $HOME/.kube
-   cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-   chown $(id -u):$(id -g) $HOME/.kube/config
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 # Container Network Interface (CNI) Flannel installation
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/2140ac876ef134e0ed5af15c65e414cf26827915/Documentation/kube-flannel.yml
@@ -49,7 +49,3 @@ unzip -o terr.zip
 mv -f terraform /bin
 
 cd $HOME/terradir/
-
-terraform init
-
-terraform apply --auto-approve

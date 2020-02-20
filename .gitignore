@@ -4,7 +4,11 @@
 *.dll
 *.so
 *.dylib
+dictionary.txt
 mcproxy
+collider
+sdnc
+revproxy
 
 # Security Credentials (e.g. TLS)
 *.pem
@@ -59,3 +63,6 @@ override.tf.json
 # Include tfplan files to ignore the plan output of command: terraform plan -out=tfplan
 # example: *tfplan*
 terraform/secrets/creds.json
+test.sh
+worker.deploy.sh
+scripts/master_deploy.sh

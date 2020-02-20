@@ -13,8 +13,9 @@ apt-get install -y \
     ca-certificates \
     curl \
     gnupg-agent \
-    software-properties-common \
-    jq
+    software-properties-common 
+
+apt install jq -y
 
 # Add Docker’s official GPG key
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -

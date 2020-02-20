@@ -8,5 +8,4 @@ xfce4-terminal -e " ssh -i ../terraform/secrets/private.pem ubuntu@$serverip "
 ((j=j+1))
 done
 
-
-
+#export instance_ips=$(terraform output instance_ips)
