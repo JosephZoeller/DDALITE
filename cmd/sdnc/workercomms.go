@@ -21,6 +21,7 @@ func sendToWorkers(hash string, workerAddrs []string) *http.Response {
 		go func(index int) {
 
 			resp, er := tryGet(workerAddrs[index], hash, startIndex, pages)
+			fmt.Println(startIndex)
 			if er == nil {
 				myResponse <- resp
 				return
