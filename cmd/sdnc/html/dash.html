@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="css/rws.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet"> 
+        <meta http-equiv="Refresh" content="5; url=./dash" />
+        <title>Revature Web Services</title>
+    </head>
+    <body>
+        <div class="outer">
+            <div class="result">
+                <h1 class="h1">System Status</h1>
+                <h2 class="h2">Node Status</h2>
+                <table>
+                    <tr>
+                        <th class="dash_th" width=150>Name</th>
+                        <th class="dash_th" width=100>Role</th>
+                        <th class="dash_th" width=100>Age</th>
+                        <th class="dash_th" width=100>Version</th>
+                        <th class="dash_th" width=120>Internal IP</th>
+                        <th class="dash_th" width=120>External IP</th>
+                        <th class="dash_th" width=120>OS Image</th>
+                        <th class="dash_th" width=150>Kernel Version</th>
+                        <th class="dash_th" width=120>Container Runtime</th>
+                    </tr>
+                    {{range .Node}}
+                    <tr>
+                        <td class="dash_td" width=120>{{.Name}}</td>
+                        <td class="dash_td" width=120>{{.Role}}</td>
+                        <td class="dash_td" width=120>{{.Age}}</td>
+                        <td class="dash_td" width=120>{{.Version}}</td>
+                        <td class="dash_td" width=120>{{.InternalIP}}</td>
+                        <td class="dash_td" width=120>{{.ExternalIP}}</td>
+                        <td class="dash_td" width=120>{{.OSImage}}</td>
+                        <td class="dash_td" width=120>{{.KernelVer}}</td>
+                        <td class="dash_td" width=120>{{.ContainerRunTime}}</t>
+                    </tr>
+                    {{end}}
+                </table>
+                <h2 class="h2">Pod Status</h2>
+                <table>
+                    <tr>
+                        <th class="dash_th" width=360>Name</th>
+                        <th class="dash_th" width=80>Ready</th>
+                        <th class="dash_th" width=200>Status</th>
+                        <th class="dash_th" width=100>Restart</th>
+                        <th class="dash_th" width=100>Age</th>
+                        <th class="dash_th" width=120>IP Address</th>
+                        <th class="dash_th" width=120>Node</th>
+                        <th class="dash_th" width=120>Nominated Node</th>
+                        <th class="dash_th" width=120>Readiness Gate</th>
+                    </tr>
+                    {{range .Pod}}
+                    <tr>
+                        <td class="dash_td" width=360>{{.Name}}</td>
+                        <td class="dash_td" width=80>{{.Ready}}</td>
+                        <td class="dash_td" width=200>{{.Status}}</td>
+                        <td class="dash_td" width=100>{{.Restart}}</td>
+                        <td class="dash_td" width=100>{{.Age}}</td>
+                        <td class="dash_td" width=120>{{.IPaddr}}</td>
+                        <td class="dash_td" width=120>{{.Node}}</td>
+                        <td class="dash_td" width=120>{{.NominatedNode}}</td>
+                        <td class="dash_td" width=120>{{.ReadinessGate}}</td>
+                    </tr>
+                    {{end}}
+                </table>
+                <h2 class="h2">Service Status</h2>
+                <table>
+                    <tr>
+                        <th class="dash_th" width=350>Name</th>
+                        <th class="dash_th" width=150>Type</th>
+                        <th class="dash_th" width=200>Cluster IP</th>
+                        <th class="dash_th" width=200>External IP</th>
+                        <th class="dash_th" width=200>Port</th>
+                        <th class="dash_th" width=150>Age</th>
+                        <th class="dash_th" width=150>Selector</th>
+                    </tr>
+                    {{range .Service}}
+                    <tr>
+                        <td class="dash_td" width=350>{{.Name}}</td>
+                        <td class="dash_td" width=150>{{.Type}}</td>
+                        <td class="dash_td" width=200>{{.ClusterIP}}</td>
+                        <td class="dash_td" width=200>{{.ExternalIP}}</td>
+                        <th class="dash_td" width=200>{{.Port}}</td>
+                        <th class="dash_td" width=150>{{.Age}}</td>
+                        <th class="dash_td" width=150>{{.Selector}}</td>
+                    </tr>
+                    {{end}}
+                </table>
+                <div class="result_spacer"></div>
+                <form action="/">
+                    <button class="home_button" type="submit">To Main Page</button>
+                 </form>
+        </div>
+    </body>
+</html>

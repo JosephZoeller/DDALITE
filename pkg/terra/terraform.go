@@ -23,7 +23,7 @@ func Provision(instanceCount string) {
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	cmd.Run()
-	cmd = exec.Command("/bin/sh", "-c", "sudo terraform apply -auto-approve")
+	cmd = exec.Command("/bin/sh", "-c", "sudo terraform apply --auto-approve")
 	cmd.Dir = "/home/ubuntu/terradir"
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr

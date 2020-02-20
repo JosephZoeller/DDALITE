@@ -97,7 +97,6 @@ resource "aws_instance" "master" {
 ##Exicute Script
   provisioner "remote-exec" {
     inline = [
-      "sudo /bin/bash /tmp/prep_core.sh",
       "sudo /bin/bash /tmp/prep_master_node.sh",
     ]
   } 

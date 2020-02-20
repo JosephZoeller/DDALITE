@@ -10,7 +10,7 @@ import (
 func main() {
 	revproxy := httputil.NewSingleHostReverseProxy(&url.URL{
 		Scheme: "http",
-		Host:   "18.216.49.100:30000", // Need to be changed to SDN.
+		Host:   "10.244.0.1:8080", // Need to be changed to SDN.
 	})
 
 	log.Fatal(http.ListenAndServeTLS(":443", "server.crt", "server.key", revproxy))

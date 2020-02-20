@@ -9,6 +9,9 @@ pipeline {
       stage('Pull') {
           steps {
               git 'https://github.com/200106-uta-go/JKJP2.git'
+              sh 'go get -u github.com/JosephZoeller/cityhash'
+              sh 'go get -u github.com/lib/pq'
+              sh 'go get -u gopkg.in/yaml.v3'
           }
       }
       stage('Test') {
