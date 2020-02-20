@@ -12,6 +12,7 @@ import (
 	"github.com/200106-uta-go/JKJP2/pkg/terra"
 )
 
+// ResltTemp is temporary struct for use with MVP collider.
 type ResultTemp struct {
 	Hash   string `json:"hash"`
 	Result string `json:"result"`
@@ -86,19 +87,18 @@ func listenForClient() {
 		Template.Result = myCollision.Collision
 
 		// Wrap up myCollision into json because you do not want to read response body multiple times.
-		js, err := json.Marshal(myCollision)
-		if err != nil {
-			http.Error(rw, fmt.Sprintf("Error marshaling json: Error == %v", err), http.StatusInternalServerError)
-			kubeutil.TearDown()
-			terra.TearDown()
-			return
-		}
+		// js, err := json.Marshal(myCollision)
+		// if err != nil {
+		// 	http.Error(rw, fmt.Sprintf("Error marshaling json: Error == %v", err), http.StatusInternalServerError)
+		// 	kubeutil.TearDown()
+		// 	terra.TearDown()
+		// 	return
+		// }
 
 		// Just pass on body from worker back to reverse proxy after marshaling.
 		rw.Header().Set("Content-Type", "application/json")
 		output, err := json.Marshal((Template))
 		fmt.Fprintln(rw, string(output))
-		rw.Write(js)
 
 		// Tear down kubernetes pods and then ec2 instances to save money.
 		tErr := kubeutil.TearDown()
