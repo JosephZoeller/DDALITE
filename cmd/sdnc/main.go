@@ -3,9 +3,6 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"os"
-	"os/signal"
-	"syscall"
 )
 
 // SDN Controller Entry point.
@@ -18,10 +15,7 @@ func main() {
 	fmt.Println("SDN Controller now listening on port 8080")
 	http.Handle("/", http.FileServer(http.Dir("html")))
 	http.HandleFunc("/loading", loading)
-	//http.HandleFunc("/result", listenForClient)
-	// go listenForWorker()
+	http.HandleFunc("/result", listenForClient)
 	http.ListenAndServe(":8080", nil)
-	signalChan := make(chan os.Signal, 1)
-	signal.Notify(signalChan, syscall.SIGINT)
-	<-signalChan
+
 }
