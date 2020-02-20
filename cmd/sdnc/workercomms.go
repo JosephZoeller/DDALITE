@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -12,12 +13,15 @@ type Data struct {
 	Result string `json:"result"`
 }
 
-var result []*http.Request
+var result []*http.Response
+var collision []Data
 
 // Send hash to each worker's overlay ip address.
-func sendToWorkers(hash string, workerAddrs []string) []*http.Request {
+func sendToWorkers(hash string, workerAddrs []string) string {
 	var workerCount int64 = int64(len(workerAddrs))  // How many slave ips have we registered?
 	var pages int64 = dictionaryLength / workerCount // How big will the assigned tasks will be
+
+	var tmp Data
 
 	// Iterate over worker addresses and submit a hash, startindex, and length of entries.
 	for i := 0; i < len(workerAddrs); i++ {
@@ -35,11 +39,18 @@ func sendToWorkers(hash string, workerAddrs []string) []*http.Request {
 
 		}(i)
 	}
-	return result
+
+	for i := 0; i < len(workerAddrs); i++ {
+		json.NewDecoder(result[i].Body).Decode(&tmp)
+		if tmp.Result != "" {
+			return tmp.Result
+		}
+	}
+	return ""
 }
 
 // tryGet attempts to send the hash string to the address every second, for t seconds. If no connection is made in that time, returns an error.
-func tryGet(addr, hash string, index int64, length int64) (*http.Request, error) {
+func tryGet(addr, hash string, index int64, length int64) (*http.Response, error) {
 	var er error
 	var colliderPort string = "8080"
 
@@ -54,6 +65,8 @@ func tryGet(addr, hash string, index int64, length int64) (*http.Request, error)
 	if er != nil {
 		log.Println(er, "Backend server connection failed")
 	}
+	client := http.Client{}
+	response, er := client.Do(request)
 
-	return request, er
+	return response, er
 }

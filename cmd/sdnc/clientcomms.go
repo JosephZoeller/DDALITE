@@ -55,25 +55,10 @@ func listenForClient(rw http.ResponseWriter, req *http.Request) {
 	// Send hash to each pod at each overlay ip.
 	resp := sendToWorkers(hash, overIps)
 
-	var tmp Data
-
-	for _, t := range resp {
-		client := http.Client{}
-		response, er := client.Do(t)
-		if er != nil {
-			log.Println(er)
-		}
-		json.NewDecoder(response.Body).Decode(&tmp)
-
-		if tmp.Result != "" {
-			Template = tmp
-		}
-	}
-
-	if Template.Result != "" {
+	if resp != "" {
 		// Log result to stdoutput. May want to route logs to different location later.
-		log.Printf("Worker Returned Collision: %v\n", Template)
-		exportCollision(Template.Hash, Template.Result)
+		log.Printf("Worker Returned Collision: %s\n", resp)
+		exportCollision(hash, resp)
 	}
 
 	// Wrap up myCollision into json because you do not want to read response body multiple times.
@@ -84,6 +69,9 @@ func listenForClient(rw http.ResponseWriter, req *http.Request) {
 	// 	terra.TearDown()
 	// 	return
 	// }
+
+	Template.Hash = hash
+	Template.Result = resp
 
 	// Just pass on body from worker back to reverse proxy after marshaling.
 	rw.Header().Set("Content-Type", "application/json")
