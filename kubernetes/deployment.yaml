@@ -17,10 +17,6 @@ spec:
               image: gophersuits/collider:0.3
               ports:
               - containerPort: 8080
-            - name: dic
-              image: gophersuits/dic:latest
-              ports:
-              - containerPort: 5432
 ---
 kind: Service
 apiVersion: v1
@@ -35,9 +31,4 @@ spec:
       port: 8080
       targetPort: 8080
       nodePort: 30000
-    - name: dic
-      protocol: TCP
-      port: 5432
-      targetPort: 5432
-      nodePort: 31000
     type: NodePort
