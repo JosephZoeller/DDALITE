@@ -35,12 +35,8 @@ func sendToWorkers(hash string, workerAddrs []string) string {
 			if er != nil {
 				log.Println(er)
 			}
-<<<<<<< HEAD
-			log.Fatalf("Fatal Erro in Go Routing ==>> %v", er)
-=======
 			result = append(result, resp)
 
->>>>>>> master
 		}(i)
 	}
 
