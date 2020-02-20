@@ -19,6 +19,7 @@ func main() {
 	http.Handle("/", http.FileServer(http.Dir("cmd/sdnc/html")))
 	http.HandleFunc("/processing", processing)
 	http.HandleFunc("/result", listenForClient)
+	http.HandleFunc("/dash", dashboard)
 	http.ListenAndServe(":8080", nil)
 	signalChan := make(chan os.Signal, 1)
 	signal.Notify(signalChan, syscall.SIGINT)
