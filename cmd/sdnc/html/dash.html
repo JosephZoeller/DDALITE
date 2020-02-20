@@ -4,17 +4,19 @@
         <meta charset="UTF-8">
         <link rel="stylesheet" href="css/rws.css">
         <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet"> 
+        <meta http-equiv="Refresh" content="5; url=./dash" />
         <title>Revature Web Services</title>
     </head>
     <body>
         <div class="outer">
             <div class="result">
                 <h1 class="h1">System Status</h1>
+                <h2 class="h2">Node Status</h2>
                 <table>
                     <tr>
                         <th class="dash_th">Name</th>
                         <th class="dash_th">Role</th>
-                        <th class="dash_th">Ager</th>
+                        <th class="dash_th">Age</th>
                         <th class="dash_th">Version</th>
                         <th class="dash_th">Internal IP</th>
                         <th class="dash_th">External IP</th>
@@ -24,15 +26,65 @@
                     </tr>
                     {{range .Node}}
                     <tr>
-                        <th class="dash_td">{{.Name}}</th>
-                        <th class="dash_td">{{.Role}}</th>
-                        <th class="dash_td">{{.Ager}}</th>
-                        <th class="dash_td">{{.Version}}</th>
-                        <th class="dash_td">{{.InternalIP}}</th>
-                        <th class="dash_td">{{.ExternalIP}}</th>
-                        <th class="dash_td">{{.OSImage}}</th>
-                        <th class="dash_td">{{.KernelVer}}</th>
-                        <th class="dash_td">{{.ContainerRunTime}}</th>
+                        <td class="dash_td">{{.Name}}</td>
+                        <td class="dash_td">{{.Role}}</td>
+                        <td class="dash_td">{{.Age}}</td>
+                        <td class="dash_td">{{.Version}}</td>
+                        <td class="dash_td">{{.InternalIP}}</td>
+                        <td class="dash_td">{{.ExternalIP}}</td>
+                        <td class="dash_td">{{.OSImage}}</td>
+                        <td class="dash_td">{{.KernelVer}}</td>
+                        <td class="dash_td">{{.ContainerRunTime}}</t>
+                    </tr>
+                    {{end}}
+                </table>
+                <h2 class="h2">Pod Status</h2>
+                <table>
+                    <tr>
+                        <th class="dash_th">Name</th>
+                        <th class="dash_th">Ready</th>
+                        <th class="dash_th">Status</th>
+                        <th class="dash_th">Restart</th>
+                        <th class="dash_th">Age</th>
+                        <th class="dash_th">IP Address</th>
+                        <th class="dash_th">Node</th>
+                        <th class="dash_th">Nominated Node</th>
+                        <th class="dash_th">Readiness Gate</th>
+                    </tr>
+                    {{range .Pod}}
+                    <tr>
+                        <td class="dash_td">{{.Name}}</td>
+                        <td class="dash_td">{{.Ready}}</td>
+                        <td class="dash_td">{{.Status}}</td>
+                        <td class="dash_td">{{.Restart}}</td>
+                        <td class="dash_td">{{.Age}}</td>
+                        <td class="dash_td">{{.IPAddress}}</td>
+                        <td class="dash_td">{{.Node}}</td>
+                        <td class="dash_td">{{.NominatedNode}}</td>
+                        <td class="dash_td">{{.ReadinessGate}}</td>
+                    </tr>
+                    {{end}}
+                </table>
+                <h2 class="h2">Service Status</h2>
+                <table>
+                    <tr>
+                        <th class="dash_th">Name</th>
+                        <th class="dash_th">Type</th>
+                        <th class="dash_th">Cluster IP</th>
+                        <th class="dash_th">External IP</th>
+                        <th class="dash_th">Port</th>
+                        <th class="dash_th">Age</th>
+                        <th class="dash_th">Selector</th>
+                    </tr>
+                    {{range .Service}}
+                    <tr>
+                        <td class="dash_td">{{.Name}}</td>
+                        <td class="dash_td">{{.Type}}</td>
+                        <td class="dash_td">{{.ClusterIP}}</td>
+                        <td class="dash_td">{{.ExternalIP}}</td>
+                        <th class="dash_td">{{.Port}}</td>
+                        <th class="dash_td">{{.Age}}</td>
+                        <th class="dash_td">{{.Selector}}</td>
                     </tr>
                     {{end}}
                 </table>

@@ -121,6 +121,15 @@
     font-family: 'Open Sans', sans-serif;
 }
 
+.h2{
+    font-size: 30px;
+    color: #323648;
+    text-align: Left;
+    font-family: 'Open Sans', sans-serif;
+    margin: 50px 0 15px;
+    padding: 0 10px;
+}
+
 .loading_p{
     font-size: 25px;
     color: #323648;
