@@ -68,23 +68,23 @@
                 <h2 class="h2">Service Status</h2>
                 <table>
                     <tr>
-                        <th class="dash_th">Name</th>
-                        <th class="dash_th">Type</th>
-                        <th class="dash_th">Cluster IP</th>
-                        <th class="dash_th">External IP</th>
-                        <th class="dash_th">Port</th>
-                        <th class="dash_th">Age</th>
-                        <th class="dash_th">Selector</th>
+                        <th class="dash_th" width=350>Name</th>
+                        <th class="dash_th" width=150>Type</th>
+                        <th class="dash_th" width=200>Cluster IP</th>
+                        <th class="dash_th" width=200>External IP</th>
+                        <th class="dash_th" width=200>Port</th>
+                        <th class="dash_th" width=150>Age</th>
+                        <th class="dash_th" width=150>Selector</th>
                     </tr>
                     {{range .Service}}
                     <tr>
-                        <td class="dash_td">{{.Name}}</td>
-                        <td class="dash_td">{{.Type}}</td>
-                        <td class="dash_td">{{.ClusterIP}}</td>
-                        <td class="dash_td">{{.ExternalIP}}</td>
-                        <th class="dash_td">{{.Port}}</td>
-                        <th class="dash_td">{{.Age}}</td>
-                        <th class="dash_td">{{.Selector}}</td>
+                        <td class="dash_td" width=350>{{.Name}}</td>
+                        <td class="dash_td" width=150>{{.Type}}</td>
+                        <td class="dash_td" width=200>{{.ClusterIP}}</td>
+                        <td class="dash_td" width=200>{{.ExternalIP}}</td>
+                        <th class="dash_td" width=200>{{.Port}}</td>
+                        <th class="dash_td" width=150>{{.Age}}</td>
+                        <th class="dash_td" width=150>{{.Selector}}</td>
                     </tr>
                     {{end}}
                 </table>
