@@ -8,8 +8,8 @@ func loading(rw http.ResponseWriter, req *http.Request) {
 		http.Error(rw, "Error Parsing client request form.", http.StatusInternalServerError)
 	}
 
-	hash := req.FormValue("hash")
-	instances := req.FormValue("instances")
-	//go http.FileServer(http.Dir("html/loading.html"))
-	http.Redirect(rw, req, "/result/?hash="+hash+"&instances="+instances, 418)
+	//hash := req.FormValue("hash")
+	//instances := req.FormValue("instances")
+	http.FileServer(http.Dir("html/loading.html"))
+	//http.Redirect(rw, req, "/result/?hash="+hash+"&instances="+instances, 418)
 }

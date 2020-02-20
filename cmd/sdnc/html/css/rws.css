@@ -24,6 +24,7 @@
 .search_preset{
     width: 200px;
     height: 56px;
+    background-color: #ffffff;
     border: 3px solid #323648;
     font-size: 20px;
     color: #323648;
