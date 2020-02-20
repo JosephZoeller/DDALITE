@@ -2,23 +2,23 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 
-	"github.com/200106-uta-go/JKJP2/pkg/cityhashutil"
 	"github.com/200106-uta-go/JKJP2/pkg/flyerdbutil"
-	_ "github.com/lib/pq"
 )
 
 var flyerDB *sql.DB
 
 func findDBCollision(inputHash string, startIndex, searchLength int) string {
 	// Connect to database
-	dbConfig, er := flyerdbutil.ReadConfig(dbConfigFilePath)
-	if er != nil {
-		log.Fatal("Failed to get Database Config data - ", er.Error())
-	}
-	flyerDB, er = flyerdbutil.Connect("server", dbConfig)
+	/*
+		dbConfig, er := flyerdbutil.ReadConfig(dbConfigFilePath)
+		if er != nil {
+			log.Fatal("Failed to get Database Config data - ", er.Error())
+		}
+	*/
+	var er error
+	flyerDB, er = flyerdbutil.ConnectHard()
 	if er != nil {
 		log.Fatal("Database connection failed - ", er.Error())
 	}
@@ -31,9 +31,8 @@ func findDBCollision(inputHash string, startIndex, searchLength int) string {
 		if er != nil {
 			return "" // get ready to redo this
 		}
-		compareHash := fmt.Sprintf("%d", cityhashutil.GetStrCode64Hash(word))
 
-		if compareHash == inputHash {
+		if compare(inputHash, word) {
 			return word
 		}
 	}
@@ -42,9 +41,7 @@ func findDBCollision(inputHash string, startIndex, searchLength int) string {
 
 func getWordFromDB(id int) (string, error) { // query database for a word
 	var word string
-
-	row := flyerDB.QueryRow("SELECT word FROM dic WHERE idx = $1", id)
-	er := row.Scan(&word)
+	er := flyerDB.QueryRow("SELECT word FROM dic WHERE idx = $1", id).Scan(&word)
 
 	return word, er
 }
