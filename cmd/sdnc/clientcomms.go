@@ -54,7 +54,6 @@ func listenForClient(rw http.ResponseWriter, req *http.Request) {
 
 	// Send hash to each pod at each overlay ip.
 	resp := sendToWorkers(hash, overIps)
-	fmt.Println(resp)
 
 	var tmp Data
 
@@ -73,7 +72,7 @@ func listenForClient(rw http.ResponseWriter, req *http.Request) {
 
 	if Template.Result != "" {
 		// Log result to stdoutput. May want to route logs to different location later.
-		log.Printf("Worker Returned Collision: %v\n", resp)
+		log.Printf("Worker Returned Collision: %v\n", Template)
 		exportCollision(Template.Hash, Template.Result)
 	}
 
