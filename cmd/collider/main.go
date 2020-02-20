@@ -17,11 +17,11 @@ func init() {
 }
 
 func main() {
-
+	
 	// Response function initiator.
 	http.HandleFunc("/", Resp)
 
 	// Listen http via service port as definded in enviroment variable.
 	fmt.Printf("Collider is running on port %d\n", inPort)
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", inPort), nil))
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }

@@ -15,15 +15,14 @@ import (
 
 // Resp responses to request in JSON format
 func Resp(w http.ResponseWriter, r *http.Request) {
-
 	// Parse request values
-	hash := r.PostFormValue("hash")
-	index, er := strconv.Atoi(r.PostFormValue("index"))
+	hash := r.FormValue("hash")
+	index, er := strconv.Atoi(r.FormValue("index"))
 	if (er != nil) {
 		fmt.Fprint(w, "")
 		return
 	}
-	length, er := strconv.Atoi(r.PostFormValue("length"))
+	length, er := strconv.Atoi(r.FormValue("length"))
 	if (er != nil) {
 		fmt.Fprint(w, "")
 		return

@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
@@ -15,9 +16,9 @@ import (
 func main() {
 
 	fmt.Println("SDN Controller now listening on port 8080")
-	go listenForClient()
+	http.HandleFunc("/", listenForClient)
 	// go listenForWorker()
-
+	http.ListenAndServe(":8080", nil)
 	signalChan := make(chan os.Signal, 1)
 	signal.Notify(signalChan, syscall.SIGINT)
 	<-signalChan
