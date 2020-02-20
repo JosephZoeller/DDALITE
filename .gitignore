@@ -26,10 +26,6 @@ revproxy
 # Don't ignore directories that have the same name as binaries
 !*/
 
-# (From https://github.com/github/gitignore/blob/master/Terraform.gitignore)
-# Ignore the creds and secrets
-terraform/
-
 # Ignore excessive mcProxy routing table profiles
 /config/*
 
