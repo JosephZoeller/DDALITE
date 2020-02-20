@@ -25,8 +25,8 @@ func sendToWorkers(hash string, workerAddrs []string) *http.Response {
 				myResponse <- resp
 				return
 			}
-			log.Fatalf("Timeout: failed to connect - %v", er)
-
+			log.Printf("Timeout: failed to connect - %v", er)
+			return
 		}(i)
 	}
 	return <-myResponse
