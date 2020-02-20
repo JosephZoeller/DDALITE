@@ -23,7 +23,6 @@ func sendToWorkers(hash string, workerAddrs []string) *http.Response {
 			resp, er := tryGet(workerAddrs[index], hash, startIndex, pages)
 			if er == nil {
 				myResponse <- resp
-				return
 			}
 			log.Fatalf("Timeout: failed to connect - %v", er)
 
@@ -57,5 +56,4 @@ func tryGet(addr, hash string, index int64, length int64) (*http.Response, error
 	// Return error from POST request.
 	log.Printf("My error says =====> %v", er)
 	return nil, er
-
 }

@@ -103,5 +103,4 @@ func listenForClient(rw http.ResponseWriter, req *http.Request) {
 		log.Printf(tErr.Error())
 	}
 	terra.TearDown()
-
 }
