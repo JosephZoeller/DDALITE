@@ -14,7 +14,7 @@ func sendToWorkers(hash string, workerAddrs []string) *http.Response {
 	myResponse := make(chan *http.Response, 0)
 
 	// Iterate over worker addresses and submit a hash, startindex, and length of entries.
-	for i := 0; i < 0; i++ {
+	for i := 0; i < 1; i++ {
 		startIndex := int64(i) * pages
 
 		// This go routine submits values to the PODS not the ec2s.
