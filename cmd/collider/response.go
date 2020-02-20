@@ -6,12 +6,11 @@ import (
 	"log"
 	"net/http"
 	"strconv"
-	"github.com/200106-uta-go/JKJP2/pkg/cityhashutil"
 
+	"github.com/200106-uta-go/JKJP2/pkg/cityhashutil"
 )
 
 // Data is response data struct
-
 
 // Resp responses to request in JSON format
 func Resp(w http.ResponseWriter, r *http.Request) {
