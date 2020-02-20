@@ -54,7 +54,7 @@ func NodeInfo() []Node {
 
 	for _, detail := range line {
 
-		field := strings.Split(detail, " ")
+		field := strings.Split(detail, "  ")
 
 		var tmp []string
 		for _, text := range field {
@@ -91,7 +91,7 @@ func PodInfo() []Pod {
 
 	for _, detail := range line {
 
-		field := strings.Split(detail, " ")
+		field := strings.Split(detail, "  ")
 
 		var tmp []string
 		for _, text := range field {
@@ -127,7 +127,7 @@ func ServiceInfo() []Service {
 
 	for _, detail := range line {
 
-		field := strings.Split(detail, " ")
+		field := strings.Split(detail, "  ")
 
 		var tmp []string
 		for _, text := range field {
@@ -139,12 +139,12 @@ func ServiceInfo() []Service {
 		if len(tmp) > 0 {
 			Services = append(Services, Service{
 				Name:       strings.TrimSpace(tmp[0]),
-				Type:       strings.TrimSpace(tmp[0]),
-				ClusterIP:  strings.TrimSpace(tmp[0]),
-				ExternalIP: strings.TrimSpace(tmp[0]),
-				Port:       strings.TrimSpace(tmp[0]),
-				Age:        strings.TrimSpace(tmp[0]),
-				Selector:   strings.TrimSpace(tmp[0]),
+				Type:       strings.TrimSpace(tmp[1]),
+				ClusterIP:  strings.TrimSpace(tmp[2]),
+				ExternalIP: strings.TrimSpace(tmp[3]),
+				Port:       strings.TrimSpace(tmp[4]),
+				Age:        strings.TrimSpace(tmp[5]),
+				Selector:   strings.TrimSpace(tmp[6]),
 			})
 		}
 	}
