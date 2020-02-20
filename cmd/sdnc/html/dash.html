@@ -14,27 +14,27 @@
                 <h2 class="h2">Node Status</h2>
                 <table>
                     <tr>
-                        <th class="dash_th">Name</th>
-                        <th class="dash_th">Role</th>
-                        <th class="dash_th">Age</th>
-                        <th class="dash_th">Version</th>
-                        <th class="dash_th">Internal IP</th>
-                        <th class="dash_th">External IP</th>
-                        <th class="dash_th">OS Image</th>
-                        <th class="dash_th">Kernel Version</th>
-                        <th class="dash_th">Container Runtime</th>
+                        <th class="dash_th" width=120>Name</th>
+                        <th class="dash_th" width=120>Role</th>
+                        <th class="dash_th" width=120>Age</th>
+                        <th class="dash_th" width=120>Version</th>
+                        <th class="dash_th" width=120>Internal IP</th>
+                        <th class="dash_th" width=120>External IP</th>
+                        <th class="dash_th" width=120>OS Image</th>
+                        <th class="dash_th" width=120>Kernel Version</th>
+                        <th class="dash_th" width=120>Container Runtime</th>
                     </tr>
                     {{range .Node}}
                     <tr>
-                        <td class="dash_td">{{.Name}}</td>
-                        <td class="dash_td">{{.Role}}</td>
-                        <td class="dash_td">{{.Age}}</td>
-                        <td class="dash_td">{{.Version}}</td>
-                        <td class="dash_td">{{.InternalIP}}</td>
-                        <td class="dash_td">{{.ExternalIP}}</td>
-                        <td class="dash_td">{{.OSImage}}</td>
-                        <td class="dash_td">{{.KernelVer}}</td>
-                        <td class="dash_td">{{.ContainerRunTime}}</t>
+                        <td class="dash_td" width=120>{{.Name}}</td>
+                        <td class="dash_td" width=120>{{.Role}}</td>
+                        <td class="dash_td" width=120>{{.Age}}</td>
+                        <td class="dash_td" width=120>{{.Version}}</td>
+                        <td class="dash_td" width=120>{{.InternalIP}}</td>
+                        <td class="dash_td" width=120>{{.ExternalIP}}</td>
+                        <td class="dash_td" width=120>{{.OSImage}}</td>
+                        <td class="dash_td" width=120>{{.KernelVer}}</td>
+                        <td class="dash_td" width=120>{{.ContainerRunTime}}</t>
                     </tr>
                     {{end}}
                 </table>
