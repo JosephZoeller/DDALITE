@@ -12,7 +12,7 @@ import (
 	"github.com/200106-uta-go/JKJP2/pkg/terra"
 )
 
-// ResltTemp is temporary struct for use with MVP collider.
+// ResultTemp is temporary struct for use with MVP collider.
 type ResultTemp struct {
 	Hash   string `json:"hash"`
 	Result string `json:"result"`
