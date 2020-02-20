@@ -16,7 +16,7 @@ import (
 func main() {
 
 	fmt.Println("SDN Controller now listening on port 8080")
-	http.Handle("/proc", http.FileServer(http.Dir("html")))
+	http.Handle("/", http.FileServer(http.Dir("html")))
 	http.HandleFunc("/loading", loading)
 	http.HandleFunc("/result", listenForClient)
 	// go listenForWorker()
