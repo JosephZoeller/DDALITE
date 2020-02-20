@@ -5,19 +5,20 @@ import (
 	"text/template"
 )
 
-// Template is a struct for HTML loading page
-type Template struct {
+// Tmpl is a struct for HTML loading page
+type Tmpl struct {
 	Hash      string
 	Instances string
+	Result    string
 }
 
-func loading(rw http.ResponseWriter, req *http.Request) {
+func processing(rw http.ResponseWriter, req *http.Request) {
 	err := req.ParseForm()
 	if err != nil {
 		http.Error(rw, "Error Parsing client request form.", http.StatusInternalServerError)
 	}
 
-	container := Template{
+	container := Tmpl{
 		Hash:      req.FormValue("hash"),
 		Instances: req.FormValue("instances"),
 	}

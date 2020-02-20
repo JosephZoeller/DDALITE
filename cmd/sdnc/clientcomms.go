@@ -1,10 +1,10 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
+	"text/template"
 
 	"github.com/200106-uta-go/JKJP2/pkg/kubeutil"
 	"github.com/200106-uta-go/JKJP2/pkg/terra"
@@ -50,7 +50,7 @@ func listenForClient(rw http.ResponseWriter, req *http.Request) {
 	fmt.Println(myPods)
 
 	fmt.Println("IPList: ", overIps)
-	var Template Data
+	var container Tmpl
 
 	// Send hash to each pod at each overlay ip.
 	resp := sendToWorkers(hash, overIps)
@@ -70,14 +70,16 @@ func listenForClient(rw http.ResponseWriter, req *http.Request) {
 	// 	return
 	// }
 
-	Template.Hash = hash
-	Template.Result = resp
+	container.Hash = hash
 
-	// Just pass on body from worker back to reverse proxy after marshaling.
-	rw.Header().Set("Content-Type", "application/json")
-	fmt.Println(Template)
-	output, err := json.Marshal(Template)
-	fmt.Fprintln(rw, string(output))
+	if resp != "" {
+		container.Result = resp
+	} else {
+		container.Result = "No hash value of words matches to the user entry."
+	}
+
+	template := template.Must(template.ParseFiles("cmd/sdnc/html/result.html"))
+	template.Execute(rw, container)
 
 	// Tear down kubernetes pods and then ec2 instances to save money.
 	tErr := kubeutil.TearDown()
