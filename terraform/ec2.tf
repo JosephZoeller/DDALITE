@@ -17,7 +17,7 @@ provider "aws" {
 }
 ##SSH LOGIN KEYS
 resource "aws_key_pair" "deployer" {
-  key_name	  = "Key123"
+  key_name	  = "Key_Master"
   public_key	= file("./secrets/public.pub")
 }
 ##EC2for MASTER 
@@ -64,7 +64,7 @@ resource "aws_instance" "master" {
   }
 ##Terraform Slave tf file
   provisioner "file" {
-    source      = "../slave.tf"
+    source      = "./slave/slave.tf"
     destination = "/home/ubuntu/terradir/slave.tf"
   }
 
