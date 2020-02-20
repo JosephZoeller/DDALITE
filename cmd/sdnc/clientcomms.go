@@ -10,15 +10,6 @@ import (
 	"github.com/200106-uta-go/JKJP2/pkg/terra"
 )
 
-<<<<<<< HEAD
-// ResultTemp is temporary struct for use with MVP collider.
-type ResultTemp struct {
-	Hash   string `json:"hash"`
-	Result string `json:"result"`
-}
-
-=======
->>>>>>> master
 // listenForClient awaits a query (curl request) from the client. Upon recieving a request, the hash is handed out to the worker addresses.
 func listenForClient(rw http.ResponseWriter, req *http.Request) {
 	// Parse Form sent from reverse proxy. Set variables equal and check they aren't empty.
