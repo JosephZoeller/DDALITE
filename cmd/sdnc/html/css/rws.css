@@ -41,8 +41,21 @@
     font-family: 'Open Sans', sans-serif;
 }
 
+.loading{
+    height: 400px;
+    margin: 150px auto 0;
+    text-align: center;
+}
+
 .index_h1{
     font-size: 40px;
+    color: #323648;
+    text-align: center;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.loading_p{
+    font-size: 25px;
     color: #323648;
     text-align: center;
     font-family: 'Open Sans', sans-serif;
