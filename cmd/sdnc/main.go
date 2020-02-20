@@ -17,7 +17,7 @@ func main() {
 
 	fmt.Println("SDN Controller now listening on port 8080")
 	http.Handle("/", http.FileServer(http.Dir("cmd/sdnc/html")))
-	http.HandleFunc("/loading", loading)
+	go http.Handle("/result", http.FileServer(http.Dir("cmd/sdnc/html/loading.html")))
 	http.HandleFunc("/result", listenForClient)
 	http.ListenAndServe(":8080", nil)
 	signalChan := make(chan os.Signal, 1)
