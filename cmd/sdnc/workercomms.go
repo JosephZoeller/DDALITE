@@ -49,12 +49,10 @@ func tryGet(addr, hash string, index int64, length int64) (Data, error) {
 	// POST Content-Type: application/x-www-form-urlencoded get parsed exactly the same by
 	// myURL.PasreForm()
 	colliderURL := fmt.Sprintf("http://%s:%s/", addr, colliderPort)
-	stringIndex := string(index)
-	stringLength := string(length)
 	// contentType := "application/x-www-form-urlencoded"
 	// content := fmt.Sprintf("hash=%s&index=%s&length=%s", hash, index, length)
 
-	request, er := http.NewRequest("GET", colliderURL+"?hash="+hash+"&index="+stringIndex+"&length="+stringLength, nil)
+	request, er := http.NewRequest("GET", colliderURL+"?hash="+hash+"&index="+fmt.Sprintf("%d", index)+"&length="+fmt.Sprintf("%d", length), nil)
 	if er != nil {
 		log.Println(er, "Backend server connection failed")
 	}
