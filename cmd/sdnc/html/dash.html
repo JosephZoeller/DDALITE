@@ -41,27 +41,27 @@
                 <h2 class="h2">Pod Status</h2>
                 <table>
                     <tr>
-                        <th class="dash_th">Name</th>
-                        <th class="dash_th">Ready</th>
-                        <th class="dash_th">Status</th>
-                        <th class="dash_th">Restart</th>
-                        <th class="dash_th">Age</th>
-                        <th class="dash_th">IP Address</th>
-                        <th class="dash_th">Node</th>
-                        <th class="dash_th">Nominated Node</th>
-                        <th class="dash_th">Readiness Gate</th>
+                        <th class="dash_th" width=360>Name</th>
+                        <th class="dash_th" width=80>Ready</th>
+                        <th class="dash_th" width=200>Status</th>
+                        <th class="dash_th" width=100>Restart</th>
+                        <th class="dash_th" width=100>Age</th>
+                        <th class="dash_th" width=120>IP Address</th>
+                        <th class="dash_th" width=120>Node</th>
+                        <th class="dash_th" width=120>Nominated Node</th>
+                        <th class="dash_th" width=120>Readiness Gate</th>
                     </tr>
                     {{range .Pod}}
                     <tr>
-                        <td class="dash_td">{{.Name}}</td>
-                        <td class="dash_td">{{.Ready}}</td>
-                        <td class="dash_td">{{.Status}}</td>
-                        <td class="dash_td">{{.Restart}}</td>
-                        <td class="dash_td">{{.Age}}</td>
-                        <td class="dash_td">{{.IPaddr}}</td>
-                        <td class="dash_td">{{.Node}}</td>
-                        <td class="dash_td">{{.NominatedNode}}</td>
-                        <td class="dash_td">{{.ReadinessGate}}</td>
+                        <td class="dash_td" width=360>{{.Name}}</td>
+                        <td class="dash_td" width=80>{{.Ready}}</td>
+                        <td class="dash_td" width=200>{{.Status}}</td>
+                        <td class="dash_td" width=100>{{.Restart}}</td>
+                        <td class="dash_td" width=100>{{.Age}}</td>
+                        <td class="dash_td" width=120>{{.IPaddr}}</td>
+                        <td class="dash_td" width=120>{{.Node}}</td>
+                        <td class="dash_td" width=120>{{.NominatedNode}}</td>
+                        <td class="dash_td" width=120>{{.ReadinessGate}}</td>
                     </tr>
                     {{end}}
                 </table>
