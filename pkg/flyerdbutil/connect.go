@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 	"io/ioutil"
+	_ "github.com/lib/pq"
+
 	"gopkg.in/yaml.v3"
 )
 
@@ -54,5 +56,10 @@ func Connect(database string, config DBConfig) (*sql.DB, error) {
 	case "defender":
 		postgres = fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", config.DefDBhost, config.DefDBport, config.DefDBadmin, config.DefDBpassword, config.DefDBname)
 	}
+	return sql.Open("postgres", postgres)
+}
+
+func ConnectHard() (*sql.DB, error) {
+	postgres := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", "localhost", "5432", "postgres", "", "postgres")
 	return sql.Open("postgres", postgres)
 }

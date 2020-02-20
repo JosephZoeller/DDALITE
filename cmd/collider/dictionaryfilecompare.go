@@ -29,10 +29,14 @@ func findCollisionFile(inputHash string, startIndex, searchLength int) string {
 			return ""
 		}
 
-		compareHash := fmt.Sprintf("%d", cityhashutil.GetStrCode64Hash(sc.Text()))
-		if compareHash == inputHash {
+		if compare(inputHash, sc.Text()) {
 			return sc.Text()
 		}
 	}
 	return ""
+}
+
+func compare(inputHash string, candidate string) bool {
+	candidateHash := fmt.Sprintf("%d", cityhashutil.GetStrCode64Hash(candidate))
+	return candidateHash == inputHash
 }
