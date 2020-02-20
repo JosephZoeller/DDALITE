@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"time"
 
 	"github.com/200106-uta-go/JKJP2/pkg/cityhashutil"
 	"github.com/200106-uta-go/JKJP2/pkg/kubeutil"
@@ -47,8 +46,6 @@ func listenForClient() {
 			http.Error(rw, setUpErr.Error(), http.StatusInternalServerError)
 			return
 		}
-
-		time.Sleep(time.Duration(10) * time.Second)
 
 		// Get Overlay IPs from current set of pods.
 		overIps := make([]string, 0)
@@ -97,7 +94,8 @@ func listenForClient() {
 
 		// Just pass on body from worker back to reverse proxy after marshaling.
 		rw.Header().Set("Content-Type", "application/json")
-		output, err := json.Marshal((Template))
+		fmt.Println(Template)
+		output, err := json.Marshal(Template)
 		fmt.Fprintln(rw, string(output))
 
 		// Tear down kubernetes pods and then ec2 instances to save money.
