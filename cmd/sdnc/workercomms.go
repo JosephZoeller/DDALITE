@@ -25,8 +25,7 @@ func sendToWorkers(hash string, workerAddrs []string) *http.Response {
 				myResponse <- resp
 				return
 			}
-			log.Printf("Timeout: failed to connect - %v", er)
-			return
+			log.Fatalf("Fatal Erro in Go Routing ==>> %v", er)
 		}(i)
 	}
 	return <-myResponse
