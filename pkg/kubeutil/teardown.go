@@ -17,6 +17,6 @@ func TearDown() error {
 		return fmt.Errorf("Could not kubectl delete: Error==%v", err)
 	}
 
-	log.Printf("-Teardown Successful-\n%s", out)
+	log.Printf("-Teardown Successful->%s", out)
 	return nil
 }
