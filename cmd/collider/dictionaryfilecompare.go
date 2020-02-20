@@ -8,11 +8,14 @@ import (
 	"github.com/200106-uta-go/JKJP2/pkg/cityhashutil"
 )
 
+func getDictionary(textfile string) (*os.File, error) {
 
-func findCollisionFile(inputHash string, startIndex, searchLength int) string {
+	return os.Open(textfile)
 	
-	dictionary, _ := os.Open(dictionaryFilePath)
-	defer dictionary.Close()
+}
+
+func findCollisionFile(dictionary *os.File, inputHash string, startIndex, searchLength int) string {
+	
 	sc := bufio.NewScanner(dictionary)
 	
 	// iterate over file strings

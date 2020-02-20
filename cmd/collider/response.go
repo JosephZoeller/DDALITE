@@ -30,9 +30,13 @@ func Resp(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Retrieve collision
+	dictionary, er := getDictionary(dictionaryFilePath)
+	if er != nil {
+		return
+	}
 	response := cityhashutil.HashCollision {
 		InputHash: hash,
-		Collision: findCollisionFile(hash, index, length),
+		Collision: findCollisionFile(dictionary, hash, index, length),
 	}
 
 	// Generate http response in JSON format
