@@ -54,7 +54,7 @@ func NodeInfo() []Node {
 
 	for _, detail := range line {
 
-		field := strings.Split(detail, " ")
+		field := strings.Split(detail, "  ")
 
 		var tmp []string
 		for _, text := range field {
@@ -91,7 +91,7 @@ func PodInfo() []Pod {
 
 	for _, detail := range line {
 
-		field := strings.Split(detail, " ")
+		field := strings.Split(detail, "  ")
 
 		var tmp []string
 		for _, text := range field {
@@ -108,9 +108,9 @@ func PodInfo() []Pod {
 				Restart:       strings.TrimSpace(tmp[3]),
 				Age:           strings.TrimSpace(tmp[4]),
 				IPaddr:        strings.TrimSpace(tmp[5]),
-				Node:          strings.TrimSpace(tmp[6]) + " " + (tmp[7]) + " " + (tmp[8]),
-				NominatedNode: strings.TrimSpace(tmp[9]),
-				ReadinessGate: strings.TrimSpace(tmp[10]),
+				Node:          strings.TrimSpace(tmp[6]),
+				NominatedNode: strings.TrimSpace(tmp[7]),
+				ReadinessGate: strings.TrimSpace(tmp[8]),
 			})
 		}
 	}
@@ -127,7 +127,7 @@ func ServiceInfo() []Service {
 
 	for _, detail := range line {
 
-		field := strings.Split(detail, " ")
+		field := strings.Split(detail, "  ")
 
 		var tmp []string
 		for _, text := range field {
@@ -139,12 +139,12 @@ func ServiceInfo() []Service {
 		if len(tmp) > 0 {
 			Services = append(Services, Service{
 				Name:       strings.TrimSpace(tmp[0]),
-				Type:       strings.TrimSpace(tmp[0]),
-				ClusterIP:  strings.TrimSpace(tmp[0]),
-				ExternalIP: strings.TrimSpace(tmp[0]),
-				Port:       strings.TrimSpace(tmp[0]),
-				Age:        strings.TrimSpace(tmp[0]),
-				Selector:   strings.TrimSpace(tmp[0]),
+				Type:       strings.TrimSpace(tmp[1]),
+				ClusterIP:  strings.TrimSpace(tmp[2]),
+				ExternalIP: strings.TrimSpace(tmp[3]),
+				Port:       strings.TrimSpace(tmp[4]),
+				Age:        strings.TrimSpace(tmp[5]),
+				Selector:   strings.TrimSpace(tmp[6]),
 			})
 		}
 	}
