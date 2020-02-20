@@ -96,6 +96,9 @@ func listenForClient() {
 		rw.Header().Set("Content-Type", "application/json")
 		fmt.Println(Template)
 		output, err := json.Marshal(Template)
+		if err != nil {
+			log.Panicf("Error trying to marshal Template ====> %s", err)
+		}
 		fmt.Fprintln(rw, string(output))
 
 		// Tear down kubernetes pods and then ec2 instances to save money.

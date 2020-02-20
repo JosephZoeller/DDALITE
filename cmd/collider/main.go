@@ -4,15 +4,14 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 )
 
-var inPort string
+var inPort int
 var dbConfigFilePath string
 var dictionaryFilePath string
 
 func init() {
-	inPort = os.Getenv("SERV_PORT")
+	inPort = 8080
 	dbConfigFilePath = "config.yaml"
 	dictionaryFilePath = "dictionary.txt"
 }
@@ -23,6 +22,6 @@ func main() {
 	http.HandleFunc("/", Resp)
 
 	// Listen http via service port as definded in enviroment variable.
-	fmt.Printf("Collider is running on port %s\n", inPort)
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", inPort), nil))
+	fmt.Printf("Collider is running on port %d\n", inPort)
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", inPort), nil))
 }

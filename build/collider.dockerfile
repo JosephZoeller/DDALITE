@@ -14,12 +14,13 @@ RUN go get -u 'github.com/JosephZoeller/cityhash'
 RUN go get -u 'github.com/lib/pq'
 RUN go get -u 'gopkg.in/yaml.v3'
 
-RUN go build -o Collider ./cmd/collider
+RUN go build -o /Collider ./cmd/collider
 
-ADD ./dictionary.txt ./dictionary.txt
+ADD ./dictionary.txt /dictionary.txt
 
 FROM alpine:latest
 
-COPY --from=builder dictionary.txt .
-COPY --from=builder Collider .
+COPY --from=builder /dictionary.txt .
+COPY --from=builder /Collider .
+EXPOSE 8080
 CMD [ "./Collider" ]
