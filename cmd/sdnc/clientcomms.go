@@ -6,16 +6,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/200106-uta-go/JKJP2/pkg/cityhashutil"
 	"github.com/200106-uta-go/JKJP2/pkg/kubeutil"
 	"github.com/200106-uta-go/JKJP2/pkg/terra"
 )
-
-// ResultTemp is temporary struct for use with MVP collider.
-type ResultTemp struct {
-	Hash   string `json:"hash"`
-	Result string `json:"result"`
-}
 
 // listenForClient awaits a query (curl request) from the client. Upon recieving a request, the hash is handed out to the worker addresses.
 func listenForClient(rw http.ResponseWriter, req *http.Request) {
@@ -57,30 +50,22 @@ func listenForClient(rw http.ResponseWriter, req *http.Request) {
 	fmt.Println(myPods)
 
 	fmt.Println("IPList: ", overIps)
+	var Template Data
 
 	// Send hash to each pod at each overlay ip.
 	resp := sendToWorkers(hash, overIps)
-	defer resp.Body.Close()
 
-	// Store hash and collision in struct
-	var myCollision cityhashutil.HashCollision
-
-	jsErr := json.NewDecoder(resp.Body).Decode(&myCollision)
-	if err != nil {
-		http.Error(rw, fmt.Sprintf("Error decoding json: Error == %v", jsErr), http.StatusInternalServerError)
-		kubeutil.TearDown()
-		terra.TearDown()
-		return
+	for _, tmp := range resp {
+		if tmp.Result != "" {
+			Template = tmp
+		}
 	}
 
-	// Log result to stdoutput. May want to route logs to different location later.
-	log.Printf("Worker Returned Collision: %v\n", myCollision)
-	exportCollision(myCollision.InputHash, myCollision.Collision)
-
-	var Template ResultTemp
-
-	Template.Hash = myCollision.InputHash
-	Template.Result = myCollision.Collision
+	if Template.Result != "" {
+		// Log result to stdoutput. May want to route logs to different location later.
+		log.Printf("Worker Returned Collision: %v\n", resp)
+		exportCollision(Template.Hash, Template.Result)
+	}
 
 	// Wrap up myCollision into json because you do not want to read response body multiple times.
 	// js, err := json.Marshal(myCollision)
