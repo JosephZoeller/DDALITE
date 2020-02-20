@@ -22,5 +22,5 @@ func exportCollision(hash, collision string) {
 		logger.Println(fmt.Sprintf("[Log Manager]: Failed to create file for %s - %s", collisionFileName, er.Error()))
 	}
 
-	logger.Println("Hash: ", hash, " | Colllision: ", collision)
+	logger.Println("Hash: ", hash, " | Collision: ", collision)
 }
