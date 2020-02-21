@@ -12,7 +12,7 @@ image:
 	terraform init
 	terraform apply --auto-approve
 	
-destroy master:
+destroy_master:
 	cd ./terraform
 	terraform destroy --auto-approve
 
