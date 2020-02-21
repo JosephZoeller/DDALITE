@@ -97,7 +97,16 @@ func TearDown() error {
 		return fmt.Errorf("Nodes not deleted => %+v", errNodes)
 	}
 
-	fmt.Println("=================END DELETING NODE PHASE=========================")
+	fmt.Println("=================END DELETING NODE PHASE===========================")
+	fmt.Println("=================START DELETING SERVICE PHASE=========================")
+	// Start Process of Deleteing Unneeded Services
+	serviceOut, serviceErr := exec.Command("sudo", "kubectl", "delete", "service", "collider-service").Output()
+	fmt.Printf("Deleting Service [%s] -> %s\n", "collider-service", serviceOut)
+	if serviceErr != nil {
+		fmt.Printf("Error deleting Service [%s] -> %+v\n", "collider-service", serviceErr)
+	}
+
+	fmt.Println("=================END DELETING SERVICE PHASE===========================")
 
 	// Return Nil if we have success in all stages
 	return nil
