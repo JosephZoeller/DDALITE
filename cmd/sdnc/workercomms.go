@@ -40,7 +40,7 @@ func sendToWorkers(hash string, workerAddrs []string) string {
 		}(i)
 	}
 
-	for i := 0; i < len(result); i++ {
+	for i := 0; i < len(workerAddrs); i++ {
 		json.NewDecoder(result[i].Body).Decode(&tmp)
 		if tmp.Result != "" {
 			return tmp.Result
