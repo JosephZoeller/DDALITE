@@ -1,5 +1,9 @@
-# Project 2 - Overlay Networking
-Jaeik, Jessey, Ken and Joseph Z, deploy a multi-instance server and VNFs to a production environment on a cloud services platform of your choice. There must be communication across separate virtual machines managed by an SDN controller and service mesh, separate applications controlling and routing traffic between them. Infrastructure and application changes should be managed by an automated CI/CD pipeline.
+# Distributed Dictionary Attack (200106-uta-go Project-2)
+
+## Overview
+Jaeik, Jessey, Ken and Joseph Z's implementation of Project-2 for 200106-uta-go. This project is an automated provisioning system for instantiating multiple AWS EC2 machines as worker "collider" nodes, as well as building a Controller which distributes the workload evenly among the workers. The user can then request a decimal-formatted StrCode64 hash to be decrypted into its original string value.
+
+Colliders are tasked with finding a StrCode64 hash collision for the user's inquiry. Upon recognizing a matching hash, the successful collider will return the hash - unhash pair to the Controller, who then returns the information to the client. The Collider Container is embedded with a literal dictionary for the Collider to reference as candidate, unhashed strings. StrCode64 is a particularly seeded cityhash64 function, and hashes can be generated using BobDoleOwndU's QuickHash tool. More details on StrCode64 can be found here. And, Although Colliders are designed to seek StrCode64 hashes, the logic can be swapped out with other hashing functions as necessity demands.
 
 ## Recommended Tools
 - [DockerHub](https://hub.docker.com/)
