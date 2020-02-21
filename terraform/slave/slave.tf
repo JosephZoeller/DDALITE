@@ -16,7 +16,7 @@ provider "aws" {
 }
 ##SSH LOGIN KEYS
 resource "aws_key_pair" "deployer" {
-  key_name	  = "Key5"
+  key_name	  = "Key_slave"
   public_key	= file("./secrets/public.pub")
 }
 ##EC2's for SLAVES
@@ -25,7 +25,7 @@ resource "aws_instance" "worker" {
   key_name = aws_key_pair.deployer.key_name
   ami           = local.json_data.WORKER_image_id
   instance_type = "t2.micro"
-  security_groups = [aws_security_group.SSH5.name]
+  security_groups = [aws_security_group.SSH_slave.name]
   connection {
     user = "ubuntu"
     type = "ssh"
@@ -64,8 +64,8 @@ resource "aws_instance" "worker" {
   }   
 }
 ##Allows SSH
-resource "aws_security_group" "SSH5" {
-  name        = "allow_ssh_5"
+resource "aws_security_group" "SSH_slave" {
+  name        = "allow_ssh_slave"
   description = "Allow SSH traffic"
   ingress {
     from_port   = 0 

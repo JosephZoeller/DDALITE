@@ -87,4 +87,5 @@ func listenForClient(rw http.ResponseWriter, req *http.Request) {
 		log.Printf(tErr.Error())
 	}
 	terra.TearDown()
+	fmt.Println("SDNC still listening on 8008...")
 }
