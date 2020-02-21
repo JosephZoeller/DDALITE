@@ -28,7 +28,7 @@ func TearDown() error {
 	*/
 
 	fmt.Println("=================START DRAINING NODE PHASE=======================")
-	myNodes := NodeInfo()
+	myNodes := RemoveMasterNode(NodeInfo())
 	errNodes := make([]Node, 0)
 
 	// Loop over nodes and drain them. If they return an error, add them to errNode list for error reporting.
@@ -56,7 +56,7 @@ func TearDown() error {
 	const drainCheck = "NotReady,SchedulingDisabled"
 
 	for isUpdated {
-		mapNodes := MapNodes(NodeInfo())
+		mapNodes := MapNodes(RemoveMasterNode(NodeInfo()))
 		for k, v := range mapNodes {
 			if v.Status == drainCheck {
 				log.Printf("Node %s drained.\n", k)
@@ -111,4 +111,21 @@ func MapNodes(nodes []Node) map[string]Node {
 	}
 
 	return mNodes
+}
+
+// RemoveMasterNode takes the master node out of a slice if it is present.
+// This will be useful for not acccidently deleting the master node during the
+// tear down process.
+func RemoveMasterNode(nodes []Node) []Node {
+	// Finder Master Node Index
+	var masterIndex int
+	for i, v := range nodes {
+		if v.Role == "master" {
+			masterIndex = i
+		}
+	}
+
+	// remove master from slice
+	nodes[len(nodes)-1], nodes[masterIndex] = nodes[masterIndex], nodes[len(nodes)-1]
+	return nodes[:len(nodes)-1]
 }
