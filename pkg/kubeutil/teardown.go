@@ -99,6 +99,7 @@ func TearDown() error {
 
 	fmt.Println("=================END DELETING NODE PHASE=========================")
 
+	// Return Nil if we have success in all stages
 	return nil
 }
 
