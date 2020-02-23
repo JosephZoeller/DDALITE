@@ -3,33 +3,9 @@
 ## Overview
 Jaeik, Jessey, Ken and Joseph Z's implementation of Project-2 for 200106-uta-go. This project is an automated provisioning system for instantiating multiple AWS EC2 machines as worker "collider" nodes, as well as building a Controller which distributes the workload evenly among the workers. The user can then request a decimal-formatted StrCode64 hash to be decrypted into its original string value.
 
-Colliders are tasked with finding a StrCode64 hash collision for the user's inquiry. Upon recognizing a matching hash, the successful collider will return the hash - unhash pair to the Controller, who then returns the information to the client. The Collider Container is embedded with a literal dictionary for the Collider to reference as candidate, unhashed strings. StrCode64 is a particularly seeded cityhash64 function, and hashes can be generated using BobDoleOwndU's QuickHash tool. More details on StrCode64 can be found here. And, Although Colliders are designed to seek StrCode64 hashes, the logic can be swapped out with other hashing functions as necessity demands.
+Colliders are tasked with finding a StrCode64 hash collision for the user's inquiry. Upon recognizing a matching hash, the successful collider will return the hash - unhash pair to the Controller, who then returns the information to the client. The Collider Container is embedded with a literal dictionary for the Collider to reference as candidate, unhashed strings. StrCode64 is a particularly seeded cityhash64 function, and hashes can be generated using [BobDoleOwndU's QuickHash tool](https://github.com/BobDoleOwndU/QuickHash). More details on StrCode64 can be found [here](https://metalgearmodding.fandom.com/wiki/Hash_Wrangling). And, Although Colliders are designed to seek StrCode64 hashes, the logic can be swapped out with other hashing functions as necessity demands.
 
-## Recommended Tools
-- [DockerHub](https://hub.docker.com/)
-- [AWS](https://aws.amazon.com/)
-- [Jenkins](https://jenkins.io/)
-- [Terraform](https://www.terraform.io/)
-- [Kubernetes](https://kubernetes.io/)
-
-## Requirements
-- [X] Documentation
-- [X] Agile/Scrum Project Management [Jira](https://revaturepro.atlassian.net/secure/BrowseProjects.jspa)
-- [X] Git Branching & Semantic Versioning
-- [X] (Cloud) Production Environment
-- [X] CI/CD Pipeline
-- [X] Infrastructure as Code
-- [X] Orchestration
-
-## Presentation
-- [X] 15-minute Demonstration
-- [X] Presentation Slides
-- [X] MVP Done
-
- 
 ## Instructions before build.
-
-
 
 AWS IAM Information and Credintials stroage
 SETUP
