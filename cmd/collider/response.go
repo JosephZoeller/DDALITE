@@ -19,25 +19,24 @@ func Resp(w http.ResponseWriter, r *http.Request) {
 	hash := r.FormValue("hash")
 	if hash == "" {
 		errStr = "Parse error - hash is empty."
-		return
+		hash = "1234"
 	}
 	index, er := strconv.Atoi(r.FormValue("index"))
 	if er != nil {
 		errStr = "Parse error - could not parse index."
-		return
+		index = 0
 	}
 	length, er := strconv.Atoi(r.FormValue("length"))
 	if er != nil {
 		fmt.Fprint(w, "")
 		errStr = "Parse error - could not parse length."
-		return
+		length = 1
 	}
 
 	// Retrieve collision
 	dictionary, er := getDictionary(dictionaryFilePath)
 	if er != nil {
 		errStr = "Dictionary Error - Could not get dictionary."
-		return
 	}
 	response := cityhashutil.HashCollision{
 		InputHash: hash,
