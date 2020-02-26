@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 
@@ -16,12 +17,13 @@ const (
 var (
 	dictionaryLength int64 = 466550 //!! WARNING THIS IS ONLY TEMPORARY PLEASE ADD INIT LOGIC TO GET ACTUAL LENGTH FROM DB
 	overIps          []string
-	instanceCount    int = 1
+	instanceCount    *int
 )
 
 func init() {
 	log.SetFlags(log.Llongfile)
-	spinUp(instanceCount)
+	instanceCount = flag.Int("count", 1, "count - Determines how many instances to spin up. Default 1.")
+	spinUp(*instanceCount)
 }
 
 func spinUp(iCnt int) {
