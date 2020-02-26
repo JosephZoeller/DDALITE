@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"text/template"
 
-	"github.com/200106-uta-go/JKJP2/pkg/kubeutil"
+	"github.com/JosephZoeller/DDALITE/pkg/kubeutil"
 )
 
 type tmpl struct {

@@ -13,5 +13,5 @@ func main() {
 		Host:   "10.244.0.1:8080", // Need to be changed to SDN.
 	})
 
-	log.Fatal(http.ListenAndServeTLS(":443", "server.crt", "server.key", revproxy))
+	log.Fatal(http.ListenAndServe(":443", revproxy))
 }

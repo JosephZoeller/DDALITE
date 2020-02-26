@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/200106-uta-go/JKJP2/pkg/cityhashutil"
+	"github.com/JosephZoeller/DDALITE/pkg/cityhashutil"
 )
 
 // Data is response data struct

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/200106-uta-go/JKJP2/pkg/cityhashutil"
+	"github.com/JosephZoeller/DDALITE/pkg/cityhashutil"
 )
 
 func getDictionary(textfile string) (*os.File, error) {

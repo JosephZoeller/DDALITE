@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"text/template"
 
-	"github.com/200106-uta-go/JKJP2/pkg/kubeutil"
-	"github.com/200106-uta-go/JKJP2/pkg/terra"
+	"github.com/JosephZoeller/DDALITE/pkg/kubeutil"
+	"github.com/JosephZoeller/DDALITE/pkg/terra"
 )
 
 // listenForClient awaits a query (curl request) from the client. Upon recieving a request, the hash is handed out to the worker addresses.
