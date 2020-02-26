@@ -15,7 +15,7 @@ import (
 // Resp responses to request in JSON format
 func Resp(w http.ResponseWriter, r *http.Request) {
 	// Parse request values
-	errStr := ""
+	errStr := "No Errors to Report!"
 	hash := r.FormValue("hash")
 	if hash == "" {
 		errStr = "Parse error - hash is empty."
