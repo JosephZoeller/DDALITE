@@ -30,7 +30,7 @@ Setup Image ID before Deployment
 Prior to deploying, an image needs to be created to act as a default machine for the tool.
 
 - change directory to the project root
-- run the make command in terminal: make image
+- run the make command in terminal: make image (NOTE: if you're using a virtual machine, make sure that the VM's time is correct!)
 - terraform will build the core image with docker, kubernetes and all depedencies 
 - once finished navagate to AWS website and go to running ec2 instance
 - select the check on the newly spun ec2
@@ -47,15 +47,16 @@ var.json Default values
     "user_count": "3"
     }
 - user_count is the default number of worker nodes that the terraform configuration will use. This is overriden when using the tool.
-- once the image is AMI is saved, the EC2 can be destroyed.
-- run the following make command in terminal at project root: make destroy_image
+- once the image is AMI is saved, the EC2 can be destroyed. Run the following make command in terminal at project root: make destroy_image
 
 ## Setup Master Instance (WIP for DDALITE)
 - run make command in terminal: make master
 - wait for the setup, estimated time is usually 2-4min
 - once ssh connected follow the steps below to setup program:
-    - sudo snap install go
-    - go get -u -d github.com/200106-uta-go/JKJP2
-    - cd go/src/github.com/200106-uta-go/JKJP2 
-    - go build /src/revproxy
-    - go build /src/sdnc
+    - sudo snap install go --classic
+    - go get -u -d github.com/JosephZoeller/cityhash
+    - go get -u -d github.com/JosephZoeller/DDALITE
+    - go build -o ./revproxy ./go/src/github.com/JosephZoeller/DDALITE/cmd/revproxy
+    - go build -o ./sdnc ./go/src/github.com/JosephZoeller/DDALITE/cmd/sdnc
+    - sudo ./revproxy & disown
+    - sudo ./sdnc

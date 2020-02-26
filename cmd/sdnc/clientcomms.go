@@ -9,11 +9,13 @@ func listenForClient(rw http.ResponseWriter, req *http.Request) {
 	err := req.ParseForm()
 	if err != nil {
 		http.Error(rw, "Error Parsing client request form.", http.StatusInternalServerError)
+		return
 	}
 
 	hash := req.FormValue("hash")
 	if hash == "" {
 		http.Error(rw, "Hash parse not found", http.StatusInternalServerError)
+		return
 	}
 
 	resp := sendToWorkers(hash, overIps)
