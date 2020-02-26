@@ -4,5 +4,5 @@ package cityhashutil
 type HashCollision struct {
 	InputHash string `json:"hash"`
 	Collision string `json:"collision"`
-	Err       string `json:errorStr`
+	Err       string `json:"errorStr"`
 }
