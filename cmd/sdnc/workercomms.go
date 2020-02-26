@@ -6,6 +6,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/JosephZoeller/DDALITE/pkg/cityhashutil"
 )
@@ -32,6 +33,7 @@ func sendToWorkers(hash string, workerAddrs []string) string {
 				log.Println(er)
 			}
 			fmt.Println("Response from worker: ", resp.Body)
+			time.Sleep(time.Second * 5)
 			responseChan <- resp.Body
 
 		}(i)

@@ -16,20 +16,26 @@ import (
 func Resp(w http.ResponseWriter, r *http.Request) {
 	// Parse request values
 	hash := r.FormValue("hash")
+	if hash == "" {
+		fmt.Fprint(w, "Parse error - hash is empty.")
+		return
+	}
 	index, er := strconv.Atoi(r.FormValue("index"))
 	if er != nil {
-		fmt.Fprint(w, "")
+		fmt.Fprint(w, "Parse error - could not parse index.")
 		return
 	}
 	length, er := strconv.Atoi(r.FormValue("length"))
 	if er != nil {
 		fmt.Fprint(w, "")
+		fmt.Fprint(w, "Parse error - could not parse index.")
 		return
 	}
 
 	// Retrieve collision
 	dictionary, er := getDictionary(dictionaryFilePath)
 	if er != nil {
+		fmt.Fprint(w, "Dictionary Error - Could not get dictionary.")
 		return
 	}
 	response := cityhashutil.HashCollision{
@@ -40,6 +46,7 @@ func Resp(w http.ResponseWriter, r *http.Request) {
 	// Generate http response in JSON format
 	output, err := json.Marshal(response)
 	if err != nil {
+		fmt.Fprint(w, "Send Error - Could not marshal response.")
 		w.WriteHeader(http.StatusTeapot)
 		log.Fatal(err)
 		return
