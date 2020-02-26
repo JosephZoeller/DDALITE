@@ -1,6 +1,11 @@
 package main
 
-import "log"
+import (
+	"log"
+
+	"github.com/JosephZoeller/DDALITE/pkg/kubeutil"
+	"github.com/JosephZoeller/DDALITE/pkg/terra"
+)
 
 // Define ports for the different components that SDNC will be communicating with.
 const (
@@ -9,16 +14,36 @@ const (
 
 var (
 	dictionaryLength int64 = 466550 //!! WARNING THIS IS ONLY TEMPORARY PLEASE ADD INIT LOGIC TO GET ACTUAL LENGTH FROM DB
-	workerAddrs      []string
+	overIps []string
+	instanceCount int = 1
 )
 
 func init() {
-	workerAddrs = make([]string, 0)
 	log.SetFlags(log.Llongfile)
-	/* What is this for?
-	for i := 0; i < 2; i++ {
-		wrkAddr := os.Getenv(fmt.Sprintf("wrkAddr_%d", 1))
-		workerAddrs = append(workerAddrs, wrkAddr)
+	spinUp(instanceCount)
+}
+
+func spinUp(iCnt int) {
+
+	if iCnt <= 0 {
+		log.Fatalf("Error instances=%d were not set.", iCnt)
 	}
-	*/
+
+	// Initiate Terraform script to create EC2 instances.
+	// NO LONGER RETURNS IPS. Use the ips here to log the EC2 underlay ips for safekeeping.
+	terra.Provision(iCnt)
+
+	// Launch deployment yaml in /kubernetes/deployment.yaml and return the pod private overlay ips.
+	setUpErr := kubeutil.SetUp(iCnt)
+	if setUpErr != nil {
+		log.Fatalf(setUpErr.Error())
+	}
+
+	// Get Overlay IPs from current set of pods.
+	overIps = make([]string, 0)
+	myPods := kubeutil.PodInfo()
+
+	for _, v := range myPods {
+		overIps = append(overIps, v.IPaddr)
+	}
 }

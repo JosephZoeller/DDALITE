@@ -21,21 +21,13 @@ creds.json
     "secret_key" : "value of secret key"
 
     }
-- copy the access_key and secret_key from you aws IAM account into creds.json file. 
-- place private key in secrets directory call it private.pem
-- place public key in secrets directory call it public.pub
+- copy the access_key (from your AWS account Security Credential page) and secret_key (from the first time you created your AWS account) into the creds.json file.
+- next, create a EC2 Key Pair (How to create a key-pair can be found [here](https://youtu.be/DpyLAdMD09w) and instructions on how to retrieve your public key can be found [here](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#retrieving-the-public-key))
+- place the private key in secrets directory call it private.pem
+- place the public key in secrets directory call it public.pub
 
-Setup Image ID befor Deployment
-
-   
-var.json Default values
-
-    {
-    "WORKER_image_id": "ami-0fc20dd1da406780b",
-    "MASTER_image_id": "ami-0fc20dd1da406780b",
-    "user_count": "3"
-    }
-Build the Worker/ Master Image ID
+Setup Image ID before Deployment
+Prior to deploying, an image needs to be created to act as a default machine for the tool.
 
 - change directory to the project root
 - run the make command in terminal: make image
@@ -46,9 +38,19 @@ Build the Worker/ Master Image ID
 - name your image, list a discription, and create image 
 - once the image has finished copy its ami number
 - place the copy of the ami number in both master and worker_id of the var.json file
-- now run the make command in terminal at project root: make destroy_image
 
-## Setup Master Instance
+var.json Default values
+
+    {
+    "WORKER_image_id": "ami-0fc20dd1da406780b",
+    "MASTER_image_id": "ami-0fc20dd1da406780b",
+    "user_count": "3"
+    }
+- user_count is the default number of worker nodes that the terraform configuration will use. This is overriden when using the tool.
+- once the image is AMI is saved, the EC2 can be destroyed.
+- run the following make command in terminal at project root: make destroy_image
+
+## Setup Master Instance (WIP for DDALITE)
 - run make command in terminal: make master
 - wait for the setup, estimated time is usually 2-4min
 - once ssh connected follow the steps below to setup program:
@@ -57,16 +59,3 @@ Build the Worker/ Master Image ID
     - cd go/src/github.com/200106-uta-go/JKJP2 
     - go build /src/revproxy
     - go build /src/sdnc
-
-## Instructions on Connecting to Web Client
-- Start the Web server and reverse proxy
-    - sudo ./revproxy & disown
-    - sudo ./sndc
-- Web server is hosted and behind tls reverse proxy
-- You need your Master's public ip to connect, can be optained from aws website on the master image dashboard, under public ip
-    - type https://"your.masterip"
-- Greeted with a client web page enter the Hash you want decifered and the priority of the build resources.
-- wait for the collision detection to occur to decode the hash
-    - Dashboard is simultaneously hosted for live feedback on the decodeing
-        https://"your.masterup"?dash
-    

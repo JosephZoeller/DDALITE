@@ -10,13 +10,14 @@ provider "aws" {
 }
 ##SSH LOGIN KEYS
 resource "aws_key_pair" "deployer" {
-  key_name	  = "Key_Image"
-  public_key	= file("../secrets/public.pub")
+  key_name      = "Key_Image"
+  public_key    = file("../secrets/public.pub")
 }
 ##EC2for MASTER 
 resource "aws_instance" "image" {
   key_name = aws_key_pair.deployer.key_name
   ami           = "ami-0fc20dd1da406780b"
+  security_groups = [aws_security_group.SSH.name]
   instance_type = "t2.medium"
   connection {
     user = "ubuntu"
@@ -38,4 +39,22 @@ resource "aws_instance" "image" {
       "sudo /bin/bash /home/ubuntu/prep_core.sh",
     ]
   } 
+}
+##Secuirty Group Allow SSH
+resource "aws_security_group" "SSH" {
+  name        = "allow_ssh"
+  description = "Allow SSH traffic"
+  ingress {
+    from_port   = 0 
+    to_port     = 0
+    protocol =   "-1"
+
+    cidr_blocks =  ["0.0.0.0/0"]
+  }
+  egress {
+    from_port       = 0
+    to_port         = 0
+    protocol        = "-1"
+    cidr_blocks     = ["0.0.0.0/0"]
+  }
 }

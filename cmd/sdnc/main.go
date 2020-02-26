@@ -2,10 +2,14 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
+
+	"github.com/JosephZoeller/DDALITE/pkg/kubeutil"
+	"github.com/JosephZoeller/DDALITE/pkg/terra"
 )
 
 // SDN Controller Entry point.
@@ -14,10 +18,18 @@ import (
 // Listens for worker responses (hash + collision)
 // Logs worker responses (hash + collision -> collisions.txt)
 func main() {
-
 	fmt.Println("SDN Controller now listening on port 8080")
+	http.HandleFunc("/", listenForClient)
 	go http.ListenAndServe(":8080", nil)
 	signalChan := make(chan os.Signal, 1)
 	signal.Notify(signalChan, syscall.SIGINT)
 	<-signalChan
+
+	// Tear down kubernetes pods and then ec2 instances to save money.
+	tErr := kubeutil.TearDown()
+	if tErr != nil {
+		log.Printf(tErr.Error())
+	}
+	terra.TearDown()
+	fmt.Println("SDNC still listening on 8008...")
 }

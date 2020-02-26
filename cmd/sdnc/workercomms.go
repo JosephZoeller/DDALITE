@@ -5,23 +5,18 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"github.com/JosephZoeller/DDALITE/pkg/cityhashutil"
 )
 
-// Data is result struct
-type Data struct {
-	Hash   string `json:"hash"`
-	Result string `json:"result"`
-}
-
 var result []*http.Response
-var collision []Data
+var collision []cityhashutil.HashCollision
 
 // Send hash to each worker's overlay ip address.
 func sendToWorkers(hash string, workerAddrs []string) string {
 	var workerCount int64 = int64(len(workerAddrs))  // How many slave ips have we registered?
 	var pages int64 = dictionaryLength / workerCount // How big will the assigned tasks will be
 
-	var tmp Data
+	var tmp cityhashutil.HashCollision
 
 	// Iterate over worker addresses and submit a hash, startindex, and length of entries.
 	for i := 0; i < len(workerAddrs); i++ {
@@ -42,8 +37,8 @@ func sendToWorkers(hash string, workerAddrs []string) string {
 
 	for i := 0; i < len(workerAddrs); i++ {
 		json.NewDecoder(result[i].Body).Decode(&tmp)
-		if tmp.Result != "" {
-			return tmp.Result
+		if tmp.Collision != "" {
+			return tmp.Collision
 		}
 	}
 	return ""
