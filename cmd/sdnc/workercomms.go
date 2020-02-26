@@ -21,7 +21,6 @@ func sendToWorkers(hash string, workerAddrs []string) string {
 
 	var tmp cityhashutil.HashCollision
 
-	fmt.Println("Beginning Sendout Logic. # Worker Addresses: ", len(workerAddrs))
 	for i := 0; i < len(workerAddrs); i++ {
 		startIndex := int64(i) * pages
 
@@ -32,17 +31,13 @@ func sendToWorkers(hash string, workerAddrs []string) string {
 			if er != nil {
 				log.Println(er)
 			}
-			fmt.Println("Response from worker: ", resp.Body)
-			time.Sleep(time.Second * 5)
 			responseChan <- resp.Body
 
 		}(i)
 	}
 
-	fmt.Println("Beginning Return Logic")
 	for i := 0; i< len(workerAddrs); i++ {
 		firstResponseBody := <- responseChan
-		fmt.Println("firstResponseBody: ", firstResponseBody)
 		json.NewDecoder(firstResponseBody).Decode(&tmp)
 
 		fmt.Println("temp collision: ", tmp.Collision, " | Input hash: ", tmp.InputHash, " | error message: ", tmp.Err )
