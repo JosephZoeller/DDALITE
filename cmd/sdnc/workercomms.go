@@ -45,7 +45,7 @@ func sendToWorkers(hash string, workerAddrs []string) string {
 		fmt.Println("firstResponseBody: ", firstResponseBody)
 		json.NewDecoder(firstResponseBody).Decode(&tmp)
 
-		fmt.Println("temp collision: ", tmp.Collision, " ", tmp.InputHash, " ", tmp.Err )
+		fmt.Println("temp collision: ", tmp.Collision, " | Input hash: ", tmp.InputHash, " | error message: ", tmp.Err )
 		if tmp.Collision != "" {
 			return tmp.Collision
 		}
