@@ -6,7 +6,6 @@ import (
 	"io"
 	"log"
 	"net/http"
-	"time"
 
 	"github.com/JosephZoeller/DDALITE/pkg/cityhashutil"
 )
