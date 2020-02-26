@@ -22,7 +22,8 @@ var (
 
 func init() {
 	log.SetFlags(log.Llongfile)
-	instanceCount = flag.Int("count", 1, "count - Determines how many instances to spin up. Default 1.")
+	instanceCount = flag.Int("c", 1, "count - Determines how many instances to spin up. Default 1.")
+	flag.Parse()
 	spinUp(*instanceCount)
 }
 
