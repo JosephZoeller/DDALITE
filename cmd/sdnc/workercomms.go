@@ -3,16 +3,18 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
+
 	"github.com/JosephZoeller/DDALITE/pkg/cityhashutil"
 )
 
-var result []*http.Response
 var collision []cityhashutil.HashCollision
 
 // Send hash to each worker's overlay ip address.
 func sendToWorkers(hash string, workerAddrs []string) string {
+	responseChan := make(chan io.ReadCloser, len(workerAddrs))
 	var workerCount int64 = int64(len(workerAddrs))  // How many slave ips have we registered?
 	var pages int64 = dictionaryLength / workerCount // How big will the assigned tasks will be
 
@@ -26,22 +28,22 @@ func sendToWorkers(hash string, workerAddrs []string) string {
 		go func(index int) {
 
 			resp, er := tryGet(workerAddrs[index], hash, startIndex, pages)
-
 			if er != nil {
 				log.Println(er)
 			}
-			result = append(result, resp)
+			responseChan <- resp.Body
 
 		}(i)
 	}
 
-	for i := 0; i < len(workerAddrs); i++ {
-		json.NewDecoder(result[i].Body).Decode(&tmp)
+	for i := 0; i< len(workerAddrs); i++ {
+		firstResponseBody := <- responseChan
+		json.NewDecoder(firstResponseBody).Decode(&tmp)
 		if tmp.Collision != "" {
 			return tmp.Collision
 		}
 	}
-	return ""
+	return tmp.Collision
 }
 
 // tryGet attempts to send the hash string to the address every second, for t seconds. If no connection is made in that time, returns an error.

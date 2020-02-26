@@ -49,14 +49,16 @@ var.json Default values
 - user_count is the default number of worker nodes that the terraform configuration will use. This is overriden when using the tool.
 - once the image is AMI is saved, the EC2 can be destroyed. Run the following make command in terminal at project root: make destroy_image
 
-## Setup Master Instance (WIP for DDALITE)
+## Setup Master Instance
 - run make command in terminal: make master
 - wait for the setup, estimated time is usually 2-4min
 - once ssh connected follow the steps below to setup program:
-    - sudo snap install go --classic
-    - go get -u -d github.com/JosephZoeller/cityhash
-    - go get -u -d github.com/JosephZoeller/DDALITE
-    - go build -o ./revproxy ./go/src/github.com/JosephZoeller/DDALITE/cmd/revproxy
-    - go build -o ./sdnc ./go/src/github.com/JosephZoeller/DDALITE/cmd/sdnc
-    - sudo ./revproxy & disown
-    - sudo ./sdnc
+```
+sudo snap install go --classic
+go get -u -d github.com/JosephZoeller/cityhash
+go get -u -d github.com/JosephZoeller/DDALITE
+go build -o ./sdnc ./go/src/github.com/JosephZoeller/DDALITE/cmd/sdnc
+sudo ./sdnc
+```
+- Wait for the Terminal to read "SDN Controller now listening on port 8080", then hash requests can be sent to the master's Public DNS on port 8080.
+- For example: ec2-3-15-220-41.us-east-2.compute.amazonaws.com:8080/?hash=85894109417755

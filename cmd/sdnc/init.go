@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/JosephZoeller/DDALITE/pkg/kubeutil"
@@ -14,8 +15,8 @@ const (
 
 var (
 	dictionaryLength int64 = 466550 //!! WARNING THIS IS ONLY TEMPORARY PLEASE ADD INIT LOGIC TO GET ACTUAL LENGTH FROM DB
-	overIps []string
-	instanceCount int = 1
+	overIps          []string
+	instanceCount    int = 1
 )
 
 func init() {
@@ -31,7 +32,10 @@ func spinUp(iCnt int) {
 
 	// Initiate Terraform script to create EC2 instances.
 	// NO LONGER RETURNS IPS. Use the ips here to log the EC2 underlay ips for safekeeping.
+
+	fmt.Printf("\nProvisioning %d instances with Terraform...\n", iCnt)
 	terra.Provision(iCnt)
+	fmt.Println("Provisioning complete. Building Kubernetes environment...")
 
 	// Launch deployment yaml in /kubernetes/deployment.yaml and return the pod private overlay ips.
 	setUpErr := kubeutil.SetUp(iCnt)
@@ -46,4 +50,5 @@ func spinUp(iCnt int) {
 	for _, v := range myPods {
 		overIps = append(overIps, v.IPaddr)
 	}
+	fmt.Println("Kubernetes Environment built.")
 }

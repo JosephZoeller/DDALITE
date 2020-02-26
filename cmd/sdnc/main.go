@@ -25,11 +25,13 @@ func main() {
 	signal.Notify(signalChan, syscall.SIGINT)
 	<-signalChan
 
+	fmt.Println("Beginning Infrastructure Teardown...")
 	// Tear down kubernetes pods and then ec2 instances to save money.
 	tErr := kubeutil.TearDown()
 	if tErr != nil {
 		log.Printf(tErr.Error())
 	}
 	terra.TearDown()
-	fmt.Println("SDNC still listening on 8008...")
+
+	fmt.Println("Teardown complete. Rerun the SDNC to rebuild the infrastructure, or exit the ssh connection and tear down the master with 'make destroy_master'.")
 }
