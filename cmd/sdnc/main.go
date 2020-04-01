@@ -9,7 +9,7 @@ import (
 	"syscall"
 
 	"github.com/JosephZoeller/DDALITE/pkg/kubeutil"
-	"github.com/JosephZoeller/DDALITE/pkg/terra"
+	terra "github.com/JosephZoeller/DDALITE/pkg/terrautil"
 )
 
 // SDN Controller Entry point.

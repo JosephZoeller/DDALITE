@@ -6,7 +6,7 @@ import (
 	"log"
 
 	"github.com/JosephZoeller/DDALITE/pkg/kubeutil"
-	"github.com/JosephZoeller/DDALITE/pkg/terra"
+	terra "github.com/JosephZoeller/DDALITE/pkg/terrautil"
 )
 
 // Define ports for the different components that SDNC will be communicating with.
