@@ -11,44 +11,49 @@ import (
 )
 
 func main() {
-	lab()
-	/*
-		fmt.Println("HELLO THERE.")
-		cmdreader := bufio.NewReader(os.Stdin)
-		in, _ := cmdreader.ReadString('\n')
-		if in != "GENERAL KENOBI\n" {
-			fmt.Println("BYE THERE.")
-		} else {
-			fmt.Println("SO UNCIVILIZED")
-		}
-		fmt.Println("'", in, "'")
-	*/
+	labSender()
 }
 
-func lab() {
-	testFunc := func(inputs []string, cFunc func(strVar string) bool) error {
+func labSender() {
+	clientBuiltFunc := func(inputs []string, cFunc func(inputHash, candidate string) bool) {
 		zeroInput := inputs[0]
-		if cFunc(zeroInput) {
-			return nil
+		generatedGuess := "Apple"
+		if cFunc(zeroInput, generatedGuess) {
+			labReturner(cityhashutil.HashOutParams{Hashed: zeroInput, Unhashed: generatedGuess, Err: nil})
 		} else {
-			return errors.New("cFunc didn't like your '" + zeroInput + "'.")
+			labReturner(cityhashutil.HashOutParams{Hashed: zeroInput, Unhashed: "----------", Err: errors.New("Failed to find collision")})
 		}
-	}
 
-	exCompare := func(strVar string) bool {
-		return strVar == "test"
 	}
 
 	labExp := cityhashutil.HashInParams{
-		InputHashes: []string{"ok boomer"},
+		InputHashes: []string{"85894109417755"},
 		HashType:    "StrCode64",
-		CompareFunc: testFunc,
+		CompareFunc: clientBuiltFunc,
 	}
 
-	err := labExp.CompareFunc(labExp.InputHashes, exCompare)
-	if err == nil {
-		fmt.Println("Successful")
-	} else {
-		fmt.Println(err)
+	labReceiver(labExp)
+}
+
+func labReceiver(input cityhashutil.HashInParams) {
+	var comparerFunc func(string, string) bool
+
+	switch input.HashType {
+	case "StrCode64":
+		comparerFunc = func(inputHash, candidate string) bool {
+			candidateHash := fmt.Sprintf("%d", cityhashutil.GetStrCode64Hash(candidate))
+			return candidateHash == inputHash
+		}
+	default:
+		return
+	}
+
+	input.CompareFunc(input.InputHashes, comparerFunc)
+}
+
+func labReturner(output cityhashutil.HashOutParams) {
+	fmt.Println("temp collision: ", output.Unhashed, " | Input hash: ", output.Hashed)
+	if output.Err != nil {
+		fmt.Println(output.Err)
 	}
 }

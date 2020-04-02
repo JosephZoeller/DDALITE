@@ -8,9 +8,9 @@ type HashCollision struct {
 }
 
 type HashInParams struct {
-	InputHashes []string                                `json:"hashes"`
-	HashType    string                                  `json:"HashType"` // should be an enum or something
-	CompareFunc func([]string, func(string) bool) error `json:"compareFunction"`
+	InputHashes []string                            
+	HashType    string                                   
+	CompareFunc func([]string, func(string, string) bool)
 }
 
 type HashOutParams struct {
