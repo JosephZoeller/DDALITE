@@ -8,13 +8,16 @@ type HashCollision struct {
 }
 
 type HashInParamsOffline struct {
-	InputHashes []string                            
-	HashType    string                                   
+	InputHashes []string
+	HashType    string
 	CompareFunc func([]string, func(string, string) bool)
 }
 
 type HashInParamsOnline struct {
-	InputHashes []string                            
+	InputHashes []string `json:"Hashes"`
+	Dictionary  []string `json:"Dictionary"`
+	Delimiter   string   `json:"Delimeter"`
+	Depth       int      `json:"Depth"`
 }
 
 type HashOutParams struct {
@@ -23,12 +26,13 @@ type HashOutParams struct {
 	Err      string `json:"errorString"`
 }
 
-type MessageToClient struct {
+type ResponseMessage struct {
 	Message string `json:"Message"`
 }
 
 type ClientPost struct {
-	InputHashes []string `json:"Hashes"`
-	Dictionary  []string `json:"Dictionary"`
-	Delimiter   string   `json:"Delimeter"`
+	InputHashes  []string   `json:"Hashes"`
+	Dictionaries [][]string `json:"Dictionaries"`
+	Delimiter    string     `json:"Delimeter"`
+	Depth        int        `json:"Depth"`
 }

@@ -21,7 +21,7 @@ func main() {
 		err := http.ListenAndServe("localhost:999", nil)
 		if err != nil {
 			log.Println(err)
-			signalChan <- os.Kill
+			signalChan <- os.Interrupt
 		}
 	}()
 
@@ -29,7 +29,7 @@ func main() {
 }
 
 func listenForSDNC(response http.ResponseWriter, request *http.Request) {
-	m := cityhashutil.MessageToClient{}
+	m := cityhashutil.ResponseMessage{}
 	
 	err := json.NewDecoder(request.Body).Decode(&m)
 	if err != nil {
@@ -37,5 +37,4 @@ func listenForSDNC(response http.ResponseWriter, request *http.Request) {
 	} else {
 		log.Println(m.Message)
 	}
-
 }

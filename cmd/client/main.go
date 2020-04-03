@@ -12,16 +12,17 @@ import (
 func main() {
 
 	post, err := json.Marshal(cityhashutil.ClientPost{
-		InputHashes: []string {"85894109417755"},
-		Dictionary:  []string {"NotApple", "apple", "Apple"},
-		Delimiter:   "",
+		InputHashes:  []string{"85894109417755"},
+		Dictionaries: [][]string{[]string{""}},
+		Delimiter:    "",
+		Depth:        4,
 	})
 	if err != nil {
 		panic(err)
 	}
 
-	msg := cityhashutil.MessageToClient{}
-	rsp, err := http.Post("http://localhost:666/", "application/json", bytes.NewReader(post))
+	msg := cityhashutil.ResponseMessage{}
+	rsp, err := http.Post("http://localhost:666/client", "application/json", bytes.NewReader(post))
 	if err != nil {
 		panic(err)
 	} else {
