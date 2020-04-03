@@ -1,11 +1,7 @@
 package main
 
 import (
-	//"bufio"
-	"errors"
 	"fmt"
-
-	//"os"
 
 	"github.com/JosephZoeller/DDALITE/pkg/cityhashutil"
 )
@@ -19,14 +15,14 @@ func labSender() {
 		zeroInput := inputs[0]
 		generatedGuess := "Apple"
 		if cFunc(zeroInput, generatedGuess) {
-			labReturner(cityhashutil.HashOutParams{Hashed: zeroInput, Unhashed: generatedGuess, Err: nil})
+			labReturner(cityhashutil.HashOutParams{Hashed: zeroInput, Unhashed: generatedGuess, Err: ""})
 		} else {
-			labReturner(cityhashutil.HashOutParams{Hashed: zeroInput, Unhashed: "----------", Err: errors.New("Failed to find collision")})
+			labReturner(cityhashutil.HashOutParams{Hashed: zeroInput, Unhashed: "----------", Err: "Failed to find collision"})
 		}
 
 	}
 
-	labExp := cityhashutil.HashInParams{
+	labExp := cityhashutil.HashInParamsOffline{
 		InputHashes: []string{"85894109417755"},
 		HashType:    "StrCode64",
 		CompareFunc: clientBuiltFunc,
@@ -35,7 +31,7 @@ func labSender() {
 	labReceiver(labExp)
 }
 
-func labReceiver(input cityhashutil.HashInParams) {
+func labReceiver(input cityhashutil.HashInParamsOffline) {
 	var comparerFunc func(string, string) bool
 
 	switch input.HashType {
@@ -53,7 +49,7 @@ func labReceiver(input cityhashutil.HashInParams) {
 
 func labReturner(output cityhashutil.HashOutParams) {
 	fmt.Println("temp collision: ", output.Unhashed, " | Input hash: ", output.Hashed)
-	if output.Err != nil {
+	if output.Err != "" {
 		fmt.Println(output.Err)
 	}
 }

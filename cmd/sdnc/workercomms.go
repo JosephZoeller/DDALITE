@@ -12,21 +12,25 @@ import (
 
 var collision []cityhashutil.HashCollision
 
+func listenForWorker(rw http.ResponseWriter, req *http.Request) {
+	
+}
+
 // Send hash to each worker's overlay ip address.
-func sendToWorkers(hash string, workerAddrs []string) string {
-	responseChan := make(chan io.ReadCloser, len(workerAddrs))
-	var workerCount int64 = int64(len(workerAddrs))  // How many slave ips have we registered?
+func sendToWorkers(hash string) string {
+	responseChan := make(chan io.ReadCloser, len(overIps))
+	var workerCount int64 = int64(len(overIps))  // How many slave ips have we registered?
 	var pages int64 = dictionaryLength / workerCount // How big will the assigned tasks will be
 
 	var tmp cityhashutil.HashCollision
 
-	for i := 0; i < len(workerAddrs); i++ {
+	for i := 0; i < len(overIps); i++ {
 		startIndex := int64(i) * pages
 
 		// This go routine submits values to the PODS not the ec2s.
 		go func(index int) {
 
-			resp, er := tryGet(workerAddrs[index], hash, startIndex, pages)
+			resp, er := tryGet(overIps[index], hash, startIndex, pages)
 			if er != nil {
 				log.Println(er)
 			}
@@ -35,7 +39,7 @@ func sendToWorkers(hash string, workerAddrs []string) string {
 		}(i)
 	}
 
-	for i := 0; i< len(workerAddrs); i++ {
+	for i := 0; i< len(overIps); i++ {
 		firstResponseBody := <- responseChan
 		json.NewDecoder(firstResponseBody).Decode(&tmp)
 

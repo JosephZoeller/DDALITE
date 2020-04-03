@@ -18,7 +18,7 @@ func listenForClient(rw http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	resp := sendToWorkers(hash, overIps)
+	resp := sendToWorkers(hash)
 	if resp != "" {
 		log.Printf("Worker Returned Collision: %s\n", resp)
 		exportCollision(hash, resp)

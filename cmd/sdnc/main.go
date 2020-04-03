@@ -19,7 +19,8 @@ import (
 // Logs worker responses (hash + collision -> collisions.txt)
 func main() {
 	fmt.Println("SDN Controller now listening on port 8080")
-	http.HandleFunc("/", listenForClient)
+	http.HandleFunc("/client", listenForClient)
+	http.HandleFunc("/worker", listenForWorker)
 	go http.ListenAndServe(":8080", nil)
 	signalChan := make(chan os.Signal, 1)
 	signal.Notify(signalChan, syscall.SIGINT)
