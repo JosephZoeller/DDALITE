@@ -22,7 +22,7 @@ func main() {
 	}
 
 	msg := cityhashutil.ResponseMessage{}
-	rsp, err := http.Post("http://localhost:666/client", "application/json", bytes.NewReader(post))
+	rsp, err := http.Post("http://localhost:666/ClientToSDNC", "application/json", bytes.NewReader(post))
 	if err != nil {
 		panic(err)
 	} else {

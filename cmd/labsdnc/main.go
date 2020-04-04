@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 
 	"github.com/JosephZoeller/DDALITE/pkg/cityhashutil"
@@ -17,11 +18,13 @@ var (
 	overIps          []string
 )
 
+var clientAddr string
+
 func main() {
 	overIps = []string {"http://localhost:8080"}
 
-	http.HandleFunc("/client", listenForClient)
-	http.HandleFunc("/worker", listenForWorker)
+	http.HandleFunc("/ClientToSDNC", listenForClient)
+	http.HandleFunc("/WorkerToSDNC", listenForWorker)
 	signalChan := make(chan os.Signal, 1)
 	signal.Notify(signalChan, syscall.SIGINT)
 
@@ -37,21 +40,26 @@ func main() {
 }
 
 func listenForWorker(rw http.ResponseWriter, req *http.Request) {
-	fmt.Println("Received data from worker, passing it onto client...")
+	fmt.Println("Received data from worker...")
 	collision := cityhashutil.HashOutParams{}
 	err := json.NewDecoder(req.Body).Decode(&collision)
 	if err != nil {
 		fmt.Println(err)
 	} else {
+		fmt.Println("Successfully decoded worker data. Passing it onto client..")
 		clientMsg := cityhashutil.ResponseMessage{ Message: fmt.Sprint(collision.Hashed, " | ", collision.Unhashed)}
 		post, _ := json.Marshal(clientMsg)
-		http.Post("http://localhost:999/sdnc", "application/json", bytes.NewReader(post))
+		postAddr := fmt.Sprintf("http://%s:999/SDNCToClient", clientAddr)
+		http.Post(postAddr, "application/json", bytes.NewReader(post))
 	}
 
 
 }
 
 func listenForClient(rw http.ResponseWriter, req *http.Request) {
+	log.Println("Request recieved from client: ", req.RemoteAddr)
+	clientAddr = strings.Split(req.RemoteAddr, ":")[0]
+
 	workSpec := cityhashutil.ClientPost{}
 
 	srvMsg := cityhashutil.ResponseMessage{}
@@ -61,15 +69,17 @@ func listenForClient(rw http.ResponseWriter, req *http.Request) {
 		json.NewEncoder(rw).Encode(srvMsg)
 		log.Println("Failed to decode client Post.")
 	} else {
-		srvMsg.Message = "Successful decode"
+		srvMsg.Message = "Successfully decoded client data. Passing it onto worker(s).."
 		json.NewEncoder(rw).Encode(srvMsg)
 	}
+	
 
 	sendToWorkers(workSpec)
 }
 
 func sendToWorkers(workSpec cityhashutil.ClientPost) {
 	for i, addr := range overIps {
+		log.Println("Sending work to: ", addr)
 		if i < len(workSpec.Dictionaries) {
 			work, _ := json.Marshal(cityhashutil.HashInParamsOnline{
 				InputHashes: workSpec.InputHashes, 

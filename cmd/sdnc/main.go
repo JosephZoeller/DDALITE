@@ -21,11 +21,18 @@ func main() {
 	fmt.Println("SDN Controller now listening on port 8080")
 	http.HandleFunc("/client", listenForClient)
 	http.HandleFunc("/worker", listenForWorker)
-	go http.ListenAndServe(":8080", nil)
 	signalChan := make(chan os.Signal, 1)
 	signal.Notify(signalChan, syscall.SIGINT)
-	<-signalChan
 
+	go func() {
+		err := http.ListenAndServe(":8080", nil)
+		if err != nil {
+			log.Println(err)
+			signalChan <- os.Kill
+		}
+	}()
+
+	<-signalChan
 	fmt.Println("Beginning Infrastructure Teardown...")
 	// Tear down kubernetes pods and then ec2 instances to save money.
 	tErr := kubeutil.TearDown()
