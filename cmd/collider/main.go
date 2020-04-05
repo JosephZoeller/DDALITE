@@ -6,22 +6,10 @@ import (
 	"net/http"
 )
 
-var inPort int
-var dbConfigFilePath string
-var dictionaryFilePath string
-
-func init() {
-	inPort = 8080
-	dbConfigFilePath = "config.yaml"
-	dictionaryFilePath = "dictionary.txt"
-}
+var SDNCAddr string
 
 func main() {
-
-	// Response function initiator.
-	http.HandleFunc("/", Resp)
-
-	// Listen http via service port as definded in enviroment variable.
-	fmt.Printf("Collider is running on port %d\n", inPort)
+	fmt.Printf("Running Collider Server on port 8080...")
+	http.HandleFunc("/", ListenForSDNC)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }

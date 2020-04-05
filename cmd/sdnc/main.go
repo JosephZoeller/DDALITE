@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"net/http"
@@ -12,20 +13,28 @@ import (
 	terra "github.com/JosephZoeller/DDALITE/pkg/terrautil"
 )
 
-// SDN Controller Entry point.
-// Listens for Client Query from Reverse Proxy (hash) Form: http://my.ip/:8080?hash=s0m3h4sh&instances=3
-// Broadcasts query to workers (hash)
-// Listens for worker responses (hash + collision)
-// Logs worker responses (hash + collision -> collisions.txt)
+var (
+	overIps          []string
+	instanceCount    *int
+	clientAddr string
+)
+
+func init() {
+	log.SetFlags(log.Llongfile)
+	instanceCount = flag.Int("c", 1, "count - Determines how many instances to spin up. Default 1.")
+	flag.Parse()
+}
+
 func main() {
-	fmt.Println("SDN Controller now listening on port 8080")
-	http.HandleFunc("/client", listenForClient)
-	http.HandleFunc("/worker", listenForWorker)
+	spinUp(*instanceCount)
+
+	http.HandleFunc("/ClientToSDNC", listenForClient)
+	http.HandleFunc("/WorkerToSDNC", listenForWorker)
 	signalChan := make(chan os.Signal, 1)
 	signal.Notify(signalChan, syscall.SIGINT)
 
 	go func() {
-		err := http.ListenAndServe(":8080", nil)
+		err := http.ListenAndServe(":666", nil)
 		if err != nil {
 			log.Println(err)
 			signalChan <- os.Kill
@@ -34,7 +43,7 @@ func main() {
 
 	<-signalChan
 	fmt.Println("Beginning Infrastructure Teardown...")
-	// Tear down kubernetes pods and then ec2 instances to save money.
+	
 	tErr := kubeutil.TearDown()
 	if tErr != nil {
 		log.Printf(tErr.Error())
@@ -42,4 +51,33 @@ func main() {
 	terra.TearDown()
 
 	fmt.Println("Teardown complete. Rerun the SDNC to rebuild the infrastructure, or exit the ssh connection and tear down the master with 'make destroy_master'.")
+}
+
+func spinUp(iCnt int) {
+
+	if iCnt <= 0 {
+		log.Fatalf("Error instances=%d were not set.", iCnt)
+	}
+
+	// Initiate Terraform script to create EC2 instances.
+	// NO LONGER RETURNS IPS. Use the ips here to log the EC2 underlay ips for safekeeping.
+
+	fmt.Printf("\nProvisioning %d instances with Terraform...\n", iCnt)
+	terra.Provision(iCnt)
+	fmt.Println("Provisioning complete. Building Kubernetes environment...")
+
+	// Launch deployment yaml in /kubernetes/deployment.yaml and return the pod private overlay ips.
+	setUpErr := kubeutil.SetUp(iCnt)
+	if setUpErr != nil {
+		log.Fatalf(setUpErr.Error())
+	}
+
+	// Get Overlay IPs from current set of pods.
+	overIps = make([]string, 0)
+	myPods := kubeutil.PodInfo()
+
+	for _, v := range myPods {
+		overIps = append(overIps, v.IPaddr)
+	}
+	fmt.Println("Kubernetes Environment built.")
 }
