@@ -1,9 +1,7 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"os"
 	"time"
 
 	"github.com/JosephZoeller/DDALITE/pkg/cityhashutil"

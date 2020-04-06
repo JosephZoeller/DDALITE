@@ -14,7 +14,7 @@ spec:
         spec:
             containers:
             - name: collider
-              image: josephzoeller/ddalite:latest
+              image: josephzoeller/ddalite:latest #docker hub repository
               ports:
               - containerPort: 8080
 ---
