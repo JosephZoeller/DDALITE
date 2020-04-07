@@ -11,26 +11,25 @@ import (
 	"github.com/JosephZoeller/DDALITE/pkg/cityhashutil"
 )
 
-
 func main() {
 	http.HandleFunc("/SDNCToClient", listenForSDNC)
 	signalChan := make(chan os.Signal, 1)
 	signal.Notify(signalChan, syscall.SIGINT)
-	
+
 	go func() {
-		err := http.ListenAndServe("localhost:999", nil)
+		err := http.ListenAndServe(":8080", nil)
 		if err != nil {
 			log.Println(err)
 			signalChan <- os.Interrupt
 		}
 	}()
 
-	<- signalChan
+	<-signalChan
 }
 
 func listenForSDNC(response http.ResponseWriter, request *http.Request) {
 	m := cityhashutil.ResponseMessage{}
-	
+
 	err := json.NewDecoder(request.Body).Decode(&m)
 	if err != nil {
 		log.Println("Error: Failed to decode server message - ", err)

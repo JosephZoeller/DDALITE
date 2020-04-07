@@ -23,7 +23,7 @@ func listenForWorker(rw http.ResponseWriter, req *http.Request) {
 		fmt.Println("Successfully decoded worker data. Passing it onto client..")
 		clientMsg := cityhashutil.ResponseMessage{ Message: fmt.Sprint(collision.Hashed, " | ", collision.Unhashed)}
 		post, _ := json.Marshal(clientMsg)
-		postAddr := fmt.Sprintf("http://%s:999/SDNCToClient", clientAddr)
+		postAddr := fmt.Sprintf("http://%s:8080/SDNCToClient", clientAddr)
 		http.Post(postAddr, "application/json", bytes.NewReader(post))
 	}
 

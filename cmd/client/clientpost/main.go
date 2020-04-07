@@ -8,7 +8,7 @@ import (
 
 	"github.com/JosephZoeller/DDALITE/pkg/cityhashutil"
 )
-
+var SDNCAddr = ""
 func main() {
 
 	post, err := json.Marshal(cityhashutil.ClientPost{
@@ -22,7 +22,7 @@ func main() {
 	}
 
 	msg := cityhashutil.ResponseMessage{}
-	rsp, err := http.Post("http://localhost:666/ClientToSDNC", "application/json", bytes.NewReader(post))
+	rsp, err := http.Post(fmt.Sprintf("http://%s:666/ClientToSDNC", SDNCAddr), "application/json", bytes.NewReader(post))
 	if err != nil {
 		panic(err)
 	} else {
