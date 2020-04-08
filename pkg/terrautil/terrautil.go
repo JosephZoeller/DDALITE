@@ -12,7 +12,7 @@ import (
 // send in request. This function returns the ips of all the created slave nodes.
 // May change to pass in master token.
 func Provision(userCount int) {
-	str, err := shellutil.RunCommand("echo $(jq '.user_count = %d' var.json) > var.json", "/home/ubuntu/terradir")
+	str, err := shellutil.RunCommand(fmt.Sprintf("echo $(jq '.user_count = %d' var.json) > var.json", userCount), "/home/ubuntu/terradir")
 	if err != nil {
 		panic(str)
 	}

@@ -1,8 +1,8 @@
 #!/bin/bash
 # The next portions are specific to the master node
 
-sudo apt install -y unzip
-
+sudo apt-get install -y unzip
+wait
 # Kubeadm initialization
 # Flannel uses 10.244.0.0/16 as the pod network CIDR
 kubeadm init --pod-network-cidr=10.244.0.0/16
@@ -43,9 +43,9 @@ iptables -P FORWARD ACCEPT
 sudo sysctl net.bridge.bridge-nf-call-iptables=1
 
 curl -fsSL https://releases.hashicorp.com/terraform/0.12.20/terraform_0.12.20_linux_amd64.zip -o terr.zip
-
+wait
 unzip -o terr.zip
-
-mv -f terraform /bin
+wait
+sudo mv terraform /usr/bin/terraform
 
 cd $HOME/terradir/
