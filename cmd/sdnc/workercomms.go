@@ -41,7 +41,7 @@ func sendToWorkers(workSpec cityhashutil.ClientSpecifications) {
 			})
 
 			msg := cityhashutil.MessageResponse{}
-			postAddr := fmt.Sprintf("http://%s:8080/", overIps)
+			postAddr := fmt.Sprintf("http://%s:8080/", addr)
 			rsp, err := http.Post(postAddr, "application/json", bytes.NewReader(work))
 			if err != nil {
 				panic(err)

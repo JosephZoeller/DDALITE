@@ -28,6 +28,7 @@ func listenForClient(rw http.ResponseWriter, req *http.Request) {
 	if !setup {
 		srvMsg.Message += "Spinning up workers, this will take a moment... "
 		spinUp(len(workSpec.Dictionaries))
+		//fakeSpinUp()
 		setup = true
 	}
 	srvMsg.Message += "Sending work request to workers."

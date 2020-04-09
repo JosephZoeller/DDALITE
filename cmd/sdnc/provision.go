@@ -8,6 +8,12 @@ import (
 	terra "github.com/JosephZoeller/DDALITE/pkg/terrautil"
 )
 
+func fakeSpinUp() {
+	log.Printf("\nFaking Spinup...\n")
+	overIps = make([]string, 0)
+	overIps = append(overIps, "localhost")
+}
+
 func spinUp(iCnt int) {
 
 	if iCnt <= 0 {

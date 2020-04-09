@@ -33,12 +33,14 @@ func ListenForSDNC(rw http.ResponseWriter, req *http.Request) {
 }
 
 func postCollisions() {
-	post, err := json.Marshal(<- collisionChan)
-	if err != nil {
-		fmt.Println(err)
-	} else {
-		fmt.Println("Sending False Data...")
-		postAddr := fmt.Sprintf("http://%s:666/WorkerToSDNC", SDNCAddr)
-		http.Post(postAddr, "application/json", bytes.NewReader(post))
+	for {
+		post, err := json.Marshal(<-collisionChan)
+		if err != nil {
+			fmt.Println(err)
+		} else {
+			fmt.Println("Sending False Data...")
+			postAddr := fmt.Sprintf("http://%s:666/WorkerToSDNC", SDNCAddr)
+			http.Post(postAddr, "application/json", bytes.NewReader(post))
+		}
 	}
 }

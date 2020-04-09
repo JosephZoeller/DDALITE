@@ -11,7 +11,7 @@ import (
 	"github.com/JosephZoeller/DDALITE/pkg/cityhashutil"
 )
 
-var SDNCAddr = "ec2-3-15-149-69.us-east-2.compute.amazonaws.com" // Insert SDNC Address Here
+var SDNCAddr = "3.135.249.249" // <INSERT SDNC ADDRESS HERE>
 const workFilePath = "work_order.json"
 
 func init() {
