@@ -13,9 +13,9 @@ func listenForClient(rw http.ResponseWriter, req *http.Request) {
 	log.Println("Request recieved from client: ", req.RemoteAddr)
 	clientAddr = strings.Split(req.RemoteAddr, ":")[0]
 
-	workSpec := cityhashutil.ClientPost{}
+	workSpec := cityhashutil.ClientSpecifications{}
 
-	srvMsg := cityhashutil.ResponseMessage{}
+	srvMsg := cityhashutil.MessageResponse{}
 	err := json.NewDecoder(req.Body).Decode(&workSpec)
 	if err != nil {
 		srvMsg.Message = "Failed to decode"

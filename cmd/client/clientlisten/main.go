@@ -28,7 +28,7 @@ func main() {
 }
 
 func listenForSDNC(response http.ResponseWriter, request *http.Request) {
-	m := cityhashutil.ResponseMessage{}
+	m := cityhashutil.MessageResponse{}
 
 	err := json.NewDecoder(request.Body).Decode(&m)
 	if err != nil {

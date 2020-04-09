@@ -22,8 +22,8 @@ func main() {
 func ListenForSDNC(rw http.ResponseWriter, req *http.Request) {
 	log.Println("Request recieved from SDNC: ", req.RemoteAddr)
 	SDNCAddr = strings.Split(req.RemoteAddr, ":")[0]
-	work := cityhashutil.HashInParamsOnline{}
-	msg := cityhashutil.ResponseMessage{}
+	work := cityhashutil.ColliderSpecifications{}
+	msg := cityhashutil.MessageResponse{}
 
 	err := json.NewDecoder(req.Body).Decode(&work)
 	if err != nil {
@@ -32,21 +32,21 @@ func ListenForSDNC(rw http.ResponseWriter, req *http.Request) {
 		log.Println("Failed to decode request from SDNC.")
 		return
 	}
-	collisionChan := make(chan cityhashutil.HashOutParams)
+	collisionChan := make(chan cityhashutil.ColliderResponse)
 	go findCollisions(collisionChan)
 
 	msg.Message = "Worker is seeking collisions..."
 	json.NewEncoder(rw).Encode(msg)
 }
 
-func findCollisions(collissionChan chan cityhashutil.HashOutParams) {
+func findCollisions(collissionChan chan cityhashutil.ColliderResponse) {
 	for i := 0; i < 5; i++ {
-		postCollisions(cityhashutil.HashOutParams{Hashed: "1234", Unhashed: "TestUnhash", Err: ""})
+		postCollisions(cityhashutil.ColliderResponse{Hashed: "1234", Unhashed: "TestUnhash", Err: ""})
 		time.Sleep(time.Second * 10)
 	}
 }
 
-func postCollisions(collision cityhashutil.HashOutParams) {
+func postCollisions(collision cityhashutil.ColliderResponse) {
 	post, err := json.Marshal(collision)
 	if err != nil {
 		fmt.Println(err)

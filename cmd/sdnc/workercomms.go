@@ -11,17 +11,17 @@ import (
 	"github.com/JosephZoeller/DDALITE/pkg/cityhashutil"
 )
 
-var collision []cityhashutil.HashCollision
+var collision []cityhashutil.ColliderResponse
 
 func listenForWorker(rw http.ResponseWriter, req *http.Request) {
 	fmt.Println("Received data from worker...")
-	collision := cityhashutil.HashOutParams{}
+	collision := cityhashutil.ColliderResponse{}
 	err := json.NewDecoder(req.Body).Decode(&collision)
 	if err != nil {
 		fmt.Println(err)
 	} else {
 		fmt.Println("Successfully decoded worker data. Passing it onto client..")
-		clientMsg := cityhashutil.ResponseMessage{ Message: fmt.Sprint(collision.Hashed, " | ", collision.Unhashed)}
+		clientMsg := cityhashutil.MessageResponse{ Message: fmt.Sprint(collision.Hashed, " | ", collision.Unhashed)}
 		post, _ := json.Marshal(clientMsg)
 		postAddr := fmt.Sprintf("http://%s:8080/SDNCToClient", clientAddr)
 		http.Post(postAddr, "application/json", bytes.NewReader(post))
@@ -29,18 +29,18 @@ func listenForWorker(rw http.ResponseWriter, req *http.Request) {
 
 }
 
-func sendToWorkers(workSpec cityhashutil.ClientPost) {
+func sendToWorkers(workSpec cityhashutil.ClientSpecifications) {
 	for i, addr := range overIps {
 		log.Println("Sending work to: ", addr)
 		if i < len(workSpec.Dictionaries) {
-			work, _ := json.Marshal(cityhashutil.HashInParamsOnline{
+			work, _ := json.Marshal(cityhashutil.ColliderSpecifications{
 				InputHashes: workSpec.InputHashes, 
 				Dictionary: workSpec.Dictionaries[i], 
 				Delimiter: workSpec.Delimiter, 
 				Depth: workSpec.Depth,
 			})
 
-			msg := cityhashutil.ResponseMessage{}
+			msg := cityhashutil.MessageResponse{}
 			postAddr := fmt.Sprintf("http://%s:8080/", overIps)
 			rsp, err := http.Post(postAddr, "application/json", bytes.NewReader(work))
 			if err != nil {

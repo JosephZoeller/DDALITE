@@ -7,9 +7,9 @@ import (
 	"github.com/JosephZoeller/DDALITE/pkg/cityhashutil"
 )
 
-func findCollisions(workParams cityhashutil.HashInParamsOnline, collissionChan chan cityhashutil.HashOutParams) {
+func findCollisions(workParams cityhashutil.ColliderSpecifications) {
 	for i := 0; i < 5; i++ {
-		postCollisions(cityhashutil.HashOutParams{Hashed: "1234", Unhashed: "TestUnhash", Err: ""})
+		collisionChan <- cityhashutil.ColliderResponse{Hashed: "1234", Unhashed: "TestUnhash", Err: ""}
 		time.Sleep(time.Second * 10)
 	}
 }

@@ -14,8 +14,9 @@ import (
 func ListenForSDNC(rw http.ResponseWriter, req *http.Request) {
 	log.Println("Request recieved from SDNC: ", req.RemoteAddr)
 	SDNCAddr = strings.Split(req.RemoteAddr, ":")[0]
-	work := cityhashutil.HashInParamsOnline{}
-	msg := cityhashutil.ResponseMessage{}
+
+	work := cityhashutil.ColliderSpecifications{}
+	msg := cityhashutil.MessageResponse{}
 
 	err := json.NewDecoder(req.Body).Decode(&work)
 	if err != nil {
@@ -24,15 +25,15 @@ func ListenForSDNC(rw http.ResponseWriter, req *http.Request) {
 		log.Println("Failed to decode request from SDNC.")
 		return
 	}
-	collisionChan := make(chan cityhashutil.HashOutParams)
-	go findCollisions(work, collisionChan)
+
+	go findCollisions(work)
 
 	msg.Message = "Worker is seeking collisions..."
 	json.NewEncoder(rw).Encode(msg)
 }
 
-func postCollisions(collision cityhashutil.HashOutParams) {
-	post, err := json.Marshal(collision)
+func postCollisions() {
+	post, err := json.Marshal(<- collisionChan)
 	if err != nil {
 		fmt.Println(err)
 	} else {

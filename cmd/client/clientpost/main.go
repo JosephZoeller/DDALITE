@@ -40,7 +40,7 @@ func main() {
 }
 
 func OutputJson() {
-	post, err := json.Marshal(cityhashutil.ClientPost{
+	post, err := json.Marshal(cityhashutil.ClientSpecifications{
 		InputHashes:  []string{"85894109417755"},
 		Dictionaries: [][]string{[]string{"This", "is"}, []string{"a", "test"}},
 		Delimiter:    "bruh",
@@ -53,7 +53,7 @@ func OutputJson() {
 }
 
 func seekReq(post io.Reader) {
-	msg := cityhashutil.ResponseMessage{}
+	msg := cityhashutil.MessageResponse{}
 	rsp, err := http.Post(fmt.Sprintf("http://%s:666/ClientToSDNC", SDNCAddr), "application/json", post)
 	if err != nil {
 		panic(err)
@@ -68,7 +68,7 @@ func seekReq(post io.Reader) {
 }
 
 func teardownReq() {
-	msg := cityhashutil.ResponseMessage{}
+	msg := cityhashutil.MessageResponse{}
 	rsp, err := http.Post(fmt.Sprintf("http://%s:666/teardown", SDNCAddr), "application/json", nil)
 	if err != nil {
 		panic(err)
