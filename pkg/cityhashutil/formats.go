@@ -9,15 +9,15 @@ type HashInParamsOffline struct {
 }
 
 type ColliderSpecifications struct {
-	InputHashes []string `json:"Hashes"`
+	InputHashes []uint64 `json:"Hashes"`
 	Dictionary  []string `json:"Dictionary"`
 	Delimiter   string   `json:"Delimeter"`
 	Depth       int      `json:"Depth"`
 }
 
 type ColliderResponse struct {
-	Hashed   string `json:"hashedString"`
-	Unhashed string `json:"unhashedString"`
+	Hashed   uint64 `json:"Hash"`
+	Unhashed string `json:"Unhash"`
 	Err      string `json:"errorString"`
 }
 
@@ -26,7 +26,7 @@ type MessageResponse struct {
 }
 
 type ClientSpecifications struct {
-	InputHashes  []string   `json:"Hashes"`
+	InputHashes  []uint64   `json:"Hashes"`
 	Dictionaries [][]string `json:"Dictionaries"`
 	Delimiter    string     `json:"Delimeter"`
 	Depth        int        `json:"Depth"`

@@ -11,7 +11,7 @@ import (
 	"github.com/JosephZoeller/DDALITE/pkg/cityhashutil"
 )
 
-var SDNCAddr = "3.135.249.249" // <INSERT SDNC ADDRESS HERE>
+var SDNCAddr = "18.217.127.193" // <INSERT SDNC ADDRESS HERE>
 const workFilePath = "work_order.json"
 
 func init() {
@@ -31,6 +31,8 @@ func main() {
 		teardownReq()
 	case "genjson":
 		OutputJson()
+	//case "workerTest":
+	//	workerTestReq()
 	default:
 		fmt.Println(usage)
 		return
@@ -41,15 +43,22 @@ func main() {
 
 func OutputJson() {
 	post, err := json.Marshal(cityhashutil.ClientSpecifications{
-		InputHashes:  []string{"85894109417755"},
-		Dictionaries: [][]string{[]string{"This", "is"}, []string{"a", "test"}},
-		Delimiter:    "bruh",
-		Depth:        4,
+		InputHashes:  []uint64{85894109417755},
+		Dictionaries: [][]string{[]string{"A", "p", "l", "e"},},
+		Delimiter:    "",
+		Depth:        5,
 	})
 	if err != nil {
 		panic(err)
 	}
 	fmt.Println(string(post))
+}
+
+func workerTestReq() {
+	_, err := http.Post("http://localhost:8080/Test", "application/json", nil)
+	if err != nil {
+		panic(err)
+	}
 }
 
 func seekReq(post io.Reader) {

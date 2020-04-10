@@ -14,11 +14,17 @@ func main() {
 	collisionChan = make(chan cityhashutil.ColliderResponse, 5)
 	
 	fmt.Printf("Running Collider Server on port 8080...")
-	http.HandleFunc("/", ListenForSDNC)
+	http.HandleFunc("/SDNCToWorker", ListenForSDNC)
 
 	go http.ListenAndServe(":8080", nil)
 	go postCollisions()
 	
+	/*
+	http.HandleFunc("/Test", AlgorithmTest)
+	go http.ListenAndServe("localhost:8080", nil)
+	go postCollisionsTest()
+	*/
+
 	for {
 	}
 }

@@ -41,7 +41,7 @@ func ListenForSDNC(rw http.ResponseWriter, req *http.Request) {
 
 func findCollisions(collissionChan chan cityhashutil.ColliderResponse) {
 	for i := 0; i < 5; i++ {
-		postCollisions(cityhashutil.ColliderResponse{Hashed: "1234", Unhashed: "TestUnhash", Err: ""})
+		postCollisions(cityhashutil.ColliderResponse{Hashed: 1234, Unhashed: "TestUnhash", Err: ""})
 		time.Sleep(time.Second * 10)
 	}
 }

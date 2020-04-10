@@ -12,10 +12,10 @@ import (
 )
 
 func main() {
-	http.HandleFunc("/SDNCToClient", listenForSDNC)
 	signalChan := make(chan os.Signal, 1)
 	signal.Notify(signalChan, syscall.SIGINT)
 
+	http.HandleFunc("/SDNCToClient", listenForSDNC)
 	go func() {
 		err := http.ListenAndServe(":8080", nil)
 		if err != nil {
@@ -24,6 +24,16 @@ func main() {
 		}
 	}()
 
+	/*
+	http.HandleFunc("/LocalToClient", listenForLocal)
+	go func() {
+		err := http.ListenAndServe("localhost:8081", nil)
+		if err != nil {
+			log.Println(err)
+			signalChan <- os.Interrupt
+		}
+	}()
+	*/
 	<-signalChan
 }
 
@@ -35,5 +45,16 @@ func listenForSDNC(response http.ResponseWriter, request *http.Request) {
 		log.Println("Error: Failed to decode server message - ", err)
 	} else {
 		log.Println(m.Message)
+	}
+}
+
+func listenForLocal(response http.ResponseWriter, request *http.Request) {
+	m := cityhashutil.ColliderResponse{}
+
+	err := json.NewDecoder(request.Body).Decode(&m)
+	if err != nil {
+		log.Println("Error: Failed to decode worker message - ", err)
+	} else {
+		log.Println(m.Hashed, m.Unhashed, m.Err)
 	}
 }

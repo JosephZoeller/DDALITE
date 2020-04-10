@@ -1,11 +1,8 @@
 {
-    "Hashes": [
-        "85894109417755"
+    "Hashes":[85894109417755],
+    "Dictionaries":[
+        ["A","p","l","e"]
     ],
-    "Dictionaries": [
-        ["This", "is"],
-        ["a", "test"]
-    ],
-    "Delimeter": "bruh",
-    "Depth": 4
+    "Delimeter":"",
+    "Depth":5
 }

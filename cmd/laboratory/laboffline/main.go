@@ -15,9 +15,9 @@ func labSender() {
 		zeroInput := inputs[0]
 		generatedGuess := "Apple"
 		if cFunc(zeroInput, generatedGuess) {
-			labReturner(cityhashutil.ColliderResponse{Hashed: zeroInput, Unhashed: generatedGuess, Err: ""})
+			labReturner(cityhashutil.ColliderResponse{Hashed: 1234, Unhashed: generatedGuess, Err: ""})
 		} else {
-			labReturner(cityhashutil.ColliderResponse{Hashed: zeroInput, Unhashed: "----------", Err: "Failed to find collision"})
+			labReturner(cityhashutil.ColliderResponse{Hashed: 1234, Unhashed: "----------", Err: "Failed to find collision"})
 		}
 
 	}
