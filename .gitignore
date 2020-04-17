@@ -11,8 +11,8 @@ sdnc
 revproxy
 
 # secrets (AWS Credentials, Private and public keys)
-/secrets/*
-!/secrets/.keep
+/build/secrets/*
+!/build/secrets/.keep
 
 # Test binary, built with `go test -c`
 *.test
