@@ -1,36 +1,37 @@
-##Local values pulled from var.json
-locals {
-  json_data = jsondecode(file("./var.json"))
-  json_secrets= jsondecode(file("./secrets/creds.json"))
-}
+variable "aws_access_key" {}
+variable "aws_secret_key" {}
+variable "public_key" {}
+variable "private_key" {}
+variable "WORKER_image_id" {}
+
 ##Public IPs for WORKER EC2's, array of worker ips.
 output "instance_ips" {
-  value = aws_instance.worker.*.public_ip
+  value = "${aws_instance.worker.*.public_ip}"
   description = "The Private IP address of the server instance"
 }
 ##AWS Login Settings and Setup
 provider "aws" {
-  access_key = local.json_secrets.access_key
-  secret_key = local.json_secrets.secret_key
+  access_key = "${var.aws_access_key}"
+  secret_key = "${var.aws_secret_key}"
   region     = "us-east-2"
 }
 ##SSH LOGIN KEYS
 resource "aws_key_pair" "deployer" {
   key_name	  = "Key_slave"
-  public_key	= file("./secrets/public.pub")
+  public_key	= "${var.public_key}"
 }
 ##EC2's for SLAVES
 resource "aws_instance" "worker" {
-  count   = local.json_data.user_count
-  key_name = aws_key_pair.deployer.key_name
-  ami           = local.json_data.WORKER_image_id
+  count   = "${var.user_count}"
+  key_name = "${aws_key_pair.deployer.key_name}"
+  ami           = "${var.WORKER_image_id}"
   instance_type = "t2.micro"
-  security_groups = [aws_security_group.SSH_slave.name]
+  security_groups = [ "${aws_security_group.SSH_Worker.name}" ]
   connection {
     user = "ubuntu"
-    type = "ssh"
-    private_key = file("./secrets/private.pem")
-    host =  self.public_ip
+    type = "ssh"    
+    private_key = "${var.private_key}"
+    host =  "${self.public_ip}"
     timeout = "4m"
 }
 ##Make file structure pods and services
@@ -64,8 +65,8 @@ resource "aws_instance" "worker" {
   }   
 }
 ##Allows SSH
-resource "aws_security_group" "SSH_slave" {
-  name        = "allow_ssh_slave"
+resource "aws_security_group" "SSH_Worker" {
+  name        = "allow_ssh_worker"
   description = "Allow SSH traffic"
   ingress {
     from_port   = 0 

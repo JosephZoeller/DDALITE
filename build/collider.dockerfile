@@ -2,6 +2,7 @@ FROM golang:alpine AS builder
 
 # build dockerfile from root directory!
 # sudo docker build -f build/collider.dockerfile -t josephzoeller/ddalite:latest .
+# sudo docker push josephzoeller/ddalite:latest
 
 RUN mkdir -p $GOPATH/src/github.com/JosephZoeller/DDALITE/
 WORKDIR $GOPATH/src/github.com/JosephZoeller/DDALITE/

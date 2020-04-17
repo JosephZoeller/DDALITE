@@ -1,36 +1,37 @@
-##Local values pulled from var.json
-locals {
-  json_data = jsondecode(file("./var.json"))
-  json_secrets= jsondecode(file("./secrets/creds.json"))
-}
+variable "aws_access_key" {}
+variable "aws_secret_key" {}
+variable "public_key" {}
+variable "private_key" {}
+variable "MASTER_image_id" {}
+
 ##Public IPs for Master EC2, 1 ip.
 output "master_ip" {
-  value = aws_instance.master.public_ip
+  value = "${aws_instance.master.public_ip}"
   description = "The Private IP address of the server instance"
 }
 
 ##AWS Login Settings and Setup
 provider "aws" {
-  access_key = local.json_secrets.access_key
-  secret_key = local.json_secrets.secret_key
+  access_key = "${var.aws_access_key}"
+  secret_key = "${var.aws_secret_key}"
   region     = "us-east-2"
 }
 ##SSH LOGIN KEYS
 resource "aws_key_pair" "deployer" {
   key_name	  = "Key_Master"
-  public_key	= file("./secrets/public.pub")
+  public_key	= "${var.public_key}"
 }
 ##EC2for MASTER 
 resource "aws_instance" "master" {
-  key_name = aws_key_pair.deployer.key_name
-  ami           = local.json_data.MASTER_image_id
+  key_name = "${aws_key_pair.deployer.key_name}"
+  ami           = "${var.MASTER_image_id}"
   instance_type = "t2.medium"
-  security_groups = [aws_security_group.SSH.name]
+  security_groups = [ "${aws_security_group.SSH.name}" ]
   connection {
     user = "ubuntu"
     type = "ssh"
-    private_key = file("./secrets/private.pem")
-    host =  self.public_ip
+    private_key = "${var.private_key}"
+    host =  "${self.public_ip}"
     timeout = "4m"
   }
 ##Setup Directories for Master
