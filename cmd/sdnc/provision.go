@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"github.com/JosephZoeller/DDALITE/pkg/kubeutil"
-	terra "github.com/JosephZoeller/DDALITE/pkg/terrautil"
 )
 
 func fakeSpinUp() {
@@ -22,10 +21,6 @@ func spinUp(iCnt int) {
 
 	// Initiate Terraform script to create EC2 instances.
 	// NO LONGER RETURNS IPS. Use the ips here to log the EC2 underlay ips for safekeeping.
-
-	log.Printf("\nProvisioning %d instances with Terraform...\n", iCnt)
-	terra.Provision(iCnt)
-	log.Println("Provisioning complete. Building Kubernetes environment...")
 
 	// Launch deployment yaml in /kubernetes/deployment.yaml and return the pod private overlay ips.
 	setUpErr := kubeutil.SetUp(iCnt)
@@ -50,7 +45,6 @@ func startTeardown(rw http.ResponseWriter, req *http.Request) {
 	if tErr != nil {
 		log.Printf(tErr.Error())
 	}
-	terra.TearDown()
-
+	
 	log.Println("Teardown complete. Rerun the SDNC to rebuild the infrastructure, or exit the ssh connection and tear down the master with 'make destroy_master'.")
 }
