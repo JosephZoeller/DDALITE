@@ -17,7 +17,7 @@ RUN go get -u 'github.com/lib/pq'
 RUN go get -u 'gopkg.in/yaml.v3'
 
 RUN ls
-RUN env GOOS=linux GOARCH=arm64 go build -o /Collider ./cmd/collider
+RUN env GOOS=linux GOARCH=arm go build -o /Collider ./cmd/collider
 
 #ADD ./dictionary.txt /dictionary.txt
 
