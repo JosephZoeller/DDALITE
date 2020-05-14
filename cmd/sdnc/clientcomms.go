@@ -25,10 +25,7 @@ func listenForClient(rw http.ResponseWriter, req *http.Request) {
 		return
 	}
 	srvMsg.Message = "Successfully decoded client data... Sending work request to workers."
-	if !deployed {
-		deployed = true
-		kubeutil.SetUp(len(workSpec.Dictionaries))
-	}
+	kubeutil.SetUp(len(workSpec.Dictionaries))
 	refreshIps()
 
 	json.NewEncoder(rw).Encode(srvMsg)
