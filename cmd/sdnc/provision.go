@@ -17,6 +17,7 @@ func refreshIps() {
 
 	overIps = make([]string, 0)
 	for _, v := range myPods {
+		log.Println(v.IPaddr)
 		overIps = append(overIps, v.IPaddr)
 	}
 }
