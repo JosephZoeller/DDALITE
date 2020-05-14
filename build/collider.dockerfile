@@ -26,4 +26,4 @@ FROM alpine:latest
 #COPY --from=builder /dictionary.txt .
 COPY --from=builder /Collider .
 EXPOSE 8080
-CMD [ "#!/bin/sh ./Collider" ]
+CMD [ "./Collider" ]
