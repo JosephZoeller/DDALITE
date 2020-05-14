@@ -23,15 +23,8 @@ func listenForClient(rw http.ResponseWriter, req *http.Request) {
 		log.Println("Failed to decode client Post.")
 		return
 	}
-	srvMsg.Message = "Successfully decoded client data... "
-
-	if !setup {
-		srvMsg.Message += "Spinning up workers, this will take a moment... "
-		spinUp(len(workSpec.Dictionaries))
-		//fakeSpinUp()
-		setup = true
-	}
-	srvMsg.Message += "Sending work request to workers."
+	srvMsg.Message = "Successfully decoded client data... Sending work request to workers."
+	refreshIps()
 
 	json.NewEncoder(rw).Encode(srvMsg)
 	sendToWorkers(workSpec)

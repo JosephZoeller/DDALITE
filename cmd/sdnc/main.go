@@ -10,14 +10,12 @@ import (
 
 var (
 	overIps    []string
-	setup      = false
 	clientAddr string
 )
 
 func main() {
 	http.HandleFunc("/ClientToSDNC", listenForClient)
 	http.HandleFunc("/WorkerToSDNC", listenForWorker)
-	http.HandleFunc("/teardown", startTeardown)
 	signalChan := make(chan os.Signal, 1)
 	signal.Notify(signalChan, syscall.SIGINT)
 
