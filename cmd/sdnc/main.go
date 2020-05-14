@@ -10,6 +10,7 @@ import (
 
 var (
 	overIps    []string
+	deployed	= false
 	clientAddr string
 )
 

@@ -11,7 +11,7 @@ import (
 	"github.com/JosephZoeller/DDALITE/pkg/cityhashutil"
 )
 
-var SDNCAddr = "18.217.127.193" // <INSERT SDNC ADDRESS HERE>
+var SDNCAddr = "192.168.1.20" // <INSERT SDNC ADDRESS HERE>
 const workFilePath = "work_order.json"
 
 func init() {
@@ -44,7 +44,7 @@ func main() {
 func OutputJson() {
 	post, err := json.Marshal(cityhashutil.ClientSpecifications{
 		InputHashes:  []uint64{85894109417755},
-		Dictionaries: [][]string{[]string{"A", "p", "l", "e"},},
+		Dictionaries: [][]string{[]string{"A", "p", "l", "e"}},
 		Delimiter:    "",
 		Depth:        5,
 	})

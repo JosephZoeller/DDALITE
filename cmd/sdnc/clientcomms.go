@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/JosephZoeller/DDALITE/pkg/cityhashutil"
+	"github.com/JosephZoeller/DDALITE/pkg/kubeutil"
 )
 
 func listenForClient(rw http.ResponseWriter, req *http.Request) {
@@ -24,6 +25,10 @@ func listenForClient(rw http.ResponseWriter, req *http.Request) {
 		return
 	}
 	srvMsg.Message = "Successfully decoded client data... Sending work request to workers."
+	if !deployed {
+		deployed = true
+		kubeutil.SetUp(len(workSpec.Dictionaries))
+	}
 	refreshIps()
 
 	json.NewEncoder(rw).Encode(srvMsg)

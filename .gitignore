@@ -8,6 +8,8 @@ dictionary.txt
 mcproxy
 collider
 sdnc
+clientpost
+clientlisten
 revproxy
 
 # secrets (AWS Credentials, Private and public keys)
