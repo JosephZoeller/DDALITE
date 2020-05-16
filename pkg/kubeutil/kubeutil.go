@@ -3,7 +3,6 @@ package kubeutil
 
 import (
 	"log"
-	"os/exec"
 	"strings"
 
 	"github.com/JosephZoeller/DDALITE/pkg/shellutil"
@@ -13,8 +12,13 @@ import (
 func NodeInfo() []Node {
 	var Nodes []Node
 
-	output, _ := exec.Command("kubectl", "get", "nodes", "-o", "wide").Output()
-	line := strings.Split(string(output), "\n")
+	output, err := shellutil.RunCommand("kubectl --kubeconfig=/home/pi/.kube/config get nodes -o wide", ".")
+	log.Println(output)
+	if err != nil {
+		panic(err)
+	}
+
+	line := strings.Split(output, "\n")
 	line = line[1:]
 
 	for _, detail := range line {
@@ -50,7 +54,7 @@ func NodeInfo() []Node {
 func PodInfo() []Pod {
 	var Pods []Pod
 
-	output, err := shellutil.RunCommand("kubectl get pods -o wide", ".")
+	output, err := shellutil.RunCommand("kubectl --kubeconfig=/home/pi/.kube/config get pods -o wide", ".")
 	log.Println(output)
 	if err != nil {
 		panic(err)
@@ -91,8 +95,13 @@ func PodInfo() []Pod {
 func ServiceInfo() []Service {
 	var Services []Service
 
-	output, _ := exec.Command("kubectl", "get", "services", "-o", "wide").Output()
-	line := strings.Split(string(output), "\n")
+	output, err := shellutil.RunCommand("kubectl --kubeconfig=/home/pi/.kube/config get services -o wide", ".")
+	log.Println(output)
+	if err != nil {
+		panic(err)
+	}
+
+	line := strings.Split(output, "\n")
 	line = line[1:]
 
 	for _, detail := range line {
