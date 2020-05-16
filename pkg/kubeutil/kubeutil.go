@@ -2,8 +2,11 @@
 package kubeutil
 
 import (
+	"log"
 	"os/exec"
 	"strings"
+
+	"github.com/JosephZoeller/DDALITE/pkg/shellutil"
 )
 
 // NodeInfo Retrieves Data on All nodes on cluster
@@ -47,8 +50,13 @@ func NodeInfo() []Node {
 func PodInfo() []Pod {
 	var Pods []Pod
 
-	output, _ := exec.Command("kubectl", "get", "pods", "-o", "wide").Output()
-	line := strings.Split(string(output), "\n")
+	output, err := shellutil.RunCommand("kubectl get pods -o wide", ".")
+	log.Println(output)
+	if err != nil {
+		panic(err)
+	}
+
+	line := strings.Split(output, "\n")
 	line = line[1:]
 
 	for _, detail := range line {
