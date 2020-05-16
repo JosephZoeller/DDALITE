@@ -12,6 +12,21 @@ func fakeIps() {
 	overIps = append(overIps, "localhost")
 }
 
+func allPodsReady(count int) bool {
+	myPods := kubeutil.PodInfo()
+
+	if len(myPods) == count {
+		for _, v := range myPods {
+			if v.Status != "Running" {
+				return false
+			}
+		}
+		return true
+	}
+	
+	return false
+}
+
 func refreshIps() {
 	myPods := kubeutil.PodInfo()
 

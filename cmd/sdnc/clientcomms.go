@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/JosephZoeller/DDALITE/pkg/cityhashutil"
 	"github.com/JosephZoeller/DDALITE/pkg/kubeutil"
@@ -24,8 +25,17 @@ func listenForClient(rw http.ResponseWriter, req *http.Request) {
 		log.Println("Failed to decode client Post.")
 		return
 	}
+	dicCount := len(workSpec.Dictionaries)
 	srvMsg.Message = "Successfully decoded client data... Sending work request to workers."
-	kubeutil.SetUp(len(workSpec.Dictionaries))
+	
+	kubeutil.SetUp(dicCount)
+	log.Println("Checking pod readiness...")
+	for !allPodsReady(dicCount) {
+		log.Println("Rechecking...")
+		time.Sleep(time.Second  * 5)
+	}
+
+	log.Println("Pods ready, gathering IPs...")
 	refreshIps()
 
 	json.NewEncoder(rw).Encode(srvMsg)
