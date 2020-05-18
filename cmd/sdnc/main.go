@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	overIps    []string
+	ingressIp = "192.0.2.666"
 	clientAddr string
 )
 
