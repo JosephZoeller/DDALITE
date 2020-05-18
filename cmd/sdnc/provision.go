@@ -28,11 +28,11 @@ func allPodsReady(count int) bool {
 }
 
 func refreshIps() {
-	myPods := kubeutil.PodInfo()
+	myPods := kubeutil.NodeInfo()
 
 	overIps = make([]string, 0)
 	for _, v := range myPods {
-		log.Println("Pod IP: " + v.IPaddr)
-		overIps = append(overIps, v.IPaddr)
+		log.Println("Pod IP: " + v.InternalIP)
+		overIps = append(overIps, v.InternalIP)
 	}
 }
