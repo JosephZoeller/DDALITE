@@ -26,12 +26,9 @@ spec:
     selector:
         app: collider
     ports:
-    - protocol: TCP
+    - name: collider
+      protocol: TCP
       port: 8080
       targetPort: 8080
-    clusterIP: 10.96.0.1
-    type: LoadBalancer
-status:
-    loadBalancer:
-        ingress:
-        - ip: 192.0.2.666
+      nodePort: 30000
+    type: NodePort

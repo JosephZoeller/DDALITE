@@ -35,7 +35,8 @@ func listenForClient(rw http.ResponseWriter, req *http.Request) {
 		time.Sleep(time.Second  * 5)
 	}
 
-	log.Println("Pods ready...")
+	log.Println("Pods ready, gathering IPs...")
+	refreshIps()
 
 	json.NewEncoder(rw).Encode(srvMsg)
 	sendToWorkers(workSpec)
