@@ -2,26 +2,28 @@ package main
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/JosephZoeller/DDALITE/pkg/cityhashutil"
 )
 
 var SDNCAddr string
 var collisionChan chan cityhashutil.ColliderResponse
+var exitChan chan bool
+var remainingHashes []uint64
+var start time.Time
 
 func main() {
-	collisionChan = make(chan cityhashutil.ColliderResponse, 5)
+	start = time.Now()
+	collisionChan = make(chan cityhashutil.ColliderResponse)
+	exitChan = make(chan bool)
 	http.HandleFunc("/SDNCToWorker", ListenForSDNC)
 
 	go http.ListenAndServe(":8080", nil)
 	go postCollisions()
 	
-	/*
-	http.HandleFunc("/Test", AlgorithmTest)
-	go http.ListenAndServe("localhost:8080", nil)
-	go postCollisionsTest()
-	*/
+	//go postCollisionsTest()
+	//go AlgorithmTest()
 
-	for {
-	}
+	<-exitChan
 }

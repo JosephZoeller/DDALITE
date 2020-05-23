@@ -38,9 +38,12 @@ func postCollisions() {
 		if err != nil {
 			fmt.Println(err)
 		} else {
-			fmt.Println("Sending False Data...")
+			fmt.Println("Sending Data...")
 			postAddr := fmt.Sprintf("http://%s:666/WorkerToSDNC", SDNCAddr)
 			http.Post(postAddr, "application/json", bytes.NewReader(post))
+			if len(remainingHashes) == 0 {
+				exitChan <- true
+			}
 		}
 	}
 }
