@@ -11,6 +11,7 @@ sdnc
 clientpost
 clientlisten
 revproxy
+logfile.log
 
 # secrets (AWS Credentials, Private and public keys)
 /build/secrets/*

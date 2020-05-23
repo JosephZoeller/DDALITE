@@ -36,9 +36,9 @@ func postCollisions() {
 	for {
 		post, err := json.Marshal(<-collisionChan)
 		if err != nil {
-			fmt.Println(err)
+			log.Println(err)
 		} else {
-			fmt.Println("Sending Data...")
+			log.Println("Sending Data...")
 			postAddr := fmt.Sprintf("http://%s:666/WorkerToSDNC", SDNCAddr)
 			http.Post(postAddr, "application/json", bytes.NewReader(post))
 			if len(remainingHashes) == 0 {

@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"os"
 
@@ -23,7 +24,7 @@ func main() {
 	case "seek":
 		workFile, err := os.Open(workFilePath)
 		if err != nil {
-			fmt.Printf("%s Error - %s\n", workFilePath, err.Error())
+			log.Printf("%s Error - %s\n", workFilePath, err.Error())
 			os.Exit(1)
 		}
 		seekReq(workFile)
@@ -34,11 +35,11 @@ func main() {
 	//case "workerTest":
 	//	workerTestReq()
 	default:
-		fmt.Println(usage)
+		log.Println(usage)
 		return
 	}
 
-	fmt.Println("DONE")
+	log.Println("DONE")
 }
 
 func OutputJson() {
@@ -51,7 +52,7 @@ func OutputJson() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(string(post))
+	log.Println(string(post))
 }
 
 func workerTestReq() {
@@ -69,9 +70,9 @@ func seekReq(post io.Reader) {
 	} else {
 		err = json.NewDecoder(rsp.Body).Decode(&msg)
 		if err != nil {
-			fmt.Println("Failed to decode server response")
+			log.Println("Failed to decode server response")
 		} else {
-			fmt.Println(msg.Message)
+			log.Println(msg.Message)
 		}
 	}
 }
@@ -84,9 +85,9 @@ func teardownReq() {
 	} else {
 		err = json.NewDecoder(rsp.Body).Decode(&msg)
 		if err != nil {
-			fmt.Println("Failed to decode server response")
+			log.Println("Failed to decode server response")
 		} else {
-			fmt.Println(msg.Message)
+			log.Println(msg.Message)
 		}
 	}
 }
