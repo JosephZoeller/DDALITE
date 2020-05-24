@@ -12,9 +12,12 @@ func AlgorithmTest() {
 
 	work := cityhashutil.ColliderSpecifications{
 		InputHashes: []uint64{0x4e1ec7e1511b,6285962488583}, //6285962488583
-		Dictionary:  []string{"A", "p", "l", "e", "s"}, //, "s"
+		Dictionary:  []string{"p", "l", "e"}, //, "s"
 		Delimiter:   "",
-		Depth:       15,
+		Contains: "",
+		StartsWith: "A",
+		EndsWith: "s",
+		Depth:       5,
 	}
 
 	findCollisions(work)

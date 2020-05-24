@@ -32,17 +32,12 @@ func listenForWorker(rw http.ResponseWriter, req *http.Request) {
 func sendToWorkers(workSpec cityhashutil.ClientSpecifications) {
 	for i, addr := range overIps {
 		log.Println("Sending work to: ", addr)
-		if i < len(workSpec.Dictionaries) {
-			work, _ := json.Marshal(cityhashutil.ColliderSpecifications{
-				InputHashes: workSpec.InputHashes, 
-				Dictionary: workSpec.Dictionaries[i], 
-				Delimiter: workSpec.Delimiter, 
-				Depth: workSpec.Depth,
-			})
-
-			msg := cityhashutil.MessageResponse{}
+		if i < len(workSpec.Colliders) {
+			work, _ := json.Marshal(workSpec.Colliders[i])
 			postAddr := fmt.Sprintf("http://%s:8080/SDNCToWorker", addr)
 			rsp, err := http.Post(postAddr, "application/json", bytes.NewReader(work))
+
+			msg := cityhashutil.MessageResponse{}
 			if err != nil {
 				panic(err)
 			} else {

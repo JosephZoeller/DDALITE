@@ -25,12 +25,12 @@ func listenForClient(rw http.ResponseWriter, req *http.Request) {
 		log.Println("Failed to decode client Post.")
 		return
 	}
-	dicCount := len(workSpec.Dictionaries)
+	colliderCount := len(workSpec.Colliders)
 	srvMsg.Message = "Successfully decoded client data... Sending work request to workers."
 	
-	kubeutil.SetUp(dicCount)
+	kubeutil.SetUp(colliderCount)
 	log.Println("Checking pod readiness...")
-	for !allPodsReady(dicCount) {
+	for !allPodsReady(colliderCount) {
 		log.Println("Rechecking...")
 		time.Sleep(time.Second  * 5)
 	}

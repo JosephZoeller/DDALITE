@@ -13,6 +13,9 @@ type ColliderSpecifications struct {
 	Dictionary  []string `json:"Dictionary"`
 	Delimiter   string   `json:"Delimeter"`
 	Depth       int      `json:"Depth"`
+	StartsWith  string   `json:"StartsWith"`
+	EndsWith	string	`json:"EndsWith"`
+	Contains    string `json:"Contains"`
 }
 
 type ColliderResponse struct {
@@ -26,8 +29,5 @@ type MessageResponse struct {
 }
 
 type ClientSpecifications struct {
-	InputHashes  []uint64   `json:"Hashes"`
-	Dictionaries [][]string `json:"Dictionaries"`
-	Delimiter    string     `json:"Delimeter"`
-	Depth        int        `json:"Depth"`
+	Colliders []ColliderSpecifications `json:"Colliders"`
 }
