@@ -1,7 +1,7 @@
 package main
 
 import (
-	//"net/http"
+	"net/http"
 	"time"
 
 	"github.com/JosephZoeller/DDALITE/pkg/cityhashutil"
@@ -17,13 +17,13 @@ func main() {
 	start = time.Now()
 	collisionChan = make(chan cityhashutil.ColliderResponse)
 	exitChan = make(chan bool)
-	//http.HandleFunc("/SDNCToWorker", ListenForSDNC)
+	http.HandleFunc("/SDNCToWorker", ListenForSDNC)
 
-	//go http.ListenAndServe(":8080", nil)
-	//go postCollisions()
+	go http.ListenAndServe(":8080", nil)
+	go postCollisions()
 	
-	go postCollisionsTest()
-	go AlgorithmTest()
+	//go postCollisionsTest()
+	//go AlgorithmTest()
 
 	<-exitChan
 }
