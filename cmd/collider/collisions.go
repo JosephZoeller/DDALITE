@@ -39,7 +39,7 @@ func combineRecurse(base string, fathometer int) {
 }
 
 func checkCandidate(candidate string, candidateLen uint32) { // string length is used in hashing, computing it beforehand should reduce processing with a long list of input hashes
-	fmt.Println(candidate) // for testing only! printing is a needless expense
+	//fmt.Println(candidate) // for testing only! printing is a needless expense
 
 	for i := 0; i < len(remainingHashes); i++ {
 		if compare(candidate, remainingHashes[i], &candidateLen) {

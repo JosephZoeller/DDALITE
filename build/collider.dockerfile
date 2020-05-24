@@ -10,13 +10,13 @@ COPY . .
 # $GOPATH refers to the docker machine's gopath, even when using it with the source path
 
 RUN apk add --no-cache git
-RUN pwd
-RUN ls
+#RUN pwd
+#RUN ls
 RUN go get -u 'github.com/JosephZoeller/cityhash'
-RUN go get -u 'github.com/lib/pq'
+#RUN go get -u 'github.com/lib/pq'
 RUN go get -u 'gopkg.in/yaml.v3'
 
-RUN ls
+#RUN ls
 RUN env GOOS=linux GOARCH=arm go build -o /Collider ./cmd/collider
 
 #ADD ./dictionary.txt /dictionary.txt
