@@ -4,10 +4,12 @@ import (
 	//"fmt"
 
 	"fmt"
+	"sync"
 
 	"github.com/JosephZoeller/DDALITE/pkg/cityhashutil"
 )
 var workParams cityhashutil.ColliderSpecifications
+var wg sync.WaitGroup
 
 // recursive function to build combinations of dictionary words and compare them with the hashes
 func findCollisions(specs cityhashutil.ColliderSpecifications) {
@@ -17,30 +19,31 @@ func findCollisions(specs cityhashutil.ColliderSpecifications) {
 	workParams.EndsWith = workParams.Delimiter + workParams.EndsWith
 
 	for _, candidate := range workParams.Dictionary {
-		candidateAugment := workParams.StartsWith + candidate + workParams.EndsWith
-		checkCandidate(candidateAugment, uint32(len(candidateAugment)))
-		combineRecurse(candidate, 1)
+		wg.Add(1)
+		go combineRecurseGoroutineLayer(candidate)
 	}
-
+	wg.Wait()
 	debriefing()
+}
+
+func combineRecurseGoroutineLayer(candidate string) {
+	combineRecurse(candidate, 1)
+	wg.Done()
 }
 
 func combineRecurse(base string, fathometer int) {
 	for _, word := range workParams.Dictionary {
-		candidate := base + workParams.Delimiter + word
-
-		candidateAugment := workParams.StartsWith + candidate + workParams.EndsWith
-		checkCandidate(candidateAugment, uint32(len(candidateAugment))) 
-
-		if fathometer+1 < workParams.Depth {
-			combineRecurse(candidate, fathometer+1)
+		if fathometer+1 < workParams.Words {
+			combineRecurse(base + workParams.Delimiter + word, fathometer+1)
+		} else {
+			candidateAugment := workParams.StartsWith + base + workParams.Delimiter + word + workParams.EndsWith
+			checkCandidate(candidateAugment, uint32(len(candidateAugment))) 
 		}
 	}
 }
 
 func checkCandidate(candidate string, candidateLen uint32) { // string length is used in hashing, computing it beforehand should reduce processing with a long list of input hashes
 	//fmt.Println(candidate) // for testing only! printing is a needless expense
-
 	for i := 0; i < len(remainingHashes); i++ {
 		if compare(candidate, remainingHashes[i], &candidateLen) {
 			collisionChan <- cityhashutil.ColliderResponse{Hashed: remainingHashes[i], Unhashed: candidate, Err: ""}

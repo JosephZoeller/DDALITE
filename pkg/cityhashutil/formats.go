@@ -12,10 +12,9 @@ type ColliderSpecifications struct {
 	InputHashes []uint64 `json:"Hashes"`
 	Dictionary  []string `json:"Dictionary"`
 	Delimiter   string   `json:"Delimeter"`
-	Depth       int      `json:"Depth"`
+	Words       int      `json:"Depth"`
 	StartsWith  string   `json:"StartsWith"`
 	EndsWith	string	`json:"EndsWith"`
-	Contains    string `json:"Contains"`
 }
 
 type ColliderResponse struct {
