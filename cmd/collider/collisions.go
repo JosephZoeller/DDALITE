@@ -1,13 +1,12 @@
 package main
 
 import (
-	//"fmt"
-
 	"fmt"
 	"sync"
 
 	"github.com/JosephZoeller/DDALITE/pkg/cityhashutil"
 )
+
 var workParams cityhashutil.ColliderSpecifications
 var wg sync.WaitGroup
 
@@ -15,14 +14,29 @@ var wg sync.WaitGroup
 func findCollisions(specs cityhashutil.ColliderSpecifications) {
 	workParams = specs
 	remainingHashes = workParams.InputHashes
+
+	if workParams.ChipCount == 0 {
+		candidateAugment := workParams.StartsWith + workParams.Delimiter + workParams.EndsWith
+		checkCandidate(candidateAugment, uint32(len(candidateAugment)))
+	}
+
 	workParams.StartsWith = workParams.StartsWith + workParams.Delimiter
 	workParams.EndsWith = workParams.Delimiter + workParams.EndsWith
 
-	for _, candidate := range workParams.Dictionary {
-		wg.Add(1)
-		go combineRecurseGoroutineLayer(candidate)
+	if workParams.ChipCount == 1 {
+		for _, candidate := range workParams.Dictionary {
+			candidateAugment := workParams.StartsWith + candidate + workParams.EndsWith
+			checkCandidate(candidateAugment, uint32(len(candidateAugment)))
+		}
+
+	} else {
+		for _, candidate := range workParams.Dictionary {
+			wg.Add(1)
+			go combineRecurseGoroutineLayer(candidate)
+		}
+
 	}
-	wg.Wait()
+
 	debriefing()
 }
 
@@ -33,11 +47,11 @@ func combineRecurseGoroutineLayer(candidate string) {
 
 func combineRecurse(base string, fathometer int) {
 	for _, word := range workParams.Dictionary {
-		if fathometer+1 < workParams.Words {
-			combineRecurse(base + workParams.Delimiter + word, fathometer+1)
+		if fathometer+1 < workParams.ChipCount {
+			combineRecurse(base+workParams.Delimiter+word, fathometer+1)
 		} else {
 			candidateAugment := workParams.StartsWith + base + workParams.Delimiter + word + workParams.EndsWith
-			checkCandidate(candidateAugment, uint32(len(candidateAugment))) 
+			checkCandidate(candidateAugment, uint32(len(candidateAugment)))
 		}
 	}
 }
@@ -65,13 +79,5 @@ func remove(s []uint64, i int) []uint64 {
 
 func debriefing() {
 	rHashCount := len(remainingHashes)
-	if rHashCount > 3 {
-		remainingHashes = make([]uint64, 0)
-		collisionChan <- cityhashutil.ColliderResponse{Err: fmt.Sprintf("[Search Complete, %d hashes not found]", rHashCount)}
-	} else {
-		for i := len(remainingHashes) - 1; i >= 0; i-- {
-			collisionChan <- cityhashutil.ColliderResponse{Hashed: remainingHashes[i], Err: "[Hash Not Found (Search Complete)]"}
-			remainingHashes = remainingHashes[:i]
-		}
-	}
+	collisionChan <- cityhashutil.ColliderResponse{Err: fmt.Sprintf("[Search Complete, %d hashes not found]", rHashCount)}
 }

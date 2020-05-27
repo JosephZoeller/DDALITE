@@ -70,7 +70,7 @@ func seekReqProgrammatic() {
 				//Dictionary: []string{"E", "T", "A", "O", "I", "N", "S", "R", "H", "L", "D", "C", "U", "M", "F", "P", "G", "W", "Y", "B", "V", "K", "X", "J", "Q", "Z"},
 				Dictionary: []string{"0","1","2","3","4","5","6","7","8","9",},
 				Delimiter:  "",
-				Words:      3,
+				ChipCount:      3,
 				StartsWith: fmt.Sprintf("SKL_"),
 				EndsWith: "_CLTH_SIM",
 			})
@@ -112,7 +112,7 @@ func OutputJson() {
 				InputHashes: []uint64{85894109417755},
 				Dictionary:  []string{"A", "p", "l", "e"},
 				Delimiter:   "",
-				Words:       5,
+				ChipCount:       5,
 			},
 		},
 	})

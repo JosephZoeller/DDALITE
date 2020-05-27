@@ -2,6 +2,7 @@ package main
 
 import (
 	//"net/http"
+	"fmt"
 	"time"
 
 	"github.com/JosephZoeller/DDALITE/pkg/cityhashutil"
@@ -26,4 +27,5 @@ func main() {
 	go AlgorithmTest()
 
 	<-exitChan
+	fmt.Println("END")
 }

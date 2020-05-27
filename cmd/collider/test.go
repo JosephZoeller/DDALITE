@@ -1,67 +1,120 @@
 package main
 
 import (
+	//"fmt"
+	"bufio"
 	"fmt"
 	"log"
 	"os"
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/JosephZoeller/DDALITE/pkg/cityhashutil"
 )
 
 func AlgorithmTest() {
-	var unknownBones = []uint64{85894109417755, 100344186467618, 100705409720908, 10084092424946, 101038941345065, 101353819857458, 102173724970085, 102715687304464, 102811854670790, 104666841482893, 105284202074245, 106076310574035, 106208077970767, 106587990740832, 109035421338545, 110183014877418, 110187210323059, 113157661544328, 115587439426589, 115621406961613, 116482325613822, 116845306561127, 117229107888337, 118065835591265, 119731277046827, 119958107505363, 119984435706406, 120270760612510, 121035842863494, 121610670284021, 122898547313985, 124747721014436, 12607858374059, 127441289898194, 127596943633518, 127638733590100, 128247721523386, 129498085446864, 129818498658395, 130219926364552, 130430345148764, 132130685949643, 132524993802473, 133942827548200, 134451830201100, 13546292615043, 135814319458652, 136045145264627, 136331588267811, 136354801730908, 136770444341289, 139733073712999, 140283266436887, 140610086406515, 140693398840635, 144257574756652, 145083297758212, 145739801048304, 145864607999828, 148072711192111, 148797272599418, 151410448453480, 152380689078046, 152792419387252, 152852247188084, 155874073873252, 156130383350500, 156181678376861, 157310544915746, 157402054338947, 157482910679507, 157687679407703, 157766615537467, 158455652395075, 159889855567111, 159918592545707, 16022057869344, 16032351500764, 160497155249166, 161942088228175, 165098553667181, 165231953886971, 165991983806716, 16787986784266, 168002599570263, 172501886224886, 174787648043115, 178590574530940, 18162403183311, 182220976625964, 182558667073806, 182721821583302, 182990262559578, 183697092816706, 183836951833349, 18387845381859, 184149668579875, 184613706032485, 184723361925497, 186299151436286, 187239081157422, 188643438332811, 189805571181043, 189885888633548, 190670263378087, 191947579684016, 1923430442702, 193288166795997, 193407690640890, 193414341055349, 193995984300117, 195636469891810, 196148785507973, 197079104529403, 197128892969526, 198520783384717, 202190862149068, 202384999040422, 203580553224979, 208827360265579, 209491297356261, 211128440901290, 211472136399331, 211692387495580, 216064519912663, 216505082093396, 217147612833288, 217421127966789, 217986995660710, 218156423355872, 218627673754400, 218840997917537, 221227959471847, 221966759100867, 223355182652541, 223852504351741, 224027568749162, 225207429120179, 227874969906556, 23278352516925, 23463391709190, 236020746423326, 238472779820926, 240687601396086, 242786796224364, 243737399290754, 244720175117252, 244835221446562, 245037001248461, 246650590047933, 246807753043925, 246828295310136, 248316319164044, 248977470868292, 249209013147774, 250810208850172, 252228964911159, 253929859193491, 254810460981251, 255117744840406, 256723045212428, 257075118197811, 25789544013089, 258826363407794, 259633369427611, 259926065145866, 260482628825493, 262559729479142, 26323030650365, 263794709895511, 26511062512644, 268229368231798, 268585427932377, 269702399666585, 269960630535862, 270062937684180, 274383749473104, 274914826523517, 275146552507742, 2755808233795, 276086469541850, 276981779850611, 277409320524446, 27899082493518, 281455042442475, 28848249376204, 30033909465817, 31921291762616, 32627462378062, 34780538976698, 36058030541339, 36316582427757, 3770146511559, 38853151620730, 39242550506188, 40084429642847, 40722697802122, 41156550617742, 41334545889889, 41603542035227, 45931149596213, 49263949749627, 50592559961664, 51144673887396, 52460443125074, 53487797509967, 5465524759509, 55640619164809, 60563395080164, 60795138794923, 63120590333790, 64004971506200, 64418549477795, 64942172097437, 66440439364686, 67128625567568, 69744545156671, 7107569878845, 72081020218900, 72171198940931, 73927543969519, 74277219576128, 75610718981125, 76516009669142, 7733774688470, 78570593565868, 78953731717284, 81671944697182, 81697005424857, 81827248469923, 8287270209564, 85996665853390, 86053755702769, 87067160542761, 90830427877514, 91141748613160, 91932972848672, 91956173861316, 92330539077970, 94163123710410, 94831980750732, 94854515111911, 95900451979075, 96314815898542, 97450771643871, 97599190796329, 97851076449043, 98334132130808, 99038264810477}
 	work := cityhashutil.ColliderSpecifications{}
-
 	/*
 		work = cityhashutil.ColliderSpecifications{
-			InputHashes: []uint64{0x4e1ec7e1511b, 6285962488583}, //6285962488583
-			Dictionary:  []string{"A", "p", "l", "e"},                 //, "s"
+			InputHashes: []uint64{0x4e1ec7e1511b},
+			Dictionary:  []string{"p", "l"},
 			Delimiter:   "",
-			//StartsWith:  "A",
-			//EndsWith:    "s",
-			Words:       13,
-		}
-		findCollisions(work)
-	*/
-	/*
-		work = cityhashutil.ColliderSpecifications{
-			InputHashes: unknownBones,
-			Dictionary: []string{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"},
-			Delimiter:  "",
-			Words:      3,
-			StartsWith: fmt.Sprintf("SKL_"),
-			EndsWith:   "_CLOTH_SIM",
+			StartsWith:  "A",
+			EndsWith:    "e",
+			Words:       3,
 		}
 		findCollisions(work)
 	*/
 
-	for i := 0; i < 1000; i++ {
+	unmatchedHashesFilename := "resources/AppleHash.txt"
+	chipDictionaryFilename := "resources/chipDictionary.txt"
+	literalDictionaryFilename := "resources/Dictionary.txt"
 
-		work = cityhashutil.ColliderSpecifications{
-			//InputHashes: []uint64{unknownBones[0]},
-			InputHashes: unknownBones,
-			Dictionary:  []string{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "R", "S", "T", "U", "CH", "SH", "TH", "_"},
-			//Dictionary: []string{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "_"},
-			//Dictionary: []string{"E", "T", "A", "O", "I", "N", "S", "R", "H", "L", "D", "C", "U", "M", "F", "P", "G", "W", "Y", "B", "V", "K", "X", "J", "Q", "Z"},
-			//Dictionary: []string{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"},
-			Delimiter:  "",
-			Words:      5,
-			StartsWith: fmt.Sprintf("SKL_%03d_", i),
-			EndsWith:   "",
+	unmatchedHashesFile, Err := os.Open(unmatchedHashesFilename)
+	if Err != nil {
+		panic(Err)
+	}
+	scanner := bufio.NewScanner(unmatchedHashesFile)
+	unknownHashesUint64 := make([]uint64, 0)
+	for scanner.Scan() {
+		meshParsed, Err := strconv.ParseUint(scanner.Text(), 10, 64)
+		if Err != nil {
+			panic(Err)
 		}
-		findCollisions(work)
+		unknownHashesUint64 = append(unknownHashesUint64, meshParsed)
 	}
 
+	chipDictionaryFile, Err := os.Open(chipDictionaryFilename)
+	if Err != nil {
+		panic(Err)
+	}
+	scanner = bufio.NewScanner(chipDictionaryFile)
+	chipDictionary := make([]string, 0)
+	for scanner.Scan() {
+		chipDictionary = append(chipDictionary, scanner.Text())
+	}
+	//chipDictionary = []string{""}
+	//chipDictionary = []string{"_","e", "t", "a", "o", "i", "n", "s", "r", "h", "l", "d", "c", "u", "m", "f", "p", "g", "w", "y", "b", "v", "k", "x", "j", "q", "z",
+	//							"", "E", "T", "A", "O", "I", "N", "S", "R", "H", "L", "D", "C", "U", "M", "F", "P", "G", "W", "Y", "B", "V", "K", "X", "J", "Q", "Z"}
+	//chipDictionary = []string{"E", "T", "A", "O", "I", "N", "S", "R", "H", "L", "D", "C", "U", "M", "F", "P", "G", "W", "Y", "B", "V", "K", "X", "J", "Q", "Z", "_"}
+	//chipDictionary = []string{"A","e", "t", "a", "o", "i", "n", "s", "r", "h", "l", "d", "c", "u", "m", "f", "p", "g", "w", "y", "b", "v", "k", "x", "j", "q", "z", "_"}
+	//chipDictionary = []string{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"}
+
+	literalDictionaryFile, Err := os.Open(literalDictionaryFilename)
+	if Err != nil {
+		panic(Err)
+	}
+	scanner = bufio.NewScanner(literalDictionaryFile)
+	literalDictionary := make([]string, 0)
+	for scanner.Scan() {
+		literalDictionary = append(literalDictionary, scanner.Text())
+	}
+
+	//var wmuUnknownMatInstances = []uint64{179744920977897,80962542339984}
+	//var wmuUnknownMeshGroups = []uint64{0xb7e8a16adbbd, 0x56a033934dc}
+
+	fmt.Println("Files loaded. Processing...")
+	for _, dicWord := range literalDictionary {
+		casing := strings.Title(dicWord)
+		work = cityhashutil.ColliderSpecifications{
+			InputHashes: unknownHashesUint64,
+			Dictionary:  chipDictionary,
+			Delimiter:   "",
+			ChipCount:   0,
+			StartsWith:  fmt.Sprintf("%s", casing),
+			EndsWith:    "",
+		}
+		//fmt.Println(casing)
+		findCollisions(work)
+	}
+	exitChan <- true
+	/*
+		for i := 0; i < 1000; i++ {
+
+			work = cityhashutil.ColliderSpecifications{
+				InputHashes: unknownHashesUint64,
+				Dictionary: []string{"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "_"},
+				Delimiter:  "",
+				ChipCount:      5,
+				StartsWith: fmt.Sprintf("SKL_%03d_", i),
+				EndsWith:   "",
+			}
+			findCollisions(work)
+		}
+	*/
 }
 
 func postCollisionsTest() {
 	f, _ := os.Create("logfile.log")
+	//lognterminal := io.MultiWriter(f, os.Stdout)
 	log.SetOutput(f)
 	for {
-		log.Println(<-collisionChan)
+		col := <-collisionChan
+		log.Println(col)
 		log.Println(time.Since(start))
 		if len(remainingHashes) == 0 {
+			log.Printf("Completed: %s", time.Since(start).String())
 			exitChan <- true
 		}
 	}
