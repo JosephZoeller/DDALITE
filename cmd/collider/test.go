@@ -81,13 +81,15 @@ func AlgorithmTest() {
 			InputHashes: unknownHashesUint64,
 			Dictionary:  chipDictionary,
 			Delimiter:   "",
-			ChipCount:   0,
+			ChipCount:   3,
 			StartsWith:  fmt.Sprintf("%s", casing),
 			EndsWith:    "",
 		}
 		//fmt.Println(casing)
 		findCollisions(work)
 	}
+	fmt.Println("Process complete.")
+	log.Printf("Completed: %s", time.Since(start).String())
 	exitChan <- true
 	/*
 		for i := 0; i < 1000; i++ {
@@ -114,7 +116,6 @@ func postCollisionsTest() {
 		log.Println(col)
 		log.Println(time.Since(start))
 		if len(remainingHashes) == 0 {
-			log.Printf("Completed: %s", time.Since(start).String())
 			exitChan <- true
 		}
 	}

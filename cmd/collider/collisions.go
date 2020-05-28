@@ -36,7 +36,7 @@ func findCollisions(specs cityhashutil.ColliderSpecifications) {
 		}
 
 	}
-
+	wg.Wait()
 	debriefing()
 }
 
